@@ -24,6 +24,12 @@ public class Company {
 
 
 
+	public Company() {
+		// TODO Auto-generated constructor stub
+	}
+
+
+
 	public int getId() {
 		return id;
 	}
@@ -51,7 +57,7 @@ public class Company {
 
 	@Override
 	public String toString() {
-		return "Company [id=" + id + ", Name=" + Name + ", computer=" + computers + "]";
+		return "Company [id=" + id + ", Name=" + Name + ", computer=" + computers + "] \n";
 	}
 	
 	

@@ -18,6 +18,12 @@ public class Computer {
 
 
 
+	public Computer() {
+		// TODO Auto-generated constructor stub
+	}
+
+
+
 	public String getName() {
 		return name;
 	}
@@ -51,7 +57,7 @@ public class Computer {
 
 	@Override
 	public String toString() {
-		return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued + "]";
+		return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued + "] \n";
 	}
 
 	
