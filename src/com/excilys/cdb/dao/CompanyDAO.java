@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.cdb.model.Company;
+import com.excilys.cdb.model.Computer;
 import com.mysql.jdbc.PreparedStatement;
 
 
@@ -35,6 +36,8 @@ public class CompanyDAO {
 			while (result.next()) {
 				company.setId(result.getInt("Id"));
 				company.setName(result.getString("Name"));
+				List<Computer> pComputers = new ComputerDAO().findByCompany(company);
+				company.setComputer(pComputers);
 			}
 			
 		} catch (SQLException e) {
@@ -73,7 +76,8 @@ public class CompanyDAO {
 				Company company = new Company();
 				company.setId(result.getInt("Id"));
 				company.setName(result.getString("Name"));
-				
+				List<Computer> pComputers = new ComputerDAO().findByCompany(company);
+				company.setComputer(pComputers);
 				companies .add(company);
 	
 			}
@@ -100,9 +104,9 @@ public class CompanyDAO {
 		return companies;
 	}
 	
-	public List<Company> findByName(Company example){
+	public Company findByName(Company example){
 		
-		List<Company> companies = new ArrayList<Company>();
+		Company company = new Company();
 		
 		Connection conn=Connexion.getConnexion();
 		PreparedStatement preparedStatement = null;
@@ -112,14 +116,11 @@ public class CompanyDAO {
 			preparedStatement.setString(1, example.getName());
 			ResultSet result = preparedStatement.executeQuery();
 	
-			while (result.next()) {
-
-				Company company = new Company();
-				
+			while (result.next()) {				
 				company.setId(result.getInt("Id"));
 				company.setName(result.getString("Name"));
-				
-				companies.add(company);
+				List<Computer> pComputers = new ComputerDAO().findByCompany(company);
+				company.setComputer(pComputers);	
 	
 			}
 			
@@ -142,7 +143,7 @@ public class CompanyDAO {
 			} 
 		}
 
-		return companies;
+		return company;
 	}
 	
 	

@@ -8,6 +8,8 @@ import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.dao.ComputerDAO;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.service.CompanyService;
+import com.excilys.cdb.service.ComputerService;
 
 public class main {
 
@@ -19,7 +21,58 @@ public class main {
 		//testSaveComputer();
 		//testComputerDAODelete();
 		//testComputerDAOUpdate();
+		
+		//testServiceCompany();
+		//testServiceComputer();
+		//testServiceComputerSave();
+		testServiceComputerDelete();
 				
+	}
+	
+	public static void testServiceComputerDelete() {
+		ComputerService cs = new ComputerService();
+		Computer computer1 = new Computer(0, "dell 1004 test service",LocalDate.of(2018,3,29), LocalDate.of(2019,3,29));
+		//cs.save(computer1, company);
+	}
+	
+	public static void testServiceComputerSave() {
+		ComputerService cs = new ComputerService();
+		Company company = new CompanyDAO().findById(5);
+		Computer computer1 = new Computer(0, "dell 1004 test service",LocalDate.of(2018,3,29), LocalDate.of(2019,3,29));
+		cs.save(computer1, company);
+	}
+	
+	public static void testServiceComputer() {
+		ComputerService cs = new ComputerService();
+		Computer computer = cs.findById(200);
+		System.out.println(computer);
+		
+		List<Computer> computers = new ArrayList<Computer>();
+		computers = cs.findAll();
+		System.out.println(computers);
+		
+		computers = null;
+		computers = cs.findByName("dell 1000");
+		System.out.println(computers);
+		
+		computers = null;
+		computers = cs.findByCompany(25);
+		System.out.println(computers);
+		
+		
+		
+	}
+	
+	public static void testServiceCompany() {
+		CompanyService cs = new CompanyService();
+		Company company = cs.findById(1);
+		System.out.println(company);
+		List<Company> companies = new ArrayList<Company>();
+		companies = cs.findAll();
+		System.out.println(companies);
+		company = null;
+		company = cs.findbyName("Samsung Electronics");
+		System.out.println(company);
 	}
 	
 	
@@ -56,7 +109,7 @@ public class main {
 		System.out.println(companies);
 		
 		//find by name
-		List<Company> companies2 = new ArrayList<Company>();
+		Company companies2 = new Company();
 		companies2 = new  CompanyDAO().findByName(company);
 		
 		System.out.println(companies2);
