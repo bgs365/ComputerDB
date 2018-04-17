@@ -25,14 +25,27 @@ public class main {
 		//testServiceCompany();
 		//testServiceComputer();
 		//testServiceComputerSave();
-		testServiceComputerDelete();
+		//testServiceComputerDelete();
+		testServiceComputerUpdate();
 				
+	}
+	
+	public static void testServiceComputerUpdate() {
+		ComputerService cs = new ComputerService();
+		Computer computer= new ComputerDAO().findById(579);
+		computer.setDiscontinued(LocalDate.of(2018,3,17));
+		computer.setIntroduced(LocalDate.of(2019,3,17));
+		cs.updateInfos(computer);
+		
+		Company company = new CompanyDAO().findById(1);
+		Computer computer2= new ComputerDAO().findById(577);
+		cs.updateCompany(computer2, company);
 	}
 	
 	public static void testServiceComputerDelete() {
 		ComputerService cs = new ComputerService();
-		Computer computer1 = new Computer(0, "dell 1004 test service",LocalDate.of(2018,3,29), LocalDate.of(2019,3,29));
-		//cs.save(computer1, company);
+		Computer computer = new ComputerDAO().findById(591);
+		cs.delete(computer);
 	}
 	
 	public static void testServiceComputerSave() {

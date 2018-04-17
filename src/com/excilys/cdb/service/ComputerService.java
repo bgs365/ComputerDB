@@ -42,4 +42,18 @@ public class ComputerService {
 		computerDAO.save(computer, company);
 	}
 	
+	public void delete(Computer computer) {
+		computerDAO.delete(computer);
+	}
+	
+	public void updateInfos(Computer computer) {
+		computerDAO.update(computer);
+	}
+	
+	public void updateCompany(Computer computer, Company company) {
+		computerDAO.updateCompany(computer, company);
+	}
+	
+	
+	
 }
