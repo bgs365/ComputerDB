@@ -10,27 +10,16 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.ui.MenuPricipal;
 
 public class main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		//testModel();
-		//testCompanyDAOSelect();
-		//testComputerDAOSelect();
-		//testSaveComputer();
-		//testComputerDAODelete();
-		//testComputerDAOUpdate();
-		
-		//testServiceCompany();
-		//testServiceComputer();
-		//testServiceComputerSave();
-		//testServiceComputerDelete();
-		testServiceComputerUpdate();
+		MenuPricipal.menuPrincipal();
 				
 	}
 	
-	public static void testServiceComputerUpdate() {
+	public static void verifServiceComputerUpdate() {
 		ComputerService cs = new ComputerService();
 		Computer computer= new ComputerDAO().findById(579);
 		computer.setDiscontinued(LocalDate.of(2018,3,17));
@@ -42,20 +31,20 @@ public class main {
 		cs.updateCompany(computer2, company);
 	}
 	
-	public static void testServiceComputerDelete() {
+	public static void verifServiceComputerDelete() {
 		ComputerService cs = new ComputerService();
 		Computer computer = new ComputerDAO().findById(591);
 		cs.delete(computer);
 	}
 	
-	public static void testServiceComputerSave() {
+	public static void verifServiceComputerSave() {
 		ComputerService cs = new ComputerService();
 		Company company = new CompanyDAO().findById(5);
-		Computer computer1 = new Computer(0, "dell 1004 test service",LocalDate.of(2018,3,29), LocalDate.of(2019,3,29));
+		Computer computer1 = new Computer(0, "dell 1004 verif service",LocalDate.of(2018,3,29), LocalDate.of(2019,3,29));
 		cs.save(computer1, company);
 	}
 	
-	public static void testServiceComputer() {
+	public static void verifServiceComputer() {
 		ComputerService cs = new ComputerService();
 		Computer computer = cs.findById(200);
 		System.out.println(computer);
@@ -76,7 +65,7 @@ public class main {
 		
 	}
 	
-	public static void testServiceCompany() {
+	public static void verifServiceCompany() {
 		CompanyService cs = new CompanyService();
 		Company company = cs.findById(1);
 		System.out.println(company);
@@ -93,7 +82,7 @@ public class main {
 	 * Les méthodes suivantes contiennent les differents cas d'utilisations des classes créees 
 	 */
 	
-	public static void testModel() {
+	public static void verifModel() {
 		Company capcom = new Company(1, "Cap Com");
 		Computer computer1 = new Computer(0, "dell 1",LocalDate.of(2017,3,29), LocalDate.of(2017,3,29));
 		Computer computer2 = new Computer(0, "dell 1",LocalDate.of(2017,3,29), null);
@@ -110,7 +99,7 @@ public class main {
 		System.out.println(capcom);
 	}
 	
-	public static void testCompanyDAOSelect() {
+	public static void verifCompanyDAOSelect() {
 		//find by id
 		Company company = new CompanyDAO().findById(1);
 		System.out.println(company);
@@ -131,7 +120,7 @@ public class main {
 		
 	}
 	
-	public static void testComputerDAOSelect() {
+	public static void verifComputerDAOSelect() {
 		Computer computer = new ComputerDAO().findById(1);
 		System.out.println(computer);
 		
@@ -152,7 +141,7 @@ public class main {
 		System.out.println(computer3);
 	}
 	
-	public static void testSaveComputer() {
+	public static void verifSaveComputer() {
 		Company company = new CompanyDAO().findById(2);
 		//Company company = new Company(45, "Cap Com");
 		Computer computer1 = new Computer(0, "dell 1004",LocalDate.of(2018,3,29), LocalDate.of(2019,3,29));
@@ -162,13 +151,13 @@ public class main {
 		
 	}
 	
-	public static void testComputerDAODelete() {
+	public static void verifComputerDAODelete() {
 		Computer computer = new ComputerDAO().findById(585);
 		ComputerDAO sup = new ComputerDAO();
 		sup.delete(computer);
 	}
 	
-	public static void testComputerDAOUpdate() {
+	public static void verifComputerDAOUpdate() {
 		Computer computer= new ComputerDAO().findById(579);
 		computer.setDiscontinued(LocalDate.of(2018,4,17));
 		computer.setIntroduced(LocalDate.of(2019,4,17));
