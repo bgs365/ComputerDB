@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class Connexion {
 	
 	static String driver = "com.mysql.jdbc.Driver";
-	static String baseDeDonnee = "jdbc:mysql://localhost:3306/computer-database-db";
+	static String baseDeDonnee = "jdbc:mysql://localhost:3306/computer-database-db?autoReconnect=true&useSSL=false";
 	static String login = "admincdb";
 	static String motDePasse = "qwerty1234";
 
