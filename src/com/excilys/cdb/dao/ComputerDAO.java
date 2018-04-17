@@ -12,13 +12,16 @@ import com.mysql.jdbc.PreparedStatement;
 
 public class ComputerDAO {
 	
+	private static final int NULL = 0;
 	String requeteFindById = "SELECT * FROM computer where id = ?";
 	String requeteFinfAll = "SELECT * FROM computer";
 	String requeteFindByName = "SELECT * FROM computer WHERE name= ? ";
 	String requeteFindByCompany = "SELECT * FROM computer WHERE company_id = ?";
 	String requeteInsert = "INSERT INTO computer (NAME, INTRODUCED, DISCONTINUED, COMPANY_ID) VALUES (?,?,?,?)";
 	String requeteInsertSansCompany = "INSERT INTO computer (NAME, INTRODUCED, DISCONTINUED) VALUES (?,?,?)";
-	String requetedelete = "DELETE DBUSER WHERE USER_ID = ?";
+	String requetedelete = "DELETE FROM computer WHERE id = ?";
+	String requeteUpdate ="UPDATE computer SET NAME = ? ,INTRODUCED = ? ,DISCONTINUED = ?  WHERE Id = ?";
+	String requeteUpdateChangerCompany ="UPDATE computer SET COMPANY_ID = ?  WHERE Id = ?";
 	
 	public Computer findById(int id) {
 		Computer computer = new Computer();
@@ -261,6 +264,7 @@ public class ComputerDAO {
 			}
 	}
 	
+	/**Supression**/
 	public void delete(Computer computer) {
 		Connection conn=Connexion.getConnexion();
 		PreparedStatement preparedStatement = null;
@@ -268,17 +272,106 @@ public class ComputerDAO {
 
 		try {
 			preparedStatement = (PreparedStatement) conn.prepareStatement(requetedelete);
-			preparedStatement.setInt(1, 1001);
+			preparedStatement.setInt(1, computer.getId());
 
 			// execute delete SQL stetement
 			preparedStatement.executeUpdate();
 
-			System.out.println("Record is deleted!");
+			System.out.println(computer.getName()+" a été bien supprimé!");
 			
 		} catch (SQLException e) {
 
 			System.out.println(e.getMessage());
 
+		} finally {
+
+			if (preparedStatement != null) {
+				try {
+					preparedStatement.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			} 
+
+		}
+	}
+	
+	/**Update**/
+	public void update(Computer computer) {
+		Connection conn=Connexion.getConnexion();
+		PreparedStatement preparedStatement = null;
+
+
+		try {
+			preparedStatement = (PreparedStatement) conn.prepareStatement(requeteUpdate);
+			
+			preparedStatement.setString(1, computer.getName() );
+			if(computer.getIntroduced()!=null) {
+				preparedStatement.setDate(2, java.sql.Date.valueOf( computer.getIntroduced() ) );
+			}else {
+				preparedStatement.setDate(2, null );
+			}
+			if(computer.getDiscontinued()!=null) {
+				preparedStatement.setDate(3, java.sql.Date.valueOf ( computer.getDiscontinued()) );
+			}else {
+				preparedStatement.setDate(3, null );
+			}
+
+			preparedStatement.setInt(4, computer.getId());
+			preparedStatement.executeUpdate();
+			System.out.println(computer.getName()+" a été bien modifié!");
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+
+			if (preparedStatement != null) {
+				try {
+					preparedStatement.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			} 
+
+		}
+	}
+	
+	/**Update Changer company**/
+	public void updateCompany(Computer computer,Company company) {
+		Connection conn=Connexion.getConnexion();
+		PreparedStatement preparedStatement = null;
+
+
+		try {
+			preparedStatement = (PreparedStatement) conn.prepareStatement(requeteUpdateChangerCompany);
+			
+			if(company != null ) {
+				preparedStatement.setInt(1, company.getId() );
+			}else {
+				preparedStatement.setInt(1, NULL);
+			}
+
+			preparedStatement.setInt(2, computer.getId());
+			preparedStatement.executeUpdate();
+			System.out.println(computer.getName()+" a bien changé de company!");
+			
+		} catch (SQLException e) {
+			//System.out.println(e.getMessage());
+			System.out.println("La company à laquelle vous voulez assigner ce pc n'existe pas");
 		} finally {
 
 			if (preparedStatement != null) {

@@ -17,11 +17,15 @@ public class main {
 		//testCompanyDAOSelect();
 		//testComputerDAOSelect();
 		//testSaveComputer();
-		
-		
+		//testComputerDAODelete();
+		//testComputerDAOUpdate();
+				
 	}
 	
 	
+	/*
+	 * Les méthodes suivantes contiennent les differents cas d'utilisations des classes créees 
+	 */
 	
 	public static void testModel() {
 		Company capcom = new Company(1, "Cap Com");
@@ -90,6 +94,24 @@ public class main {
 		ComputerDAO saveComputer = new ComputerDAO();
 		saveComputer.save(computer1, company);
 		
+	}
+	
+	public static void testComputerDAODelete() {
+		Computer computer = new ComputerDAO().findById(585);
+		ComputerDAO sup = new ComputerDAO();
+		sup.delete(computer);
+	}
+	
+	public static void testComputerDAOUpdate() {
+		Computer computer= new ComputerDAO().findById(579);
+		computer.setDiscontinued(LocalDate.of(2018,4,17));
+		computer.setIntroduced(LocalDate.of(2019,4,17));
+		ComputerDAO upd = new ComputerDAO();
+		upd.update(computer);
+		
+		Company company = new CompanyDAO().findById(6);
+		Computer computer2= new ComputerDAO().findById(577);
+		upd.updateCompany(computer2, company);
 	}
 
 }
