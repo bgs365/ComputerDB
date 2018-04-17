@@ -14,18 +14,10 @@ public class main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		//testModel();
-		//TestCompanyDAO();
-		Computer computer = new ComputerDAO().findById(1);
-		System.out.println(computer);
+		//testCompanyDAOSelect();
+		//testComputerDAOSelect();
+		//testSaveComputer();
 		
-		List<Computer> computers = new ArrayList<Computer>();
-		computers = new  ComputerDAO().findAll();
-		System.out.println(computers);
-		
-		List<Computer> computer2 = new ArrayList<Computer>();
-		computer2 = new  ComputerDAO().findByName(computer);
-		
-		System.out.println(computer2);
 		
 	}
 	
@@ -48,7 +40,7 @@ public class main {
 		System.out.println(capcom);
 	}
 	
-	public static void TestCompanyDAO() {
+	public static void testCompanyDAOSelect() {
 		//find by id
 		Company company = new CompanyDAO().findById(1);
 		System.out.println(company);
@@ -64,6 +56,40 @@ public class main {
 		companies2 = new  CompanyDAO().findByName(company);
 		
 		System.out.println(companies2);
+		
+		
+		
+	}
+	
+	public static void testComputerDAOSelect() {
+		Computer computer = new ComputerDAO().findById(1);
+		System.out.println(computer);
+		
+		List<Computer> computers = new ArrayList<Computer>();
+		computers = new  ComputerDAO().findAll();
+		System.out.println(computers);
+		
+		List<Computer> computer2 = new ArrayList<Computer>();
+		computer2 = new  ComputerDAO().findByName(computer);
+		
+		System.out.println(computer2);
+		
+		//find by company
+		List<Computer> computer3 = new ArrayList<Computer>();
+		Company company = new CompanyDAO().findById(1);
+		computer3 = new  ComputerDAO().findByCompany(company);
+		
+		System.out.println(computer3);
+	}
+	
+	public static void testSaveComputer() {
+		Company company = new CompanyDAO().findById(2);
+		//Company company = new Company(45, "Cap Com");
+		Computer computer1 = new Computer(0, "dell 1004",LocalDate.of(2018,3,29), LocalDate.of(2019,3,29));
+		
+		ComputerDAO saveComputer = new ComputerDAO();
+		saveComputer.save(computer1, company);
+		
 	}
 
 }
