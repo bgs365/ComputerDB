@@ -45,6 +45,9 @@ public class ComputerDAO {
 				if( result.getDate("discontinued")!=null ) {
 					computer.setDiscontinued( result.getDate("discontinued").toLocalDate() );
 				}
+				int companyId = result.getInt("company_id");
+				Company company = new CompanyDAO().findById(companyId);
+				computer.setCompany( company );
 				
 			}
 			
@@ -94,6 +97,9 @@ public class ComputerDAO {
 				if( result.getDate("discontinued")!=null ) {
 					computer.setDiscontinued( result.getDate("discontinued").toLocalDate() );
 				}
+				int companyId = result.getInt("company_id");
+				Company company = new CompanyDAO().findById(companyId);
+				computer.setCompany( company );
 				computers.add(computer);
 			}
 			

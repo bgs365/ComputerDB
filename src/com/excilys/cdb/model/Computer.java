@@ -7,7 +7,12 @@ public class Computer {
 	private int id;
 	private String name;
 	private LocalDate introduced;               
-	private LocalDate discontinued ;  
+	private LocalDate discontinued;
+	private Company company;
+	
+	public Computer() {
+		// TODO Auto-generated constructor stub
+	}
   
 	public Computer(int id, String name, LocalDate introduced, LocalDate discontinued) {
 		this.id = id;
@@ -15,14 +20,14 @@ public class Computer {
 		this.introduced = introduced;
 		this.discontinued = discontinued;
 	}
-
-
-
-	public Computer() {
-		// TODO Auto-generated constructor stub
+	
+	public Computer(int id, String name, LocalDate introduced, LocalDate discontinued, Company company) {
+		this.id = id;
+		this.name = name;
+		this.introduced = introduced;
+		this.discontinued = discontinued;
+		this.setCompany(company);
 	}
-
-
 
 	public String getName() {
 		return name;
@@ -53,13 +58,17 @@ public class Computer {
 		this.id = id;
 	}
 
+	public Company getCompany() {
+		return company;
+	}
 
+	public void setCompany(Company company) {
+		this.company = company;
+	}
 
 	@Override
 	public String toString() {
 		return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued + "] \n";
 	}
 
-	
-	
 }

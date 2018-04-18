@@ -16,7 +16,9 @@ public class main {
 
 	public static void main(String[] args) {
 		MenuPricipal.menuPrincipal();
-				
+		//verifModel() ;
+		//verifServiceComputer();
+		//verifComputerDAOSelect();
 	}
 	
 	public static void verifServiceComputerUpdate() {
@@ -121,8 +123,8 @@ public class main {
 	}
 	
 	public static void verifComputerDAOSelect() {
-		Computer computer = new ComputerDAO().findById(1);
-		System.out.println(computer);
+		Computer computer = new ComputerDAO().findById(7);
+		System.out.println(computer.getCompany().getName());
 		
 		List<Computer> computers = new ArrayList<Computer>();
 		computers = new  ComputerDAO().findAll();

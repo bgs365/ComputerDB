@@ -12,7 +12,7 @@ public class Connexion {
 	static String motDePasse = "qwerty1234";
 
 	  public static Connection getConnexion() {
-		  System.out.println("-------- MySQL JDBC Connection Testing ------------");
+		 // System.out.println("-------- MySQL JDBC Connection Testing ------------");
 	
 			try {
 				Class.forName(driver);
@@ -21,7 +21,7 @@ public class Connexion {
 				e.printStackTrace();
 			}
 	
-			System.out.println("MySQL JDBC Driver Registered!");
+			//System.out.println("MySQL JDBC Driver Registered!");
 			Connection connection = null;
 	
 			try {
