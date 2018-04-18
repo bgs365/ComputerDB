@@ -237,8 +237,19 @@ public class ComputerDAO {
 				}
 				
 				preparedStatement.setString(1, computer.getName());
-				preparedStatement.setDate(2, java.sql.Date.valueOf( computer.getIntroduced() ) );
-				preparedStatement.setDate(3, java.sql.Date.valueOf ( computer.getDiscontinued()) );
+				
+				if( computer.getIntroduced() == null ) {
+					preparedStatement.setDate(2,null);
+				}else {
+					preparedStatement.setDate(2, java.sql.Date.valueOf( computer.getIntroduced() ) );
+				}
+				
+				if( computer.getDiscontinued() == null ) {
+					preparedStatement.setDate(3,null);
+				}else {
+					preparedStatement.setDate(3, java.sql.Date.valueOf ( computer.getDiscontinued()) );
+				}
+				
 				
 				// execute insert SQL stetement
 				preparedStatement.executeUpdate();

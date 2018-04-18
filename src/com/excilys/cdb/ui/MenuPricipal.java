@@ -1,13 +1,6 @@
 package com.excilys.cdb.ui;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
-
-import com.excilys.cdb.model.Company;
-import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.service.CompanyService;
-import com.excilys.cdb.service.ComputerService;
 
 public class MenuPricipal {
 	private static Scanner sc;
@@ -30,11 +23,11 @@ public class MenuPricipal {
 			System.out.println(choix);
 			switch(choix) {
 				case 1:
-					 uiCompany.listCompany();
+					 UICompany.listCompany();
 				break;
 				
 				case 2:
-					 uiComputer.listComputer();
+					 UIComputer.listComputer();
 				break;
 				
 				case 3:

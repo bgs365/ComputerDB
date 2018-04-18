@@ -22,6 +22,7 @@ public class main {
 		//verifServiceComputerSave();
 	}
 	
+	/*Verification des services*/
 	public static void verifServiceComputerUpdate() {
 		ComputerService cs = new ComputerService();
 		Computer computer= new ComputerDAO().findById(579);
@@ -43,7 +44,7 @@ public class main {
 	public static void verifServiceComputerSave() {
 		ComputerService cs = new ComputerService();
 		Company company = new CompanyDAO().findById(5);
-		Computer computer1 = new Computer(0, "dell 1004 verif service3 sans company",LocalDate.of(2018,3,29), LocalDate.of(2019,3,29));
+		Computer computer1 = new Computer(0, "dell 1004 verif service3 sans company sans dateDisc.. ",null, null);
 		computer1.setCompany(company);
 		cs.save(computer1);
 	}
