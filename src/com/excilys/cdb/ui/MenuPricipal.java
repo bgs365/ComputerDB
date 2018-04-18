@@ -11,6 +11,8 @@ import com.excilys.cdb.service.ComputerService;
 
 public class MenuPricipal {
 	private static Scanner sc;
+	static UICompany uiCompany = new UICompany();
+	static UIComputer uiComputer = new UIComputer();
 
 	public static void menuPrincipal() {
 		boolean quitter = true;
@@ -28,11 +30,11 @@ public class MenuPricipal {
 			System.out.println(choix);
 			switch(choix) {
 				case 1:
-					listCompany();
+					 uiCompany.listCompany();
 				break;
 				
 				case 2:
-					listComputer();
+					uiComputer.listComputer();
 				break;
 				
 				case 3:
@@ -54,26 +56,6 @@ public class MenuPricipal {
 			}
 		}
 
-	}
-	
-	public static void listCompany() {
-		CompanyService cs = new CompanyService();
-		List<Company> companies = new ArrayList<Company>();
-		companies = cs.findAll();
-		
-		for(Company cpn : companies) {
-			System.out.println("-->"+cpn.getName());
-		}
-	}
-	
-	public static void listComputer() {
-		ComputerService cs = new ComputerService();
-		List<Computer> computers = new ArrayList<Computer>();
-		computers = cs.findAll();
-		
-		for(Computer cpt : computers) {
-			System.out.println("<-- "+cpt.getName()+" --> introduced = "+cpt.getIntroduced()+" | discontinued = "+cpt.getDiscontinued()+" | "+cpt.getCompany().getName()+" -->");
-		}
 	}
 	
 }
