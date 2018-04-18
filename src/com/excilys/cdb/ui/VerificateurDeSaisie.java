@@ -1,0 +1,99 @@
+package com.excilys.cdb.ui;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
+
+import com.excilys.cdb.model.Company;
+import com.excilys.cdb.service.CompanyService;
+
+public class VerificateurDeSaisie {
+	private static CompanyService companyService = new CompanyService();
+	private static Scanner sc = new Scanner(System.in);
+	
+	public VerificateurDeSaisie() {
+	}
+	/*
+	 *Permet de rentrer et de verifier le nom entré par l'utilisateur 
+	 */
+	public static String saisieNom() {
+		String nom = null;
+		
+		do {
+			System.out.println("Le nom doit avoir plus de 3 carractère !");
+			nom = sc.nextLine();
+		}while(nom.length() < 5);
+		return nom;
+	}
+
+	/*
+	 * Permet à l'utilisateur de saisir une date
+	 * Verifie la date saisie par l'utilisateur, et retourne une date au bon format
+	 * */
+	public static LocalDate saisieDate() {
+		
+		LocalDate localDate = null;
+		boolean dateValide = false;
+		String uDate = null;
+		
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        sdf.setLenient(false);
+        System.out.println("format accepté : (dd/mm/yyyy) || Vous pouvez aussi mettre nc si vous voulez pas entrez de date");
+       
+        do {
+        	uDate = sc.nextLine();
+        	if(!uDate.equals("nc") )
+        	{
+        		 try{ 
+     	            sdf.parse(uDate);
+     	            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+     	        	localDate = LocalDate.parse(uDate, formatter);
+     	        	dateValide = true;
+     	        }
+     	        catch(ParseException e)
+     	        {
+     	            System.out.println(uDate+" n'est pas une date valid");  	            
+     	        }
+        	}else {
+        		dateValide = true;
+    		}
+	       
+        }while(!dateValide);
+        return localDate;
+        
+	}
+	
+	/*
+	 * Permet à l'utilisateur de saisir une company
+	 * Verifie si la company existe dans la bdd, sinon demande de ressaisir une company valid
+	 * renvoie une company null quand l'utilisateur entre "nc"
+	 * */
+	public  static Company saisirCompany() {
+		
+		Company company = null;
+		boolean companyValide = false;
+		String nomCompany = null;
+		
+		do {
+			System.out.println("Entrez une company existante ou *nc* pour aucune company");
+			nomCompany = sc.nextLine();
+			if(!nomCompany.equals("nc") ){
+				company = companyService.findbyName(nomCompany);
+				if(company.getId() != 0) {
+					companyValide = true;
+				}else {
+					System.out.println("Cette Company n'existe Pas");
+					company = null;
+				}
+        	}else {
+        		companyValide = true;
+        	}
+			
+		}while(!companyValide);
+		
+		
+		return company;
+	}
+}

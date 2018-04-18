@@ -31,7 +31,7 @@ public class MenuPricipal {
 				break;
 				
 				case 3:
-					System.out.println("Choix "+choix);;
+					 UIComputer.createComputer();
 				break;
 				
 				case 4:
@@ -43,11 +43,11 @@ public class MenuPricipal {
 				break;
 						
 				case 6:
-					System.out.println("Choix "+choix);
 					quitter=false;
 				break;
 			}
 		}
+		System.out.println("******************* Bye *******************");
 
 	}
 	
