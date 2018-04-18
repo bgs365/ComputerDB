@@ -7,10 +7,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 import com.excilys.cdb.model.Company;
+import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
+import com.excilys.cdb.service.ComputerService;
 
 public class VerificateurDeSaisie {
 	private static CompanyService companyService = new CompanyService();
+	private static ComputerService computerService = new ComputerService();
 	private static Scanner sc = new Scanner(System.in);
 	
 	public VerificateurDeSaisie() {
@@ -95,5 +98,46 @@ public class VerificateurDeSaisie {
 		
 		
 		return company;
+	}
+	
+	public static Computer saisirComputerATrouver(){
+		Computer computer = null;
+		boolean computerValide = false;
+		int idComputer = 0;
+		do {
+			System.out.println("Entrez une computer existante ou *0* pour sortir");
+			idComputer = sc.nextInt();
+			if(idComputer != 0 ){
+				computer = computerService.findById(idComputer);
+				if(computer.getId() != 0) {
+					computerValide = true;
+				}else {
+					System.out.println("Cette Company n'existe Pas");
+					computer = null;
+				}
+        	}else {
+        		computerValide = true;
+        	}
+		}while(!computerValide);
+		return computer;
+	}
+	
+
+	public static String choixBinaire() {
+		String choix = null;
+		boolean choixValide = false;
+		do{
+			System.out.println("Entre : 1--> Oui - 2-->Non");
+			choix = sc.nextLine();
+			if(choix.equals("1") | choix.equals("2")){
+				choixValide = true;
+			}
+			
+		}while(!choixValide) ;
+		return choix;
+	}
+	
+	public static void main(String[] args) {
+		//choixBinaire();
 	}
 }

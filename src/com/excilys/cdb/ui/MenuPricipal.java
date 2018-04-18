@@ -35,11 +35,11 @@ public class MenuPricipal {
 				break;
 				
 				case 4:
-					System.out.println("Choix "+choix);;
+					UIComputer.updateComputer();
 				break;
 				
 				case 5:
-					System.out.println("Choix "+choix);;
+					UIComputer.deleteComputer();
 				break;
 						
 				case 6:
