@@ -222,15 +222,15 @@ public class ComputerDAO {
 	}
 	
 	/**Enregistrement**/
-	public void save(Computer computer,Company company) {
+	public void save(Computer computer) {
 		Connection conn=Connexion.getConnexion();
 
 			PreparedStatement preparedStatement = null;
 			try {
 				
-				if(company != null  ) {
+				if(computer.getCompany() != null  ) {
 					preparedStatement = (PreparedStatement) conn.prepareStatement(requeteInsert);
-					preparedStatement.setInt(4, company.getId());
+					preparedStatement.setInt(4, computer.getCompany().getId());
 					
 				}else {
 					preparedStatement = (PreparedStatement) conn.prepareStatement(requeteInsertSansCompany);
@@ -248,7 +248,7 @@ public class ComputerDAO {
 			} catch (SQLException e) {
 
 				//System.out.println(e.getMessage());
-				System.out.println(company.getName()+" N'existe pas");
+				System.out.println(computer.getCompany().getName()+" N'existe pas");
 
 			} finally {
 

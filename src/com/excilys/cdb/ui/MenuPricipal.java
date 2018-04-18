@@ -34,7 +34,7 @@ public class MenuPricipal {
 				break;
 				
 				case 2:
-					uiComputer.listComputer();
+					 uiComputer.listComputer();
 				break;
 				
 				case 3:

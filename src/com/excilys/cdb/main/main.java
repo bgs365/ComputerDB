@@ -15,10 +15,11 @@ import com.excilys.cdb.ui.MenuPricipal;
 public class main {
 
 	public static void main(String[] args) {
-		MenuPricipal.menuPrincipal();
+		//MenuPricipal.menuPrincipal();
 		//verifModel() ;
 		//verifServiceComputer();
 		//verifComputerDAOSelect();
+		//verifServiceComputerSave();
 	}
 	
 	public static void verifServiceComputerUpdate() {
@@ -42,8 +43,9 @@ public class main {
 	public static void verifServiceComputerSave() {
 		ComputerService cs = new ComputerService();
 		Company company = new CompanyDAO().findById(5);
-		Computer computer1 = new Computer(0, "dell 1004 verif service",LocalDate.of(2018,3,29), LocalDate.of(2019,3,29));
-		cs.save(computer1, company);
+		Computer computer1 = new Computer(0, "dell 1004 verif service3 sans company",LocalDate.of(2018,3,29), LocalDate.of(2019,3,29));
+		computer1.setCompany(company);
+		cs.save(computer1);
 	}
 	
 	public static void verifServiceComputer() {
@@ -147,9 +149,9 @@ public class main {
 		Company company = new CompanyDAO().findById(2);
 		//Company company = new Company(45, "Cap Com");
 		Computer computer1 = new Computer(0, "dell 1004",LocalDate.of(2018,3,29), LocalDate.of(2019,3,29));
-		
+		computer1.setCompany(company);
 		ComputerDAO saveComputer = new ComputerDAO();
-		saveComputer.save(computer1, company);
+		saveComputer.save(computer1);
 		
 	}
 	

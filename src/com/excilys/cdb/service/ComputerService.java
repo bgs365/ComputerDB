@@ -38,8 +38,8 @@ public class ComputerService {
 		return computers;
 	}
 	
-	public void save(Computer computer, Company company) {
-		computerDAO.save(computer, company);
+	public void save(Computer computer) {
+		computerDAO.save(computer);
 	}
 	
 	public void delete(Computer computer) {
