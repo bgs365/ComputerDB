@@ -1,7 +1,6 @@
 package com.excilys.cdb.Page;
 
 import java.util.List;
-import java.util.ArrayList;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.service.CompanyService;
@@ -19,7 +18,7 @@ public class CompanyPage {
 		this.nombreElementParPage = 10;
 		this.indexFirstPageElement = 0;
 		companyService = new CompanyService();
-		companies = companyService.findLimitNomberOfResult(indexFirstPageElement, nombreElementParPage);
+		companies = companyService.findLimitNumberOfResult(indexFirstPageElement, nombreElementParPage);
 		
 	}
 
@@ -30,15 +29,15 @@ public class CompanyPage {
 	public void setNombreElementParPage(int nombreElementParPage) {
 		this.nombreElementParPage = nombreElementParPage;
 	}
-
+	
 	public int getNumerosPage() {
-		return indexFirstPageElement;
+		return numerosPage;
 	}
 
 	public void setNumerosPage(int numerosPage) {
-		this.indexFirstPageElement = numerosPage;
+		this.numerosPage = numerosPage;
 	}
-	
+
 	public int getIndexFirstPageElement() {
 		return indexFirstPageElement;
 	}
@@ -48,20 +47,16 @@ public class CompanyPage {
 	}
 	
 	public void nextPage() {
-		if(indexFirstPageElement<nombreElementParPage) {
 			numerosPage++;
 			indexFirstPageElement+=nombreElementParPage;
-			companies = companyService.findLimitNomberOfResult(indexFirstPageElement, nombreElementParPage);
-		}else{
-			System.out.println("Operation impossible, vous êtes à la première dernière page");
-		}
+			companies = companyService.findLimitNumberOfResult(indexFirstPageElement, nombreElementParPage);
 	}
 	
 	public void previousPage() {
-		if(indexFirstPageElement>nombreElementParPage) {
+		if(numerosPage > 1) {
 			numerosPage--;
 			indexFirstPageElement-=nombreElementParPage;
-			companies = companyService.findLimitNomberOfResult(indexFirstPageElement, nombreElementParPage);
+			companies = companyService.findLimitNumberOfResult(indexFirstPageElement, nombreElementParPage);
 		}else{
 			System.out.println("Operation impossible, vous êtes à la première page");
 		}
@@ -77,10 +72,4 @@ public class CompanyPage {
 		return valeurRetour;
 	}
 	
-	public static void main(String[] args) {
-		CompanyPage cp = new CompanyPage();
-		System.out.println(cp.toString());
-		cp.nextPage();
-		System.out.println(cp.toString());
-	}
 }

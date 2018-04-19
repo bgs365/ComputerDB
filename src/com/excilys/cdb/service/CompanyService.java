@@ -27,9 +27,9 @@ public class CompanyService {
 		return companies;
 	}
 	
-	public List<Company> findLimitNomberOfResult(int pageIndex, int numberOfResultByPage) {
+	public List<Company> findLimitNumberOfResult(int pageIndex, int numberOfResultByPage) {
 		List<Company> companies = new ArrayList<Company>();
-		companies = companyDAO.findLimitNomberOfResult(pageIndex, numberOfResultByPage);
+		companies = companyDAO.findLimitNumberOfResult(pageIndex, numberOfResultByPage);
 		return companies;
 	}
 	

@@ -14,7 +14,7 @@ import com.mysql.jdbc.PreparedStatement;
 public class CompanyDAO {
 	String requeteFindById = "SELECT * FROM company where id = ?";
 	String requeteFinfAll = "SELECT * FROM company";
-	String requeteFindLimitNomberOfResult = "SELECT * FROM company LIMIT ?, ?";
+	String requeteFindLimitNumberOfResult = "SELECT * FROM company LIMIT ?, ?";
 	String requeteFindByName = "SELECT * FROM company WHERE name= ? ";
 	
 
@@ -106,7 +106,7 @@ public class CompanyDAO {
 		return companies;
 	}
 	
-	public List<Company> findLimitNomberOfResult(int pageIndex, int numberOfResultByPage){
+	public List<Company> findLimitNumberOfResult(int pageIndex, int numberOfResultByPage){
 		
 		List<Company> companies = new ArrayList<Company>();
 		
@@ -114,7 +114,7 @@ public class CompanyDAO {
 		PreparedStatement preparedStatement = null;
 		
 		try {
-			preparedStatement = (PreparedStatement) conn.prepareStatement(requeteFindLimitNomberOfResult);
+			preparedStatement = (PreparedStatement) conn.prepareStatement(requeteFindLimitNumberOfResult);
 			preparedStatement.setInt(1, pageIndex);
 			preparedStatement.setInt(2, numberOfResultByPage);
 			ResultSet result = preparedStatement.executeQuery();

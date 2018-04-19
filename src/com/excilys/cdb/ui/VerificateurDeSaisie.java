@@ -30,6 +30,7 @@ public class VerificateurDeSaisie {
 		}while(nom.length() < 5);
 		return nom;
 	}
+	
 
 	/*
 	 * Permet à l'utilisateur de saisir une date

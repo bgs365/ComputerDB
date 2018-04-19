@@ -38,6 +38,12 @@ public class ComputerService {
 		return computers;
 	}
 	
+	public List<Computer> findLimitNumberOfResult(int pageIndex, int numberOfResultByPage) {
+		List<Computer> computers = new ArrayList<Computer>();
+		computers = computerDAO.findLimitNumberOfResult(pageIndex, numberOfResultByPage);
+		return computers;
+	}
+	
 	public void save(Computer computer) {
 		computerDAO.save(computer);
 	}

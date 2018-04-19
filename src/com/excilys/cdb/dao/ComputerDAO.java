@@ -16,6 +16,7 @@ public class ComputerDAO {
 	String requeteFindById = "SELECT * FROM computer where id = ?";
 	String requeteFinfAll = "SELECT * FROM computer";
 	String requeteFindByName = "SELECT * FROM computer WHERE name= ? ";
+	String requeteFindLimitNumberOfResult = "SELECT * FROM computer LIMIT ?, ?";
 	String requeteFindByCompany = "SELECT * FROM computer WHERE company_id = ?";
 	String requeteInsert = "INSERT INTO computer (NAME, INTRODUCED, DISCONTINUED, COMPANY_ID) VALUES (?,?,?,?)";
 	String requeteInsertSansCompany = "INSERT INTO computer (NAME, INTRODUCED, DISCONTINUED) VALUES (?,?,?)";
@@ -124,6 +125,54 @@ public class ComputerDAO {
 
 		return computers;
 		
+	}
+	
+	public List<Computer> findLimitNumberOfResult(int pageIndex, int numberOfResultByPage){
+		List<Computer> computers = new ArrayList<Computer>();
+		
+		Connection conn=Connexion.getConnexion();
+		PreparedStatement preparedStatement = null;
+		
+		try {
+			
+			preparedStatement = (PreparedStatement) conn.prepareStatement(requeteFindLimitNumberOfResult);
+			preparedStatement.setInt( 1, pageIndex );
+			preparedStatement.setInt( 2, numberOfResultByPage );
+			ResultSet result = preparedStatement.executeQuery();
+			
+			while (result.next()) {
+				
+				Computer computer = new Computer();
+				computer.setId(result.getInt("Id"));
+				computer.setName(result.getString("Name"));
+				if( result.getDate("introduced")!=null ){
+					computer.setIntroduced( result.getDate("introduced").toLocalDate() );
+				}
+				if( result.getDate("discontinued")!=null ) {
+					computer.setDiscontinued( result.getDate("discontinued").toLocalDate() );
+				}
+				computers.add(computer);
+			}
+			
+		} catch (SQLException e) {
+			 System.err.println("Erreur sur la requete find Company by id : "+e.getMessage());
+		}finally {
+			if (preparedStatement != null) {
+				try {
+					preparedStatement.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			} 
+		}
+		return computers;
 	}
 	
 	public List<Computer> findByName(Computer example){

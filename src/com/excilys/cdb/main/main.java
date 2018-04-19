@@ -68,7 +68,9 @@ public class main {
 		computers = cs.findByCompany(25);
 		System.out.println(computers);
 		
-		
+		computers = null;
+		computers = cs.findLimitNumberOfResult(0, 10);
+		System.out.println(computers);
 		
 	}
 	
@@ -86,7 +88,7 @@ public class main {
 		System.out.println(company);
 		
 		companies = null;
-		companies = cs.findLimitNomberOfResult(0, 10);
+		companies = cs.findLimitNumberOfResult(0, 10);
 		System.out.println(companies);
 		
 	}
@@ -131,7 +133,7 @@ public class main {
 		System.out.println(companies2);
 		
 		List<Company> companies3 = new ArrayList<Company>();
-		companies3 = new CompanyDAO().findLimitNomberOfResult(0, 10);
+		companies3 = new CompanyDAO().findLimitNumberOfResult(0, 10);
 		
 		System.out.println(companies3);
 		
@@ -155,6 +157,12 @@ public class main {
 		Company company = new CompanyDAO().findById(1);
 		computer3 = new  ComputerDAO().findByCompany(company);
 		System.out.println(computer3);
+		
+		List<Computer> computers4 = new ArrayList<Computer>();
+		computers4 = new  ComputerDAO().findLimitNumberOfResult(0,10);
+		System.out.println(computers4);
+		
+		
 	}
 	
 	public static void verifSaveComputer() {
