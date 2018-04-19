@@ -11,16 +11,14 @@ import com.excilys.cdb.model.Computer;
 import com.mysql.jdbc.PreparedStatement;
 
 
-public class CompanyDAO {
+public enum CompanyDAO {
+	INSTANCE;
+	
 	String requeteFindById = "SELECT * FROM company where id = ?";
 	String requeteFinfAll = "SELECT * FROM company";
 	String requeteFindLimitNumberOfResult = "SELECT * FROM company LIMIT ?, ?";
 	String requeteFindByName = "SELECT * FROM company WHERE name= ? ";
 	
-
-	public CompanyDAO() {
-		
-	}
 	
 	public Company findById(int id){
 		Company company = new Company();
@@ -38,7 +36,7 @@ public class CompanyDAO {
 			while (result.next()) {
 				company.setId(result.getInt("Id"));
 				company.setName(result.getString("Name"));
-				List<Computer> pComputers = new ComputerDAO().findByCompany(company);
+				List<Computer> pComputers = ComputerDAO.INSTANCE.findByCompany(company.getId());
 				company.setComputer(pComputers);
 			}
 			
@@ -78,7 +76,7 @@ public class CompanyDAO {
 				Company company = new Company();
 				company.setId(result.getInt("Id"));
 				company.setName(result.getString("Name"));
-				List<Computer> pComputers = new ComputerDAO().findByCompany(company);
+				List<Computer> pComputers = ComputerDAO.INSTANCE.findByCompany(company.getId());
 				company.setComputer(pComputers);
 				companies .add(company);
 	
@@ -124,7 +122,7 @@ public class CompanyDAO {
 				Company company = new Company();
 				company.setId(result.getInt("Id"));
 				company.setName(result.getString("Name"));
-				List<Computer> pComputers = new ComputerDAO().findByCompany(company);
+				List<Computer> pComputers = ComputerDAO.INSTANCE.findByCompany(company.getId());
 				company.setComputer(pComputers);
 				companies .add(company);
 	
@@ -152,7 +150,7 @@ public class CompanyDAO {
 		return companies;
 	}
 	
-	public Company findByName(Company example){
+	public Company findByName(String name){
 		
 		Company company = new Company();
 		
@@ -161,13 +159,13 @@ public class CompanyDAO {
 		
 		try {
 			preparedStatement = (PreparedStatement) conn.prepareStatement(requeteFindByName);
-			preparedStatement.setString(1, example.getName());
+			preparedStatement.setString(1, name);
 			ResultSet result = preparedStatement.executeQuery();
 	
 			while (result.next()) {				
 				company.setId(result.getInt("Id"));
 				company.setName(result.getString("Name"));
-				List<Computer> pComputers = new ComputerDAO().findByCompany(company);
+				List<Computer> pComputers = ComputerDAO.INSTANCE.findByCompany(company.getId());
 				company.setComputer(pComputers);	
 	
 			}

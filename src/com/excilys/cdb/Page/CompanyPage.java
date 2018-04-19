@@ -17,7 +17,7 @@ public class CompanyPage {
 		this.numerosPage = 1;
 		this.nombreElementParPage = 10;
 		this.indexFirstPageElement = 0;
-		companyService = new CompanyService();
+		companyService = CompanyService.INSTANCE;
 		companies = companyService.findLimitNumberOfResult(indexFirstPageElement, nombreElementParPage);
 		
 	}

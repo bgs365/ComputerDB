@@ -4,7 +4,9 @@ import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class Connexion {
+public enum Connexion {
+	
+	INSTANCE;
 	
 	static String driver = "com.mysql.jdbc.Driver";
 	static String baseDeDonnee = "jdbc:mysql://localhost:3306/computer-database-db?autoReconnect=true&useSSL=false";

@@ -9,7 +9,7 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.ComputerService;
 
 public class UIComputer {
-	private static ComputerService computerService = new ComputerService();
+	private static ComputerService computerService = ComputerService.INSTANCE;
 	
 	public static void listComputer() {
 		
@@ -103,12 +103,11 @@ public class UIComputer {
 				System.out.println("--> Entrez le nom de la company : ");
 				company = VerificateurDeSaisie.saisirCompany();
 				System.out.println("--> Company = "+company);
-				computer.setCompany(company);
-				computerService.updateInfos(computer);
-				computerService.updateCompany(computer, company);
-			}else {
-				computerService.updateInfos(computer);
+				
+				computerService.update(computer);
 			}
+			
+			computer.setCompany(company);
 		}
 		
 		

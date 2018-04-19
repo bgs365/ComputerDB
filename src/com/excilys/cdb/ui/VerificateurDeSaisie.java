@@ -12,8 +12,8 @@ import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 
 public class VerificateurDeSaisie {
-	private static CompanyService companyService = new CompanyService();
-	private static ComputerService computerService = new ComputerService();
+	private static CompanyService companyService = CompanyService.INSTANCE;
+	private static ComputerService computerService = ComputerService.INSTANCE;
 	private static Scanner sc = new Scanner(System.in);
 	
 	public VerificateurDeSaisie() {
