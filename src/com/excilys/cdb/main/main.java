@@ -20,6 +20,8 @@ public class main {
 		//verifServiceComputer();
 		//verifComputerDAOSelect();
 		//verifServiceComputerSave();
+		//verifCompanyDAOSelect();
+		//verifServiceCompany();
 	}
 	
 	/*Verification des services*/
@@ -74,12 +76,19 @@ public class main {
 		CompanyService cs = new CompanyService();
 		Company company = cs.findById(1);
 		System.out.println(company);
+		
 		List<Company> companies = new ArrayList<Company>();
 		companies = cs.findAll();
 		System.out.println(companies);
+		
 		company = null;
 		company = cs.findbyName("Samsung Electronics");
 		System.out.println(company);
+		
+		companies = null;
+		companies = cs.findLimitNomberOfResult(0, 10);
+		System.out.println(companies);
+		
 	}
 	
 	
@@ -106,7 +115,7 @@ public class main {
 	
 	public static void verifCompanyDAOSelect() {
 		//find by id
-		Company company = new CompanyDAO().findById(1);
+		Company company = new CompanyDAO().findById(2);
 		System.out.println(company);
 		
 		//find by all
@@ -121,12 +130,15 @@ public class main {
 		
 		System.out.println(companies2);
 		
+		List<Company> companies3 = new ArrayList<Company>();
+		companies3 = new CompanyDAO().findLimitNomberOfResult(0, 10);
 		
+		System.out.println(companies3);
 		
 	}
 	
 	public static void verifComputerDAOSelect() {
-		Computer computer = new ComputerDAO().findById(7);
+		Computer computer = new ComputerDAO().findById(1);
 		System.out.println(computer.getCompany().getName());
 		
 		List<Computer> computers = new ArrayList<Computer>();
@@ -142,7 +154,6 @@ public class main {
 		List<Computer> computer3 = new ArrayList<Computer>();
 		Company company = new CompanyDAO().findById(1);
 		computer3 = new  ComputerDAO().findByCompany(company);
-		
 		System.out.println(computer3);
 	}
 	

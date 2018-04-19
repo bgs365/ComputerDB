@@ -25,7 +25,7 @@ public class VerificateurDeSaisie {
 		String nom = null;
 		
 		do {
-			System.out.println("Le nom doit avoir plus de 3 carractère !");
+			System.out.println("Le nom doit avoir plus de 5 carractère !");
 			nom = sc.nextLine();
 		}while(nom.length() < 5);
 		return nom;

@@ -14,7 +14,9 @@ import com.mysql.jdbc.PreparedStatement;
 public class CompanyDAO {
 	String requeteFindById = "SELECT * FROM company where id = ?";
 	String requeteFinfAll = "SELECT * FROM company";
+	String requeteFindLimitNomberOfResult = "SELECT * FROM company LIMIT ?, ?";
 	String requeteFindByName = "SELECT * FROM company WHERE name= ? ";
+	
 
 	public CompanyDAO() {
 		
@@ -84,6 +86,52 @@ public class CompanyDAO {
 			
 		} catch (SQLException e) {
 			 System.err.println("Erreur sur la requete find all Company : "+e.getMessage());
+		}finally {
+			if (preparedStatement != null) {
+				try {
+					preparedStatement.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			} 
+		}
+
+		return companies;
+	}
+	
+	public List<Company> findLimitNomberOfResult(int pageIndex, int numberOfResultByPage){
+		
+		List<Company> companies = new ArrayList<Company>();
+		
+		Connection conn=Connexion.getConnexion();
+		PreparedStatement preparedStatement = null;
+		
+		try {
+			preparedStatement = (PreparedStatement) conn.prepareStatement(requeteFindLimitNomberOfResult);
+			preparedStatement.setInt(1, pageIndex);
+			preparedStatement.setInt(2, numberOfResultByPage);
+			ResultSet result = preparedStatement.executeQuery();
+	
+
+			while (result.next()) {
+				Company company = new Company();
+				company.setId(result.getInt("Id"));
+				company.setName(result.getString("Name"));
+				List<Computer> pComputers = new ComputerDAO().findByCompany(company);
+				company.setComputer(pComputers);
+				companies .add(company);
+	
+			}
+			
+		} catch (SQLException e) {
+			 System.err.println("Erreur sur la requete find company by name : "+e.getMessage());
 		}finally {
 			if (preparedStatement != null) {
 				try {

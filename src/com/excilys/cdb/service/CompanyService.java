@@ -27,6 +27,12 @@ public class CompanyService {
 		return companies;
 	}
 	
+	public List<Company> findLimitNomberOfResult(int pageIndex, int numberOfResultByPage) {
+		List<Company> companies = new ArrayList<Company>();
+		companies = companyDAO.findLimitNomberOfResult(pageIndex, numberOfResultByPage);
+		return companies;
+	}
+	
 	public Company findbyName(String name) {
 		Company company = new Company();
 		Company companyToFind = new Company(1,name);
@@ -34,5 +40,5 @@ public class CompanyService {
 		return company;//Parceque le nom est prompre à la company
 	}
 	
-	
+		
 }

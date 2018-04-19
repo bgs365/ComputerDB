@@ -2,14 +2,15 @@ package com.excilys.cdb.ui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.service.CompanyService;
 
 public class UICompany {
-	
+
+	static CompanyService cs = new CompanyService();
 	public static void listCompany() {
-		CompanyService cs = new CompanyService();
 		List<Company> companies = new ArrayList<Company>();
 		companies = cs.findAll();
 		
@@ -17,4 +18,5 @@ public class UICompany {
 			System.out.println("-->"+cpn.getName());
 		}
 	}
+
 }

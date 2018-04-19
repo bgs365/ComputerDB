@@ -71,7 +71,7 @@ public class UIComputer {
 		
 		if(computer!=null) {
 			System.out.println("--> Voulez vous modifier le nom ?");
-			choix = VerificateurDeSaisie.choixBinaire();
+			choix = VerificateurDeSaisie.choixBinaire(); 
 			if(choix.equals("1")) {
 				System.out.println("--> Entrez le nom du PC : ");
 				nom = VerificateurDeSaisie.saisieNom();
