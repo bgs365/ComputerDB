@@ -14,7 +14,6 @@ import com.excilys.cdb.ui.MenuPricipal;
 
 public class main {
 	static ComputerService computerService = ComputerService.INSTANCE;
-
 	public static void main(String[] args) {
 		MenuPricipal.menuPrincipal();
 		// verifServiceComputer();
@@ -22,7 +21,9 @@ public class main {
 		// verifServiceCompany();
 		// verifServiceComputerUpdate();
 		// verifServiceComputerDelete();
+		  
 	}
+
 
 	/* Verification des services */
 	public static void verifServiceComputerUpdate() {
