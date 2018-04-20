@@ -1,14 +1,20 @@
 package com.excilys.cdb.ui;
 
+import java.util.List;
 import java.util.Scanner;
-import com.excilys.cdb.Page.CompanyPage;
+
+import com.excilys.cdb.model.Company;
+import com.excilys.cdb.page.CompanyPage;
+import com.excilys.cdb.page.Page;
+import com.excilys.cdb.service.CompanyService;
 
 public class UICompany {
 
 	private static Scanner sc = new Scanner(System.in);
 	
 	public static void listCompany() {
-		CompanyPage companyPage = new CompanyPage();
+		List<Company> companies = CompanyService.INSTANCE.findLimitNumberOfResult(0, 10);
+		Page<Company> companyPage = new Page(companies);
 		String choix = null;
 		
 		System.out.println("*******************Listing company *******************");

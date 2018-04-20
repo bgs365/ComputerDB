@@ -203,9 +203,9 @@ public enum ComputerDAO {
 	}
 	
 	/**Enregistrement**/
-	public void save(Computer computer) {
+	public int save(Computer computer) {
 		Connection conn=Connexion.getConnexion();
-
+			int reussite = 0;
 			PreparedStatement preparedStatement = null;
 			try {
 				
@@ -233,7 +233,7 @@ public enum ComputerDAO {
 				
 				
 				// execute insert SQL stetement
-				preparedStatement.executeUpdate();
+				reussite = preparedStatement.executeUpdate();
 
 				System.out.println(computer.getName()+" bien créee");
 
@@ -260,20 +260,17 @@ public enum ComputerDAO {
 				} 
 
 			}
+			return reussite;
 	}
 	
 	/**Supression**/
-	public void delete(Computer computer) {
-		Connection conn=Connexion.getConnexion();
-		PreparedStatement preparedStatement = null;
-
-
-		try {
-			preparedStatement = (PreparedStatement) conn.prepareStatement(requetedelete);
+	public int delete(Computer computer) {
+		int reussite = 0;
+		try(Connection conn=Connexion.getConnexion();PreparedStatement preparedStatement = conn.prepareStatement(requetedelete)) {
 			preparedStatement.setInt(1, computer.getId());
 
 			// execute delete SQL stetement
-			preparedStatement.executeUpdate();
+			reussite = preparedStatement.executeUpdate();
 
 			System.out.println(computer.getName()+" a été bien supprimé!");
 			
@@ -281,31 +278,13 @@ public enum ComputerDAO {
 
 			System.out.println(e.getMessage());
 
-		} finally {
-
-			if (preparedStatement != null) {
-				try {
-					preparedStatement.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			} 
-
-		}
+		} 
+		return reussite;
 	}
 	
 	/**Update**/
-	public void update(Computer computer) {
-		
-
-
+	public int update(Computer computer) {
+		int reussite = 0;
 		try (Connection conn=Connexion.getConnexion();
 		PreparedStatement preparedStatement = conn.prepareStatement(requeteUpdate)){
 		
@@ -329,12 +308,13 @@ public enum ComputerDAO {
 			}
 
 			preparedStatement.setInt(5, computer.getId());
-			preparedStatement.executeUpdate();
+			reussite = preparedStatement.executeUpdate();
 			System.out.println(computer.getName()+" a été bien modifié!");
 			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} 
+		return reussite;
 	}
 	
 	

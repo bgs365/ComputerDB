@@ -28,16 +28,16 @@ public enum ComputerService {
 		return ComputerDAO.INSTANCE.findLimitNumberOfResult(pageIndex, numberOfResultByPage);
 	}
 	
-	public void save(Computer computer) {
-		ComputerDAO.INSTANCE.save(computer);
+	public int save(Computer computer) {
+		return ComputerDAO.INSTANCE.save(computer);
 	}
 	
-	public void delete(Computer computer) {
-		ComputerDAO.INSTANCE.delete(computer);
+	public int delete(Computer computer) {
+		return ComputerDAO.INSTANCE.delete(computer);
 	}
 	
-	public void update(Computer computer) {
-		ComputerDAO.INSTANCE.update(computer);
+	public int update(Computer computer) {
+		return ComputerDAO.INSTANCE.update(computer);
 	}
 	
 	

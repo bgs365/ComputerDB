@@ -11,7 +11,6 @@ public class Computer {
 	private Company company;
 	
 	public Computer() {
-		// TODO Auto-generated constructor stub
 	}
   
 	public Computer(int id, String name, LocalDate introduced, LocalDate discontinued) {
@@ -22,11 +21,8 @@ public class Computer {
 	}
 	
 	public Computer(int id, String name, LocalDate introduced, LocalDate discontinued, Company company) {
-		this.id = id;
-		this.name = name;
-		this.introduced = introduced;
-		this.discontinued = discontinued;
-		this.setCompany(company);
+		super();
+		this.company = company;
 	}
 
 	public String getName() {
@@ -68,7 +64,7 @@ public class Computer {
 
 	@Override
 	public String toString() {
-		return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued + "] \n";
+		return "[" + id + "--" + name + " -- " + introduced + " -- " + discontinued + "] \n";
 	}
 
 }

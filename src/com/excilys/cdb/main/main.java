@@ -25,25 +25,25 @@ public class main {
 	
 	/*Verification des services*/
 	public static void verifServiceComputerUpdate() {
-		Computer computer= ComputerDAO.INSTANCE.findById(577);
+		Computer computer= ComputerDAO.INSTANCE.findById(582);
 		computer.setName("Test apres");
 		Company company = CompanyDAO.INSTANCE.findById(17);
-		computer.setDiscontinued(LocalDate.of(2018,3,17));
-		computer.setIntroduced(LocalDate.of(2019,3,17));
+		computer.setDiscontinued(LocalDate.of(2018,3,18));
+		computer.setIntroduced(null);
 		computer.setCompany(company);
-		cs.update(computer);
+		System.out.println(cs.update(computer));
 	}
 	
 	public static void verifServiceComputerDelete() {
-		Computer computer = ComputerDAO.INSTANCE.findById(591);
-		cs.delete(computer);
+		Computer computer = ComputerDAO.INSTANCE.findById(583);
+		System.out.println( cs.delete(computer) );
 	}
 	
 	public static void verifServiceComputerSave() {
 		Company company = CompanyDAO.INSTANCE.findById(5);
-		Computer computer1 = new Computer(0, "dell 1004 verif service4 sans company sans dateDisc.. ",null, null);
+		Computer computer1 = new Computer(0, "dell 1004 verif service avec company sans dateDisc.. ",null, null);
 		computer1.setCompany(company);
-		cs.save(computer1);
+		System.out.println( cs.save(computer1));
 	}
 	
 	public static void verifServiceComputer() {
