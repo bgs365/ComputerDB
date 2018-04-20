@@ -13,9 +13,9 @@ public enum Connexion {
 	INSTANCE;
 	
 	static String driver = "com.mysql.jdbc.Driver";
-	static String baseDeDonnee = "jdbc:mysql://localhost:3306/computer-database-db?autoReconnect=true&useSSL=false";
-	static String login = "admincdb";
-	static String motDePasse = "qwerty1234";
+	static String baseDeDonnee = null;// "jdbc:mysql://localhost:3306/computer-database-db?autoReconnect=true&useSSL=false";
+	static String login = null;// "admincdb";
+	static String motDePasse = null;// "qwerty1234";
 	
 	public static void getConnexionVariables() {
 		Properties prop = new Properties();

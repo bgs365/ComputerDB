@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.dao.ComputerDAO;
 import com.excilys.cdb.model.Company;
@@ -12,10 +15,13 @@ import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.ui.MenuPricipal;
 
-public class main {
+public class Main {
 	static ComputerService computerService = ComputerService.INSTANCE;
+	final static Logger logger = LoggerFactory.getLogger(Main.class);
 	public static void main(String[] args) {
+		logger.info("Ouverture du Menu");
 		MenuPricipal.menuPrincipal();
+		logger.info("Fermeture du Menu");
 		// verifServiceComputer();
 		// verifServiceComputerSave();
 		// verifServiceCompany();
