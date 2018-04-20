@@ -2,19 +2,19 @@ package com.excilys.cdb.page;
 
 import java.util.List;
 
-public class Page <T>{
+public class Page<T> {
 	private List<T> t;
 	private int indexFirstPageElement;
 	private int numerosPage;
 	private int nombreElementParPage;
-	
+
 	public Page(List<T> t, int nombreElementParPage) {
 		this.numerosPage = 1;
 		this.nombreElementParPage = nombreElementParPage;
 		this.indexFirstPageElement = 0;
 		this.t = t;
 	}
-	
+
 	public int getNombreElementParPage() {
 		return nombreElementParPage;
 	}
@@ -41,17 +41,17 @@ public class Page <T>{
 
 	public int nextPage() {
 		numerosPage++;
-		return indexFirstPageElement+=nombreElementParPage;
-		
+		return indexFirstPageElement += nombreElementParPage;
+
 	}
 
 	public int previousPage() {
 		int indexRetour = indexFirstPageElement;
-		if(numerosPage > 1) {
+		if (numerosPage > 1) {
 			numerosPage--;
-			indexRetour = indexFirstPageElement-=nombreElementParPage;
-			
-		}else{
+			indexRetour = indexFirstPageElement -= nombreElementParPage;
+
+		} else {
 			System.out.println("Operation impossible, vous êtes à la première page");
 		}
 		return indexRetour;

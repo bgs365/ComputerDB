@@ -12,57 +12,58 @@ public class UICompany {
 	private static Scanner sc = new Scanner(System.in);
 	static CompanyService companyService = CompanyService.INSTANCE;
 	public static int nombrElementParPage = 10;
-	
+
 	public static void listCompany() {
 		List<Company> companies = companyService.findLimitNumberOfResult(0, nombrElementParPage);
 		Page<Company> companyPage = new Page<Company>(companies, nombrElementParPage);
 		String choix = null;
-		
+
 		System.out.println("*******************Listing company *******************");
-		System.out.println("Page n° "+companyPage.getNumerosPage());
+		System.out.println("Page n° " + companyPage.getNumerosPage());
 		System.out.println(display(companies));
 		System.out.println(" << Page precedente 1 ** 0  Quitter ** 2 Page suivante >> ");
 		boolean quiter = false;
-		do{
+		do {
 			choix = sc.nextLine();
-			if( choix.equals("1") | choix.equals("2") | choix.equals("0")) {
-				if(choix.equals("1") | choix.equals("2")){
-					switch(choix) {
-						case "1":
-							companies = companyService.findLimitNumberOfResult(companyPage.previousPage(), nombrElementParPage );
-							System.out.println("Page n° "+companyPage.getNumerosPage());
-							System.out.println(display(companies));
-							System.out.println(" << Page precedente 1 ** 0  Quitter ** 2 Page suivante >> ");
+			if (choix.equals("1") | choix.equals("2") | choix.equals("0")) {
+				if (choix.equals("1") | choix.equals("2")) {
+					switch (choix) {
+					case "1":
+						companies = companyService.findLimitNumberOfResult(companyPage.previousPage(),
+								nombrElementParPage);
+						System.out.println("Page n° " + companyPage.getNumerosPage());
+						System.out.println(display(companies));
+						System.out.println(" << Page precedente 1 ** 0  Quitter ** 2 Page suivante >> ");
 						break;
-						
-						case "2":
-							companies = companyService.findLimitNumberOfResult(companyPage.nextPage(), nombrElementParPage );
-							System.out.println("Page n° "+companyPage.getNumerosPage());
-							System.out.println(display(companies));
-							System.out.println(" << Page precedente 1 ** 0  Quitter ** 2 Page suivante >> ");
+
+					case "2":
+						companies = companyService.findLimitNumberOfResult(companyPage.nextPage(), nombrElementParPage);
+						System.out.println("Page n° " + companyPage.getNumerosPage());
+						System.out.println(display(companies));
+						System.out.println(" << Page precedente 1 ** 0  Quitter ** 2 Page suivante >> ");
 						break;
 					}
 					quiter = false;
-				}else {
+				} else {
 					quiter = true;
 				}
-			}else {
+			} else {
 				System.out.println("Choix non valide");
 				quiter = false;
 			}
-			
-		}while(!quiter) ;
-		
+
+		} while (!quiter);
+
 	}
-	
+
 	private static String display(List<Company> company) {
 		String valeurRetour = "";
-		for(Company indexOfCompany : company) {
-			valeurRetour += "------>" + indexOfCompany.toString()+"\n";
+		for (Company indexOfCompany : company) {
+			valeurRetour += "------>" + indexOfCompany.toString() + "\n";
 		}
 		return valeurRetour;
 	}
-	
+
 	public static void main(String[] args) {
 		listCompany();
 	}

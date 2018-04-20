@@ -14,84 +14,88 @@ import com.excilys.cdb.ui.MenuPricipal;
 
 public class main {
 	static ComputerService computerService = ComputerService.INSTANCE;
+
 	public static void main(String[] args) {
 		MenuPricipal.menuPrincipal();
-		//verifServiceComputer();
-		//verifServiceComputerSave();
-		//verifServiceCompany();
-		//verifServiceComputerUpdate();
-		//verifServiceComputerDelete();
+		// verifServiceComputer();
+		// verifServiceComputerSave();
+		// verifServiceCompany();
+		// verifServiceComputerUpdate();
+		// verifServiceComputerDelete();
 	}
-	
-	/*Verification des services*/
+
+	/* Verification des services */
 	public static void verifServiceComputerUpdate() {
-		Computer computer= ComputerDAO.INSTANCE.findById(582);
+		Computer computer = ComputerDAO.INSTANCE.findById(582);
 		computer.setName("Test apres");
 		Company company = CompanyDAO.INSTANCE.findById(17);
-		computer.setDiscontinued(LocalDate.of(2018,3,18));
+		computer.setDiscontinued(LocalDate.of(2018, 3, 18));
 		computer.setIntroduced(null);
 		computer.setCompany(company);
 		System.out.println(computerService.update(computer));
 	}
-	
+
 	public static void verifServiceComputerDelete() {
 		Computer computer = ComputerDAO.INSTANCE.findById(583);
-		System.out.println( computerService.delete(computer) );
+		System.out.println(computerService.delete(computer));
 	}
-	
+
 	public static void verifServiceComputerSave() {
 		Company company = CompanyDAO.INSTANCE.findById(5);
-		Computer computer1 = new Computer(0, "dell 1004 verif service avec company sans dateDisc.. ",null, null);
+		Computer computer1 = new Computer(0, "dell 1004 verif service avec company sans dateDisc.. ", null, null);
 		computer1.setCompany(company);
-		System.out.println( computerService.save(computer1));
+		System.out.println(computerService.save(computer1));
 	}
-	
+
 	public static void verifServiceComputer() {
 		List<Computer> computers = new ArrayList<Computer>();
 		Computer computer = computerService.findById(200);
 		System.out.println(computer);
-		
+
 		computers = computerService.findAll();
-		for(Computer cpt : computers) {
-			System.out.println("<-- "+cpt.getName()+" --> introduced = "+cpt.getIntroduced()+" | discontinued = "+cpt.getDiscontinued()+" | "+cpt.getCompany().getName()+" -->");
+		for (Computer cpt : computers) {
+			System.out.println("<-- " + cpt.getName() + " --> introduced = " + cpt.getIntroduced()
+					+ " | discontinued = " + cpt.getDiscontinued() + " | " + cpt.getCompany().getName() + " -->");
 		}
-		
+
 		computers = computerService.findByName("dell 1000");
-		for(Computer cpt : computers) {
-			System.out.println("<-- "+cpt.getName()+" --> introduced = "+cpt.getIntroduced()+" | discontinued = "+cpt.getDiscontinued()+" | "+cpt.getCompany().getName()+" -->");
+		for (Computer cpt : computers) {
+			System.out.println("<-- " + cpt.getName() + " --> introduced = " + cpt.getIntroduced()
+					+ " | discontinued = " + cpt.getDiscontinued() + " | " + cpt.getCompany().getName() + " -->");
 		}
-		
+
 		computers = null;
 		computers = computerService.findByCompany(1);
-		for(Computer cpt : computers) {
-			System.out.println("<-- "+cpt.getName()+" --> introduced = "+cpt.getIntroduced()+" | discontinued = "+cpt.getDiscontinued()+" | "+cpt.getCompany().getName()+" -->");
+		for (Computer cpt : computers) {
+			System.out.println("<-- " + cpt.getName() + " --> introduced = " + cpt.getIntroduced()
+					+ " | discontinued = " + cpt.getDiscontinued() + " | " + cpt.getCompany().getName() + " -->");
 		}
 		computers = null;
 		computers = computerService.findLimitNumberOfResult(0, 10);
-		for(Computer cpt : computers) {
-			System.out.println("<-- "+cpt.getName()+" --> introduced = "+cpt.getIntroduced()+" | discontinued = "+cpt.getDiscontinued()+" | "+cpt.getCompany().getName()+" -->");
+		for (Computer cpt : computers) {
+			System.out.println("<-- " + cpt.getName() + " --> introduced = " + cpt.getIntroduced()
+					+ " | discontinued = " + cpt.getDiscontinued() + " | " + cpt.getCompany().getName() + " -->");
 		}
-		
+
 	}
-	
+
 	public static void verifServiceCompany() {
 		CompanyService cs = CompanyService.INSTANCE;
 		Company company = cs.findById(1);
 		System.out.println(company);
-		
+
 		List<Company> companies = new ArrayList<Company>();
 		companies = cs.findAll();
 		System.out.println(companies);
-		
+
 		company = null;
 		company = cs.findbyName("Samsung Electronics");
 		System.out.println(company);
-		
+
 		companies = null;
 		companies = cs.findLimitNumberOfResult(0, 10);
 		System.out.println(companies);
-		
-	}
 
+	}
 
 }

@@ -9,11 +9,11 @@ public class MenuPricipal {
 
 	public static void menuPrincipal() {
 		boolean quitter = true;
-		while(quitter){
+		while (quitter) {
 			System.out.println("******************* BIENVENUE DANS LA COMPUTER DATA BASE *******************");
 			System.out.println("******************* 		  MENU PRINCIPAL            					");
 			System.out.println("******************* 			1 -- ACCES- LIST COMPANY 			 		");
-		    System.out.println("******************* 			2 -- DETAIL OF COMPUTER 					");
+			System.out.println("******************* 			2 -- DETAIL OF COMPUTER 					");
 			System.out.println("******************* 			3 -- CREATE COMPUTER 			     		");
 			System.out.println("******************* 			4 -- UPDATE COMPUTER 			     		");
 			System.out.println("******************* 			5 -- DELETE COMPUTER 			     		");
@@ -21,34 +21,34 @@ public class MenuPricipal {
 			sc = new Scanner(System.in);
 			int choix = sc.nextInt();
 			System.out.println(choix);
-			switch(choix) {
-				case 1:
-					 UICompany.listCompany();
+			switch (choix) {
+			case 1:
+				UICompany.listCompany();
 				break;
-				
-				case 2:
-					 UIComputer.listComputer();
+
+			case 2:
+				UIComputer.listComputer();
 				break;
-				
-				case 3:
-					 UIComputer.createComputer();
+
+			case 3:
+				UIComputer.createComputer();
 				break;
-				
-				case 4:
-					UIComputer.updateComputer();
+
+			case 4:
+				UIComputer.updateComputer();
 				break;
-				
-				case 5:
-					UIComputer.deleteComputer();
+
+			case 5:
+				UIComputer.deleteComputer();
 				break;
-						
-				case 6:
-					quitter=false;
+
+			case 6:
+				quitter = false;
 				break;
 			}
 		}
 		System.out.println("******************* Bye *******************");
 
 	}
-	
+
 }
