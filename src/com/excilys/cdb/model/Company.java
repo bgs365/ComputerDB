@@ -6,12 +6,15 @@ import java.util.List;
 public class Company {
 	
 	private int id;
-	private String Name;
+	private String name;
 	private List<Computer> computers = new ArrayList<Computer>();
+	
+	public Company() {
+	}
 	
 	public Company(int id, String name, List<Computer> computer) {
 		this.id = id;
-		Name = name;
+		this.name = name;
 		this.computers = computer;
 	}
 	
@@ -19,16 +22,8 @@ public class Company {
 	
 	public Company(int id, String name) {
 		this.id = id;
-		Name = name;	
+		this.name = name;	
 	}
-
-
-
-	public Company() {
-		// TODO Auto-generated constructor stub
-	}
-
-
 
 	public int getId() {
 		return id;
@@ -38,10 +33,10 @@ public class Company {
 	}
 	
 	public String getName() {
-		return Name;
+		return name;
 	}
 	public void setName(String name) {
-		Name = name;
+		this.name = name;
 	}
 	
 	public List<Computer> getComputer() {
@@ -57,7 +52,7 @@ public class Company {
 
 	@Override
 	public String toString() {
-		return "[" + id +" -- "+ Name +  "]";
+		return "[" + id +" -- "+ name +  "]";
 	}
 	
 	

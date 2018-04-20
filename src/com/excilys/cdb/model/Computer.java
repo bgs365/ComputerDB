@@ -64,7 +64,12 @@ public class Computer {
 
 	@Override
 	public String toString() {
-		return "[" + id + "--" + name + " -- " + introduced + " -- " + discontinued + "] \n";
+		return "Computer [id=" + id + ", " + (name != null ? "name=" + name + ", " : "")
+				+ (introduced != null ? "introduced=" + introduced + ", " : "")
+				+ (discontinued != null ? "discontinued=" + discontinued + ", " : "")
+				+ (company != null ? "company=" + company : "") + "]";
 	}
+
+	
 
 }

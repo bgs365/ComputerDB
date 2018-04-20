@@ -4,36 +4,42 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.excilys.cdb.model.Company;
-import com.excilys.cdb.page.CompanyPage;
 import com.excilys.cdb.page.Page;
 import com.excilys.cdb.service.CompanyService;
 
 public class UICompany {
 
 	private static Scanner sc = new Scanner(System.in);
+	static CompanyService companyService = CompanyService.INSTANCE;
+	public static int nombrElementParPage = 10;
 	
 	public static void listCompany() {
-		List<Company> companies = CompanyService.INSTANCE.findLimitNumberOfResult(0, 10);
-		Page<Company> companyPage = new Page(companies);
+		List<Company> companies = companyService.findLimitNumberOfResult(0, nombrElementParPage);
+		Page<Company> companyPage = new Page<Company>(companies, nombrElementParPage);
 		String choix = null;
 		
 		System.out.println("*******************Listing company *******************");
-		System.out.println(companyPage.toString());
+		System.out.println("Page n° "+companyPage.getNumerosPage());
+		System.out.println(display(companies));
 		System.out.println(" << Page precedente 1 ** 0  Quitter ** 2 Page suivante >> ");
 		boolean quiter = false;
 		do{
 			choix = sc.nextLine();
 			if( choix.equals("1") | choix.equals("2") | choix.equals("0")) {
 				if(choix.equals("1") | choix.equals("2")){
-					System.out.println(companyPage.toString());
-					System.out.println(" << Page precedente 1 ** 0  Quitter ** 2 Page suivante >> ");
 					switch(choix) {
 						case "1":
-							companyPage.previousPage();
+							companies = companyService.findLimitNumberOfResult(companyPage.previousPage(), nombrElementParPage );
+							System.out.println("Page n° "+companyPage.getNumerosPage());
+							System.out.println(display(companies));
+							System.out.println(" << Page precedente 1 ** 0  Quitter ** 2 Page suivante >> ");
 						break;
 						
 						case "2":
-							companyPage.nextPage();
+							companies = companyService.findLimitNumberOfResult(companyPage.nextPage(), nombrElementParPage );
+							System.out.println("Page n° "+companyPage.getNumerosPage());
+							System.out.println(display(companies));
+							System.out.println(" << Page precedente 1 ** 0  Quitter ** 2 Page suivante >> ");
 						break;
 					}
 					quiter = false;
@@ -47,6 +53,14 @@ public class UICompany {
 			
 		}while(!quiter) ;
 		
+	}
+	
+	private static String display(List<Company> company) {
+		String valeurRetour = "";
+		for(Company indexOfCompany : company) {
+			valeurRetour += "------>" + indexOfCompany.toString()+"\n";
+		}
+		return valeurRetour;
 	}
 	
 	public static void main(String[] args) {

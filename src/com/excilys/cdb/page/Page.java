@@ -8,9 +8,9 @@ public class Page <T>{
 	private int numerosPage;
 	private int nombreElementParPage;
 	
-	public Page(List<T> t) {
+	public Page(List<T> t, int nombreElementParPage) {
 		this.numerosPage = 1;
-		this.nombreElementParPage = 10;
+		this.nombreElementParPage = nombreElementParPage;
 		this.indexFirstPageElement = 0;
 		this.t = t;
 	}
@@ -39,32 +39,22 @@ public class Page <T>{
 		this.numerosPage = numerosPage;
 	}
 
-	public void nextPage() {
+	public int nextPage() {
 		numerosPage++;
-		indexFirstPageElement+=nombreElementParPage;
+		return indexFirstPageElement+=nombreElementParPage;
 		
 	}
 
-	public void previousPage() {
+	public int previousPage() {
+		int indexRetour = indexFirstPageElement;
 		if(numerosPage > 1) {
 			numerosPage--;
-			indexFirstPageElement-=nombreElementParPage;
+			indexRetour = indexFirstPageElement-=nombreElementParPage;
 			
 		}else{
 			System.out.println("Operation impossible, vous êtes à la première page");
 		}
+		return indexRetour;
 	}
 
-	@Override
-	public String toString() {
-		String valeurRetour = "Page n° "+(getNumerosPage())+"\n";
-		for(T indexOfT : t) {
-			valeurRetour += "------>" + indexOfT.toString()+"\n";
-		}
-		
-		return valeurRetour;
-	}
-	
-	
-	
 }
