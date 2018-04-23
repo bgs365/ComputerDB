@@ -26,8 +26,7 @@ public enum ComputerDAO {
 	public Computer findById(int id) {
 		Computer computer = new Computer();
 
-		try (Connection conn = Connexion.getConnexion();
-				PreparedStatement preparedStatement = conn.prepareStatement(requeteFindById)) {
+		try (Connection conn = Connexion.getConnexion();PreparedStatement preparedStatement = conn.prepareStatement(requeteFindById)) {
 
 			preparedStatement.setInt(1, id);
 			ResultSet result = preparedStatement.executeQuery();
