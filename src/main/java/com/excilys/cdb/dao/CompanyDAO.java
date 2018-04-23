@@ -26,11 +26,9 @@ public enum CompanyDAO {
 	public Company findById(int id) {
 		Company company = new Company();
 
-		Connection conn = Connexion.getConnexion();
-		PreparedStatement preparedStatement = null;
+		
 
-		try{
-			preparedStatement = conn.prepareStatement(requeteFindById);
+		try(Connection conn = Connexion.getConnexion(); PreparedStatement preparedStatement = conn.prepareStatement(requeteFindById)){
 
 			preparedStatement.setInt(1, id);
 
@@ -45,33 +43,17 @@ public enum CompanyDAO {
 
 		} catch (SQLException e) {
 			logger.info("Erreur sur la requete find Company by id : " + e.getMessage());
-		} finally {
-			if (preparedStatement != null) {
-				try {
-					preparedStatement.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+		} 
 
 		return company;
 	}
 
 	public List<Company> findAll() {
 		List<Company> companies = new ArrayList<Company>();
-		Connection conn = Connexion.getConnexion();
-		PreparedStatement preparedStatement = null;
+		
+		
 
-		try {
-			preparedStatement = (PreparedStatement) conn.prepareStatement(requeteFinfAll);
+		try (Connection conn = Connexion.getConnexion();PreparedStatement preparedStatement = conn.prepareStatement(requeteFinfAll) ){
 
 			ResultSet result = preparedStatement.executeQuery();
 
@@ -86,22 +68,7 @@ public enum CompanyDAO {
 			}
 
 		} catch (SQLException e) {
-			System.err.println("Erreur sur la requete find all Company : " + e.getMessage());
-		} finally {
-			if (preparedStatement != null) {
-				try {
-					preparedStatement.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			logger.info("Erreur sur la requete find all Company : " + e.getMessage());
 		}
 
 		return companies;
@@ -111,11 +78,9 @@ public enum CompanyDAO {
 
 		List<Company> companies = new ArrayList<Company>();
 
-		Connection conn = Connexion.getConnexion();
-		PreparedStatement preparedStatement = null;
+		
 
-		try {
-			preparedStatement = (PreparedStatement) conn.prepareStatement(requeteFindLimitNumberOfResult);
+		try (Connection conn = Connexion.getConnexion(); PreparedStatement preparedStatement =  conn.prepareStatement(requeteFindLimitNumberOfResult) ){
 			preparedStatement.setInt(1, pageIndex);
 			preparedStatement.setInt(2, numberOfResultByPage);
 			ResultSet result = preparedStatement.executeQuery();
@@ -131,22 +96,7 @@ public enum CompanyDAO {
 			}
 
 		} catch (SQLException e) {
-			System.err.println("Erreur sur la requete find company by name : " + e.getMessage());
-		} finally {
-			if (preparedStatement != null) {
-				try {
-					preparedStatement.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			logger.info("Erreur sur la requete find company by name : " + e.getMessage());
 		}
 
 		return companies;
@@ -156,11 +106,7 @@ public enum CompanyDAO {
 
 		Company company = new Company();
 
-		Connection conn = Connexion.getConnexion();
-		PreparedStatement preparedStatement = null;
-
-		try {
-			preparedStatement = (PreparedStatement) conn.prepareStatement(requeteFindByName);
+		try(Connection conn = Connexion.getConnexion();PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByName)) {
 			preparedStatement.setString(1, name);
 			ResultSet result = preparedStatement.executeQuery();
 
@@ -173,22 +119,7 @@ public enum CompanyDAO {
 			}
 
 		} catch (SQLException e) {
-			System.err.println("Erreur sur la requete find company by name : " + e.getMessage());
-		} finally {
-			if (preparedStatement != null) {
-				try {
-					preparedStatement.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			logger.info("Erreur sur la requete find company by name : " + e.getMessage());
 		}
 
 		return company;

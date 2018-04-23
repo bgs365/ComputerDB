@@ -7,11 +7,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.excilys.cdb.main.Main;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 
 public enum ComputerDAO {
 	INSTANCE;
+	final static Logger logger = LoggerFactory.getLogger(Main.class);
+
 	String requeteFindById = "SELECT * FROM computer LEFT JOIN company ON company.id = computer.company_id WHERE computer.id = ?";
 	String requeteFinfAll = "SELECT * FROM computer LEFT JOIN company ON company.id = computer.company_id ";
 	String requeteFindByName = "SELECT * FROM computer LEFT JOIN company ON company.id = computer.company_id  WHERE company.name= ? ";
@@ -50,7 +56,7 @@ public enum ComputerDAO {
 			}
 
 		} catch (SQLException e) {
-			System.err.println("Erreur sur la requete find Company by id : " + e.getMessage());
+			logger.info("Erreur sur la requete find Computer by id : " + e.getMessage());
 		}
 
 		return computer;
@@ -86,7 +92,7 @@ public enum ComputerDAO {
 			}
 
 		} catch (SQLException e) {
-			System.err.println("Erreur sur la requete find Company by id : " + e.getMessage());
+			logger.info("Erreur sur la requete findAll Computer  : " + e.getMessage());
 		}
 
 		return computers;
@@ -124,7 +130,8 @@ public enum ComputerDAO {
 			}
 
 		} catch (SQLException e) {
-			System.err.println("Erreur sur la requete find Company by id : " + e.getMessage());
+			
+			logger.info("Erreur sur la requete find limit NUmber of computer  : " + e.getMessage());
 		}
 		return computers;
 	}
@@ -159,7 +166,7 @@ public enum ComputerDAO {
 			}
 
 		} catch (SQLException e) {
-			System.err.println("Erreur sur la requete find Company by id : " + e.getMessage());
+			logger.info("Erreur sur la requete find Computer by name : " + e.getMessage());
 		}
 
 		return computers;
@@ -194,7 +201,7 @@ public enum ComputerDAO {
 			}
 
 		} catch (SQLException e) {
-			System.err.println("Erreur sur la requete find Company by id : " + e.getMessage());
+			logger.info("Erreur sur la requete find Computer by Company id : " + e.getMessage());
 		}
 
 		return computers;
@@ -235,10 +242,7 @@ public enum ComputerDAO {
 			System.out.println(computer.getName() + " bien créee");
 
 		} catch (SQLException e) {
-
-			// System.out.println(e.getMessage());
-			System.out.println(computer.getCompany().getName() + " N'existe pas");
-
+			logger.info(computer.getCompany().getName() + " N'existe pas");
 		} finally {
 
 			if (preparedStatement != null) {
@@ -270,11 +274,11 @@ public enum ComputerDAO {
 			// execute delete SQL stetement
 			reussite = preparedStatement.executeUpdate();
 
-			System.out.println(computer.getName() + " a été bien supprimé!");
+			logger.info(computer.getName() + " a été bien supprimé!");
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
+			logger.info(e.getMessage());
 
 		}
 		return reussite;
@@ -307,10 +311,10 @@ public enum ComputerDAO {
 
 			preparedStatement.setInt(5, computer.getId());
 			reussite = preparedStatement.executeUpdate();
-			System.out.println(computer.getName() + " a été bien modifié!");
+			logger.info(computer.getName() + " a été bien modifié!");
 
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			logger.info(e.getMessage());
 		}
 		return reussite;
 	}
