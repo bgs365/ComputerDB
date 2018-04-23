@@ -7,7 +7,7 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.page.Page;
 import com.excilys.cdb.service.CompanyService;
 
-public class UICompany {
+public class CompanyUI {
 
 	private static Scanner sc = new Scanner(System.in);
 	static CompanyService companyService = CompanyService.INSTANCE;

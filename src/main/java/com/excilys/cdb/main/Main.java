@@ -13,14 +13,14 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
-import com.excilys.cdb.ui.MenuPricipal;
+import com.excilys.cdb.ui.MainMenu;
 
 public class Main {
 	static ComputerService computerService = ComputerService.INSTANCE;
 	final static Logger logger = LoggerFactory.getLogger(Main.class);
 	public static void main(String[] args) {
 		logger.info("Ouverture du Menu");
-		MenuPricipal.menuPrincipal();
+		MainMenu.display();
 		logger.info("Fermeture du Menu");
 		// verifServiceComputer();
 		// verifServiceComputerSave();
@@ -28,6 +28,7 @@ public class Main {
 		// verifServiceComputerUpdate();
 		// verifServiceComputerDelete();	  
 	}
+	
 
 
 	/* Verification des services */

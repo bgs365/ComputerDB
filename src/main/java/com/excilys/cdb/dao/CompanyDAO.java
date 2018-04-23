@@ -10,13 +10,17 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.cdb.main.Main;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 
+/**
+ * *Classe qui permet de mettre en place la persistance d'un Computer
+ * @autor Beydi SANOGO
+ */
+
 public enum CompanyDAO {
 	INSTANCE;
-	final static Logger logger = LoggerFactory.getLogger(Main.class);
+	final static Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 
 	String requeteFindById = "SELECT * FROM company where id = ?";
 	String requeteFinfAll = "SELECT * FROM company";
@@ -26,9 +30,8 @@ public enum CompanyDAO {
 	public Company findById(int id) {
 		Company company = new Company();
 
-		
-
-		try(Connection conn = Connexion.getConnexion(); PreparedStatement preparedStatement = conn.prepareStatement(requeteFindById)){
+		try (Connection conn = Connexion.getConnexion();
+				PreparedStatement preparedStatement = conn.prepareStatement(requeteFindById)) {
 
 			preparedStatement.setInt(1, id);
 
@@ -43,17 +46,16 @@ public enum CompanyDAO {
 
 		} catch (SQLException e) {
 			logger.info("Erreur sur la requete find Company by id : " + e.getMessage());
-		} 
+		}
 
 		return company;
 	}
 
 	public List<Company> findAll() {
 		List<Company> companies = new ArrayList<Company>();
-		
-		
 
-		try (Connection conn = Connexion.getConnexion();PreparedStatement preparedStatement = conn.prepareStatement(requeteFinfAll) ){
+		try (Connection conn = Connexion.getConnexion();
+				PreparedStatement preparedStatement = conn.prepareStatement(requeteFinfAll)) {
 
 			ResultSet result = preparedStatement.executeQuery();
 
@@ -78,9 +80,8 @@ public enum CompanyDAO {
 
 		List<Company> companies = new ArrayList<Company>();
 
-		
-
-		try (Connection conn = Connexion.getConnexion(); PreparedStatement preparedStatement =  conn.prepareStatement(requeteFindLimitNumberOfResult) ){
+		try (Connection conn = Connexion.getConnexion();
+				PreparedStatement preparedStatement = conn.prepareStatement(requeteFindLimitNumberOfResult)) {
 			preparedStatement.setInt(1, pageIndex);
 			preparedStatement.setInt(2, numberOfResultByPage);
 			ResultSet result = preparedStatement.executeQuery();
@@ -106,7 +107,8 @@ public enum CompanyDAO {
 
 		Company company = new Company();
 
-		try(Connection conn = Connexion.getConnexion();PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByName)) {
+		try (Connection conn = Connexion.getConnexion();
+				PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByName)) {
 			preparedStatement.setString(1, name);
 			ResultSet result = preparedStatement.executeQuery();
 

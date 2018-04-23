@@ -11,18 +11,16 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.cdb.main.Main;
-
 public enum Connexion {
 
 	INSTANCE;
-	final static Logger logger = LoggerFactory.getLogger(Main.class);
-	
+	final static Logger logger = LoggerFactory.getLogger(Connexion.class);
+
 	static String driver = "com.mysql.jdbc.Driver";
 	static String baseDeDonnee = null;
 	static String login = null;
 	static String motDePasse = null;
-	
+
 	public static void getConnexionVariables() {
 		Properties prop = new Properties();
 		InputStream input = null;

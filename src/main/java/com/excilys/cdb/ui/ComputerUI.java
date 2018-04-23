@@ -9,7 +9,7 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.page.Page;
 import com.excilys.cdb.service.ComputerService;
 
-public class UIComputer {
+public class ComputerUI {
 	private static ComputerService computerService = ComputerService.INSTANCE;
 	private static Scanner sc = new Scanner(System.in);
 	public static int nombrElementParPage = 10;
@@ -91,19 +91,19 @@ public class UIComputer {
 		System.out.println("******************* Création de PC *******************");
 
 		System.out.println("--> Entrez le nom du PC : ");
-		nom = VerificateurDeSaisie.saisieNom();
+		nom = SeizureVerification.saisieNom();
 		System.out.println("--> Nom = " + nom);
 
 		System.out.println("--> Entrez la date d'introduction : ");
-		IntroducedDate = VerificateurDeSaisie.saisieDate();
+		IntroducedDate = SeizureVerification.saisieDate();
 		System.out.println("--> Date d'intro = " + IntroducedDate);
 
 		System.out.println("--> Entrez la date de retait : ");
-		discontinuedDate = VerificateurDeSaisie.saisieDate();
+		discontinuedDate = SeizureVerification.saisieDate();
 		System.out.println("--> Date de retrait = " + discontinuedDate);
 
 		System.out.println("--> Entrez le nom de la company : ");
-		company = VerificateurDeSaisie.saisirCompany();
+		company = SeizureVerification.saisirCompany();
 		System.out.println("--> Company = " + company);
 
 		computer.setName(nom);
@@ -123,42 +123,42 @@ public class UIComputer {
 		String choix = null;
 
 		System.out.println("******************* Entrez l'id du pc à Modifier *******************");
-		computer = VerificateurDeSaisie.saisirComputerATrouver();
+		computer = SeizureVerification.saisirComputerATrouver();
 		System.out.println("Le PC choisi est --> " + computer);
 
 		if (computer != null) {
 			System.out.println("--> Voulez vous modifier le nom ?");
-			choix = VerificateurDeSaisie.choixBinaire();
+			choix = SeizureVerification.choixBinaire();
 			if (choix.equals("1")) {
 				System.out.println("--> Entrez le nom du PC : ");
-				nom = VerificateurDeSaisie.saisieNom();
+				nom = SeizureVerification.saisieNom();
 				System.out.println("--> Nom = " + nom);
 				computer.setName(nom);
 			}
 
 			System.out.println("--> Voulez vous modifier la date d'introduction ?");
-			choix = VerificateurDeSaisie.choixBinaire();
+			choix = SeizureVerification.choixBinaire();
 			if (choix.equals("1")) {
 				System.out.println("--> Entrez la date d'introduction : ");
-				IntroducedDate = VerificateurDeSaisie.saisieDate();
+				IntroducedDate = SeizureVerification.saisieDate();
 				System.out.println("--> Date d'intro = " + IntroducedDate);
 				computer.setIntroduced(IntroducedDate);
 			}
 
 			System.out.println("--> Voulez vous modifier la date de retait ?");
-			choix = VerificateurDeSaisie.choixBinaire();
+			choix = SeizureVerification.choixBinaire();
 			if (choix.equals("1")) {
 				System.out.println("--> Entrez la date de retait : ");
-				discontinuedDate = VerificateurDeSaisie.saisieDate();
+				discontinuedDate = SeizureVerification.saisieDate();
 				System.out.println("--> Date de retrait = " + discontinuedDate);
 				computer.setDiscontinued(discontinuedDate);
 			}
 
 			System.out.println("--> Voulez vous modifier le nom de company ?");
-			choix = VerificateurDeSaisie.choixBinaire();
+			choix = SeizureVerification.choixBinaire();
 			if (choix.equals("1")) {
 				System.out.println("--> Entrez le nom de la company : ");
-				company = VerificateurDeSaisie.saisirCompany();
+				company = SeizureVerification.saisirCompany();
 				System.out.println("--> Company = " + company);
 
 				computerService.update(computer);
@@ -174,9 +174,9 @@ public class UIComputer {
 		String choix = null;
 
 		System.out.println("******************* Entrez l'id du pc à Suprimer *******************");
-		computer = VerificateurDeSaisie.saisirComputerATrouver();
+		computer = SeizureVerification.saisirComputerATrouver();
 		System.out.println("Voulez vous vraiment effacer --> " + computer);
-		choix = VerificateurDeSaisie.choixBinaire();
+		choix = SeizureVerification.choixBinaire();
 		if (choix.equals("1")) {
 			computerService.delete(computer);
 		} else {

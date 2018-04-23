@@ -16,6 +16,8 @@ local.properties
 .loadpath
 .recommenders
 *.properties
+*.lob
+*.script
 
 # External tool builders
 .externalToolBuilders/

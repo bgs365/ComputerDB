@@ -2,12 +2,12 @@ package com.excilys.cdb.ui;
 
 import java.util.Scanner;
 
-public class MenuPricipal {
+public class MainMenu {
 	private static Scanner sc;
-	static UICompany uiCompany = new UICompany();
-	static UIComputer uiComputer = new UIComputer();
+	static CompanyUI uiCompany = new CompanyUI();
+	static ComputerUI uiComputer = new ComputerUI();
 
-	public static void menuPrincipal() {
+	public static void display() {
 		boolean quitter = true;
 		while (quitter) {
 			System.out.println("******************* BIENVENUE DANS LA COMPUTER DATA BASE *******************");
@@ -23,23 +23,23 @@ public class MenuPricipal {
 			System.out.println(choix);
 			switch (choix) {
 			case 1:
-				UICompany.listCompany();
+				CompanyUI.listCompany();
 				break;
 
 			case 2:
-				UIComputer.listComputer();
+				ComputerUI.listComputer();
 				break;
 
 			case 3:
-				UIComputer.createComputer();
+				ComputerUI.createComputer();
 				break;
 
 			case 4:
-				UIComputer.updateComputer();
+				ComputerUI.updateComputer();
 				break;
 
 			case 5:
-				UIComputer.deleteComputer();
+				ComputerUI.deleteComputer();
 				break;
 
 			case 6:

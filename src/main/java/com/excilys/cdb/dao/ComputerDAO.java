@@ -14,6 +14,11 @@ import com.excilys.cdb.main.Main;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 
+/**
+ * *Classe qui permet de mettre en place la persistance d'une Company
+ * @autor Beydi SANOGO
+ */
+
 public enum ComputerDAO {
 	INSTANCE;
 	final static Logger logger = LoggerFactory.getLogger(Main.class);
@@ -29,6 +34,11 @@ public enum ComputerDAO {
 	String requeteUpdate = "UPDATE computer SET NAME = ? ,INTRODUCED = ? ,DISCONTINUED = ? ,COMPANY_ID = ? WHERE Id = ?";
 	String requeteUpdateChangerCompany = "UPDATE computer SET COMPANY_ID = ?  WHERE Id = ?";
 
+	/**
+	 * allow access to an computer with is id
+	 * @param id
+	 * @return Computer
+	 */
 	public Computer findById(int id) {
 		Computer computer = new Computer();
 
@@ -62,7 +72,11 @@ public enum ComputerDAO {
 		return computer;
 
 	}
-
+	
+	/**
+	 * Allow access to all computers of database
+	 * @return List<Computer>
+	 */
 	public List<Computer> findAll() {
 		List<Computer> computers = new ArrayList<Computer>();
 
@@ -98,7 +112,13 @@ public enum ComputerDAO {
 		return computers;
 
 	}
-
+	
+	/**
+	 * Use to generate pages
+	 * @param pageIndex
+	 * @param numberOfResultByPage
+	 * @return List<Computer>
+	 */
 	public List<Computer> findLimitNumberOfResult(int pageIndex, int numberOfResultByPage) {
 		List<Computer> computers = new ArrayList<Computer>();
 
@@ -136,13 +156,18 @@ public enum ComputerDAO {
 		return computers;
 	}
 
-	public List<Computer> findByName(Computer example) {
+	/**
+	 * Return all computer whith name past as parameter
+	 * @param name
+	 * @return List<Computer>
+	 */
+	public List<Computer> findByName(String name) {
 		List<Computer> computers = new ArrayList<Computer>();
 
 		try (Connection conn = Connexion.getConnexion();
 				PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByName)) {
 
-			preparedStatement.setString(1, example.getName());
+			preparedStatement.setString(1, name );
 			ResultSet result = preparedStatement.executeQuery();
 
 			while (result.next()) {
@@ -171,7 +196,12 @@ public enum ComputerDAO {
 
 		return computers;
 	}
-
+	
+	/**
+	 * k
+	 * @param companyId
+	 * @return List<Computer>
+	 */
 	public List<Computer> findByCompany(int companyId) {
 		List<Computer> computers = new ArrayList<Computer>();
 

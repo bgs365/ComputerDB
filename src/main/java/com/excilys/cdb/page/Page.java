@@ -3,7 +3,7 @@ package com.excilys.cdb.page;
 import java.util.List;
 
 public class Page<T> {
-	private List<T> t;
+	private List<T> objetT;
 	private int indexFirstPageElement;
 	private int numerosPage;
 	private int nombreElementParPage;
@@ -12,7 +12,7 @@ public class Page<T> {
 		this.numerosPage = 1;
 		this.nombreElementParPage = nombreElementParPage;
 		this.indexFirstPageElement = 0;
-		this.t = t;
+		this.setObjetT(t);
 	}
 
 	public int getNombreElementParPage() {
@@ -55,6 +55,14 @@ public class Page<T> {
 			System.out.println("Operation impossible, vous êtes à la première page");
 		}
 		return indexRetour;
+	}
+
+	public List<T> getObjetT() {
+		return objetT;
+	}
+
+	public void setObjetT(List<T> objetT) {
+		this.objetT = objetT;
 	}
 
 }

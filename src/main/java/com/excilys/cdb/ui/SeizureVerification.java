@@ -11,12 +11,12 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 
-public class VerificateurDeSaisie {
+public class SeizureVerification {
 	private static CompanyService companyService = CompanyService.INSTANCE;
 	private static ComputerService computerService = ComputerService.INSTANCE;
 	private static Scanner sc = new Scanner(System.in);
 
-	public VerificateurDeSaisie() {
+	public SeizureVerification() {
 	}
 
 	/*
