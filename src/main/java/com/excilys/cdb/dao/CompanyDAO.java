@@ -1,17 +1,22 @@
 package com.excilys.cdb.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.excilys.cdb.main.Main;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.mysql.jdbc.PreparedStatement;
 
 public enum CompanyDAO {
 	INSTANCE;
+	final static Logger logger = LoggerFactory.getLogger(Main.class);
 
 	String requeteFindById = "SELECT * FROM company where id = ?";
 	String requeteFinfAll = "SELECT * FROM company";
@@ -24,8 +29,8 @@ public enum CompanyDAO {
 		Connection conn = Connexion.getConnexion();
 		PreparedStatement preparedStatement = null;
 
-		try {
-			preparedStatement = (PreparedStatement) conn.prepareStatement(requeteFindById);
+		try{
+			preparedStatement = conn.prepareStatement(requeteFindById);
 
 			preparedStatement.setInt(1, id);
 
@@ -39,7 +44,7 @@ public enum CompanyDAO {
 			}
 
 		} catch (SQLException e) {
-			System.err.println("Erreur sur la requete find Company by id : " + e.getMessage());
+			logger.info("Erreur sur la requete find Company by id : " + e.getMessage());
 		} finally {
 			if (preparedStatement != null) {
 				try {

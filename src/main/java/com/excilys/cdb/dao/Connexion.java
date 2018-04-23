@@ -8,14 +8,20 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.excilys.cdb.main.Main;
+
 public enum Connexion {
 
 	INSTANCE;
+	final static Logger logger = LoggerFactory.getLogger(Main.class);
 	
 	static String driver = "com.mysql.jdbc.Driver";
-	static String baseDeDonnee = null;// "jdbc:mysql://localhost:3306/computer-database-db?autoReconnect=true&useSSL=false";
-	static String login = null;// "admincdb";
-	static String motDePasse = null;// "qwerty1234";
+	static String baseDeDonnee = null;
+	static String login = null;
+	static String motDePasse = null;
 	
 	public static void getConnexionVariables() {
 		Properties prop = new Properties();
@@ -28,14 +34,9 @@ public enum Connexion {
 			// load a properties file
 			prop.load(input);
 
-			// get the property value and print it out
 			baseDeDonnee = prop.getProperty("database");
 			login = prop.getProperty("dbuser");
 			motDePasse = prop.getProperty("dbpassword");
-			/*
-			System.out.println(prop.getProperty("database"));
-			System.out.println(prop.getProperty("dbuser"));
-			System.out.println(prop.getProperty("dbpassword"));*/
 
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -51,22 +52,22 @@ public enum Connexion {
 	}
 
 	public static Connection getConnexion() {
-		// System.out.println("-------- MySQL JDBC Connection Testing ------------");
+
+		logger.info("-------- MySQL JDBC Connection Testing ------------");
 		getConnexionVariables();
 		try {
 			Class.forName(driver);
 		} catch (ClassNotFoundException e) {
-			// System.out.println("Where is your MySQL JDBC Driver?");
+			logger.info("Where is your MySQL JDBC Driver?");
 			e.printStackTrace();
 		}
-
-		// System.out.println("MySQL JDBC Driver Registered!");
+		logger.info("MySQL JDBC Driver Registered!");
 		Connection connection = null;
 
 		try {
 			connection = DriverManager.getConnection(baseDeDonnee, login, motDePasse);
 		} catch (SQLException e) {
-			System.out.println("Connection Failed! Check output console");
+			logger.info("Connection Failed! Check output console");
 			e.printStackTrace();
 		}
 
