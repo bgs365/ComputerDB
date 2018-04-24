@@ -65,7 +65,7 @@ public enum ComputerDAO {
 
 			}
 
-		} catch (SQLException e) {
+		} catch (SQLException | NullPointerException e ) {
 			logger.info("Erreur sur la requete find Computer by id : " + e.getMessage());
 		}
 

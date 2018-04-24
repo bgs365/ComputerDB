@@ -20,14 +20,15 @@ public class Main {
 	static ComputerService computerService = ComputerService.INSTANCE;
 	final static Logger logger = LoggerFactory.getLogger(Main.class);
 	public static void main(String[] args) {
-		logger.info("Ouverture du Menu");
+		/*logger.info("Ouverture du Menu");
 		MainMenu.display();
-		logger.info("Fermeture du Menu");
+		logger.info("Fermeture du Menu");*/
 		// verifServiceComputer();
 		// verifServiceComputerSave();
 		//verifServiceCompany();
 		// verifServiceComputerUpdate();
 		 //verifServiceComputerDelete();
+		System.out.println(CompanyDAO.INSTANCE.findById(50));
 	}
 	
 	
