@@ -30,7 +30,7 @@ public enum CompanyDAO {
 	public Company findById(int id) {
 		Company company = new Company();
 
-		try (Connection conn = Connexion.getConnexion();
+		try (Connection conn = Connexion.INSTANCE.getConnexion();
 				PreparedStatement preparedStatement = conn.prepareStatement(requeteFindById)) {
 
 			preparedStatement.setInt(1, id);
@@ -54,7 +54,7 @@ public enum CompanyDAO {
 	public List<Company> findAll() {
 		List<Company> companies = new ArrayList<Company>();
 
-		try (Connection conn = Connexion.getConnexion();
+		try (Connection conn = Connexion.INSTANCE.getConnexion();
 				PreparedStatement preparedStatement = conn.prepareStatement(requeteFinfAll)) {
 
 			ResultSet result = preparedStatement.executeQuery();
@@ -80,7 +80,7 @@ public enum CompanyDAO {
 
 		List<Company> companies = new ArrayList<Company>();
 
-		try (Connection conn = Connexion.getConnexion();
+		try (Connection conn = Connexion.INSTANCE.getConnexion();
 				PreparedStatement preparedStatement = conn.prepareStatement(requeteFindLimitNumberOfResult)) {
 			preparedStatement.setInt(1, pageIndex);
 			preparedStatement.setInt(2, numberOfResultByPage);
@@ -107,7 +107,7 @@ public enum CompanyDAO {
 
 		Company company = new Company();
 
-		try (Connection conn = Connexion.getConnexion();
+		try (Connection conn = Connexion.INSTANCE.getConnexion();
 				PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByName)) {
 			preparedStatement.setString(1, name);
 			ResultSet result = preparedStatement.executeQuery();

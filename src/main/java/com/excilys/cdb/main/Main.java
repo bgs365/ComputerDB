@@ -20,16 +20,14 @@ public class Main {
 	static ComputerService computerService = ComputerService.INSTANCE;
 	final static Logger logger = LoggerFactory.getLogger(Main.class);
 	public static void main(String[] args) {
-		/*logger.info("Ouverture du Menu");
+		logger.info("Ouverture du Menu");
 		MainMenu.display();
-		logger.info("Fermeture du Menu");*/
+		logger.info("Fermeture du Menu");
 		// verifServiceComputer();
 		// verifServiceComputerSave();
-		// verifServiceCompany();
+		//verifServiceCompany();
 		// verifServiceComputerUpdate();
-		// verifServiceComputerDelete();
-		List<Computer> computers = computerService.findAll();
-		System.out.println(computers.size());
+		 //verifServiceComputerDelete();
 	}
 	
 	
@@ -49,7 +47,7 @@ public class Main {
 
 	public static void verifServiceComputerDelete() {
 		Computer computer = ComputerDAO.INSTANCE.findById(583);
-		System.out.println(computerService.delete(computer));
+		System.out.println(computerService.delete(575));
 	}
 
 	public static void verifServiceComputerSave() {
@@ -70,7 +68,7 @@ public class Main {
 					+ " | discontinued = " + cpt.getDiscontinued() + " | " + cpt.getCompany().getName() + " -->");
 		}
 
-		computers = computerService.findByName("dell 1000");
+		computers = computerService.findByName("iPhone 4S");
 		for (Computer cpt : computers) {
 			System.out.println("<-- " + cpt.getName() + " --> introduced = " + cpt.getIntroduced()
 					+ " | discontinued = " + cpt.getDiscontinued() + " | " + cpt.getCompany().getName() + " -->");

@@ -50,12 +50,12 @@ public enum ComputerService {
 		}
 	}
 
-	public int delete(Computer computer) {
-		if( findById(computer.getId()).getId() == 0 ) {
+	public int delete(int id) {
+		if( findById(id).getId() == 0 ) {
 			logger.info("Le computer que vous voulez supprimer n'esxiste pas");
 			return 0;
 		}else {
-			return ComputerDAO.INSTANCE.delete(computer);
+			return ComputerDAO.INSTANCE.delete(id);
 		}
 	}
 

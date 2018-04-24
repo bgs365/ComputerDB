@@ -178,7 +178,7 @@ public class ComputerUI {
 		System.out.println("Voulez vous vraiment effacer --> " + computer);
 		choix = SeizureVerification.choixBinaire();
 		if (choix.equals("1")) {
-			computerService.delete(computer);
+			computerService.delete(computer.getId());
 		} else {
 			System.out.println("OK");
 		}

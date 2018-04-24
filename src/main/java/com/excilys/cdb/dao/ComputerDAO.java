@@ -25,7 +25,7 @@ public enum ComputerDAO {
 
 	String requeteFindById = "SELECT * FROM computer LEFT JOIN company ON company.id = computer.company_id WHERE computer.id = ?";
 	String requeteFinfAll = "SELECT * FROM computer LEFT JOIN company ON company.id = computer.company_id ";
-	String requeteFindByName = "SELECT * FROM computer LEFT JOIN company ON company.id = computer.company_id  WHERE company.name= ? ";
+	String requeteFindByName = "SELECT * FROM computer LEFT JOIN company ON company.id = computer.company_id  WHERE computer.name= ? ";
 	String requeteFindLimitNumberOfResult = "SELECT * FROM computer LEFT JOIN company ON company.id = computer.company_id LIMIT ?, ?";
 	String requeteFindByCompany = "SELECT * FROM computer LEFT JOIN company ON company.id = computer.company_id WHERE computer.company_id = ?";
 	String requeteInsert = "INSERT INTO computer (NAME, INTRODUCED, DISCONTINUED, COMPANY_ID) VALUES (?,?,?,?)";
@@ -42,7 +42,7 @@ public enum ComputerDAO {
 	public Computer findById(int id) {
 		Computer computer = new Computer();
 
-		try (Connection conn = Connexion.getConnexion();PreparedStatement preparedStatement = conn.prepareStatement(requeteFindById)) {
+		try (Connection conn = Connexion.INSTANCE.getConnexion();PreparedStatement preparedStatement = conn.prepareStatement(requeteFindById)) {
 
 			preparedStatement.setInt(1, id);
 			ResultSet result = preparedStatement.executeQuery();
@@ -80,7 +80,7 @@ public enum ComputerDAO {
 	public List<Computer> findAll() {
 		List<Computer> computers = new ArrayList<Computer>();
 
-		try (Connection conn = Connexion.getConnexion();
+		try (Connection conn = Connexion.INSTANCE.getConnexion();
 				PreparedStatement preparedStatement = conn.prepareStatement(requeteFinfAll)) {
 
 			ResultSet result = preparedStatement.executeQuery();
@@ -122,8 +122,7 @@ public enum ComputerDAO {
 	public List<Computer> findLimitNumberOfResult(int pageIndex, int numberOfResultByPage) {
 		List<Computer> computers = new ArrayList<Computer>();
 
-		try (Connection conn = Connexion.getConnexion();
-				PreparedStatement preparedStatement = conn.prepareStatement(requeteFindLimitNumberOfResult)) {
+		try (Connection conn = Connexion.INSTANCE.getConnexion();PreparedStatement preparedStatement = conn.prepareStatement(requeteFindLimitNumberOfResult)) {
 
 			preparedStatement.setInt(1, pageIndex);
 			preparedStatement.setInt(2, numberOfResultByPage);
@@ -164,7 +163,7 @@ public enum ComputerDAO {
 	public List<Computer> findByName(String name) {
 		List<Computer> computers = new ArrayList<Computer>();
 
-		try (Connection conn = Connexion.getConnexion();
+		try (Connection conn = Connexion.INSTANCE.getConnexion();
 				PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByName)) {
 
 			preparedStatement.setString(1, name );
@@ -205,7 +204,7 @@ public enum ComputerDAO {
 	public List<Computer> findByCompany(int companyId) {
 		List<Computer> computers = new ArrayList<Computer>();
 
-		try (Connection conn = Connexion.getConnexion();
+		try (Connection conn = Connexion.INSTANCE.getConnexion();
 				PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByCompany)) {
 			preparedStatement.setInt(1, companyId);
 			ResultSet result = preparedStatement.executeQuery();
@@ -237,9 +236,13 @@ public enum ComputerDAO {
 		return computers;
 	}
 
-	/** Enregistrement **/
+	/**
+	 * Save computer in Db and return 1 in case of success and 0 if not
+	 * @param computer
+	 * @return (0 or 1)
+	 */
 	public int save(Computer computer) {
-		Connection conn = Connexion.getConnexion();
+		Connection conn = Connexion.INSTANCE.getConnexion();
 		int reussite = 0;
 		PreparedStatement preparedStatement = null;
 		try {
@@ -294,17 +297,22 @@ public enum ComputerDAO {
 		return reussite;
 	}
 
-	/** Supression **/
-	public int delete(Computer computer) {
+	
+	/**
+	 * Delete computer from Db and return 1 in case of success and 0 if not
+	 * @param computer
+	 * @return
+	 */
+	public int delete(int id) {
 		int reussite = 0;
-		try (Connection conn = Connexion.getConnexion();
+		try (Connection conn = Connexion.INSTANCE.getConnexion();
 				PreparedStatement preparedStatement = conn.prepareStatement(requetedelete)) {
-			preparedStatement.setInt(1, computer.getId());
+			preparedStatement.setInt(1, id);
 
 			// execute delete SQL stetement
 			reussite = preparedStatement.executeUpdate();
 
-			logger.info(computer.getName() + " a été bien supprimé!");
+			logger.info(" le pc qui a pour id : "+id + " a été bien supprimé!");
 
 		} catch (SQLException e) {
 
@@ -314,10 +322,14 @@ public enum ComputerDAO {
 		return reussite;
 	}
 
-	/** Update **/
+	/**
+	 * Update computer in Db and return 1 in case of success and 0 if not
+	 * @param computer
+	 * @return (0 or 1)
+	 */
 	public int update(Computer computer) {
 		int reussite = 0;
-		try (Connection conn = Connexion.getConnexion();
+		try (Connection conn = Connexion.INSTANCE.getConnexion();
 				PreparedStatement preparedStatement = conn.prepareStatement(requeteUpdate)) {
 
 			preparedStatement.setString(1, computer.getName());

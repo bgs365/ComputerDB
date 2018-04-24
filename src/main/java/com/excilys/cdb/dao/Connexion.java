@@ -30,7 +30,7 @@ public enum Connexion {
 		
 	}
 
-	public static Connection getConnexion() {
+	public Connection getConnexion() {
 
 		logger.info("-------- MySQL JDBC Connection Testing ------------");
 		getConnexionVariables();
