@@ -7,8 +7,8 @@
 target/
 bin/
 tmp/
-src/main/sql/
-src/test/sql/
+/src/main/sql/
+/src/test/sql/
 *.tmp
 *.bak
 *.swp

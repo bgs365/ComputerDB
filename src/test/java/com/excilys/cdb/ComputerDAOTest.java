@@ -34,8 +34,8 @@ public class ComputerDAOTest {
 	static String password = "test";
 	static String emptyComputer = "DROP TABLE computer";
 	static String emptyCompany = "DROP TABLE company";
-	static String aSQLScriptFilePath = System.getProperty("user.dir") + "/src/test/sql/3-ENTRIES-test.sql";
-	static String aSQLScriptFilePath2 = System.getProperty("user.dir") + "/src/test/sql/1-SCHEMA-test.sql";
+	static String aSQLScriptFilePath = System.getProperty("user.dir") + "/src/test/sql/3-ENTRIES.sql";
+	static String aSQLScriptFilePath2 = System.getProperty("user.dir") + "/src/test/sql/1-SCHEMA.sql";
 
 	@Before
 	public void init() throws SQLException, ClassNotFoundException, IOException {
