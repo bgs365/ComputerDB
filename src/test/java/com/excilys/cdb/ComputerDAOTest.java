@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -18,7 +19,10 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.service.ComputerService;
 import com.ibatis.common.jdbc.ScriptRunner;
+
 
 public class ComputerDAOTest {
 
@@ -30,8 +34,8 @@ public class ComputerDAOTest {
 	static String password = "test";
 	static String emptyComputer = "DROP TABLE computer";
 	static String emptyCompany = "DROP TABLE company";
-	static String aSQLScriptFilePath = System.getProperty("user.dir") + "/sql/dbTest/3-ENTRIES-test.sql";
-	static String aSQLScriptFilePath2 = System.getProperty("user.dir") + "/sql/dbTest/1-SCHEMA-test.sql";
+	static String aSQLScriptFilePath = System.getProperty("user.dir") + "/src/test/sql/3-ENTRIES-test.sql";
+	static String aSQLScriptFilePath2 = System.getProperty("user.dir") + "/src/test/sql/1-SCHEMA-test.sql";
 
 	@Before
 	public void init() throws SQLException, ClassNotFoundException, IOException {
@@ -124,24 +128,9 @@ public class ComputerDAOTest {
 	}
 	
 	@Test
-	public void testFindById(){
-		try (Connection connection = getConnection();
-				Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-						ResultSet.CONCUR_READ_ONLY);) {
-
-			ResultSet result = statement.executeQuery("SELECT name FROM computer");
-
-			if (result.first()) {
-				assertEquals("MacBook Pro 15.4 inch", result.getString("name") );
-			}
-			
-			if (result.last()) {
-				assertEquals("iPhone 4S", result.getString("name") );
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	public void testFindAll(){
+		List<Computer> computers = ComputerService.INSTANCE.findAll();
+		assertEquals(574,computers.size());
 	}
 
 }

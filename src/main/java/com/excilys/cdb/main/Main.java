@@ -3,6 +3,7 @@ package com.excilys.cdb.main;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,15 +20,19 @@ public class Main {
 	static ComputerService computerService = ComputerService.INSTANCE;
 	final static Logger logger = LoggerFactory.getLogger(Main.class);
 	public static void main(String[] args) {
-		logger.info("Ouverture du Menu");
+		/*logger.info("Ouverture du Menu");
 		MainMenu.display();
-		logger.info("Fermeture du Menu");
+		logger.info("Fermeture du Menu");*/
 		// verifServiceComputer();
 		// verifServiceComputerSave();
 		// verifServiceCompany();
 		// verifServiceComputerUpdate();
-		// verifServiceComputerDelete();	  
+		// verifServiceComputerDelete();
+		List<Computer> computers = computerService.findAll();
+		System.out.println(computers.size());
 	}
+	
+	
 	
 
 

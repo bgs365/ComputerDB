@@ -38,10 +38,14 @@ public enum ComputerService {
 		if(computer.getName().length() < 5 ) {
 			logger.info("Le nom du computer doit faire au moins 5 carractères");
 			return 0;
-		}else if(computer.getIntroduced().isBefore( computer.getDiscontinued() ) ) {
-			logger.info("La date d'intro doit être inferieur à la date de retrait");
-			return 0;
-		}else {
+		}/*else if( ! computer.getDiscontinued().equals(null)) {
+			if( computer.getIntroduced().isAfter( computer.getDiscontinued() ) ) {
+				logger.info("La date d'intro doit être inferieur à la date de retrait");
+				return 0;
+			}else {
+				return ComputerDAO.INSTANCE.save(computer);
+			}
+		}*/else {
 			return ComputerDAO.INSTANCE.save(computer);
 		}
 	}

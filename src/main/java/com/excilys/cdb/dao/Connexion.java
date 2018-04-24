@@ -1,12 +1,9 @@
 package com.excilys.cdb.dao;
 
 import java.sql.DriverManager;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Properties;
+import java.util.ResourceBundle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,38 +12,22 @@ public enum Connexion {
 
 	INSTANCE;
 	final static Logger logger = LoggerFactory.getLogger(Connexion.class);
-
+	
+	
 	static String driver = "com.mysql.jdbc.Driver";
 	static String baseDeDonnee = null;
 	static String login = null;
 	static String motDePasse = null;
 
 	public static void getConnexionVariables() {
-		Properties prop = new Properties();
-		InputStream input = null;
+		
+		ResourceBundle input = ResourceBundle.getBundle("config");
 
-		try {
+		baseDeDonnee = input.getString("database");
+		login = input.getString("dbuser");
+		motDePasse = input.getString("dbpassword");
 
-			input = new FileInputStream("config.properties");
-
-			// load a properties file
-			prop.load(input);
-
-			baseDeDonnee = prop.getProperty("database");
-			login = prop.getProperty("dbuser");
-			motDePasse = prop.getProperty("dbpassword");
-
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} finally {
-			if (input != null) {
-				try {
-					input.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+		
 	}
 
 	public static Connection getConnexion() {
