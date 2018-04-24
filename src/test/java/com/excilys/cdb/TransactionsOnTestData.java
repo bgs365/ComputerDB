@@ -14,16 +14,16 @@ import com.excilys.cdb.dao.Connexion;
 import com.ibatis.common.jdbc.ScriptRunner;
 
 public enum TransactionsOnTestData {
-	
+
 	INSTANCE;
-	
+
 	final static Logger logger = LoggerFactory.getLogger(ComputerDAOTest.class);
-	
+
 	static String emptyComputer = "DROP TABLE computer";
 	static String emptyCompany = "DROP TABLE company";
 	static String aSQLScriptFilePath = System.getProperty("user.dir") + "/src/test/sql/3-ENTRIES.sql";
 	static String aSQLScriptFilePath2 = System.getProperty("user.dir") + "/src/test/sql/1-SCHEMA.sql";
-	
+
 	/**
 	 * initialise test data
 	 */
@@ -43,12 +43,13 @@ public enum TransactionsOnTestData {
 			logger.info("Failed to Execute" + aSQLScriptFilePath + " The error is " + e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Destroy data
 	 */
 	protected void destroyDate() {
-		try (Connection connection = Connexion.INSTANCE.getConnexion(); Statement statement = connection.createStatement();) {
+		try (Connection connection = Connexion.INSTANCE.getConnexion();
+				Statement statement = connection.createStatement();) {
 			connection.createStatement().executeUpdate(emptyComputer);
 			connection.createStatement().executeUpdate(emptyCompany);
 			connection.close();
@@ -56,5 +57,5 @@ public enum TransactionsOnTestData {
 			e.printStackTrace();
 		}
 	}
-	
+
 }

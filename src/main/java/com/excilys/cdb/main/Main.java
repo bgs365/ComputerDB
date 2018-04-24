@@ -3,8 +3,6 @@ package com.excilys.cdb.main;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,26 +12,23 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
-import com.excilys.cdb.ui.MainMenu;
 
 public class Main {
 	static ComputerService computerService = ComputerService.INSTANCE;
 	final static Logger logger = LoggerFactory.getLogger(Main.class);
+
 	public static void main(String[] args) {
-		/*logger.info("Ouverture du Menu");
-		MainMenu.display();
-		logger.info("Fermeture du Menu");*/
+		/*
+		 * logger.info("Ouverture du Menu"); MainMenu.display();
+		 * logger.info("Fermeture du Menu");
+		 */
 		// verifServiceComputer();
 		// verifServiceComputerSave();
-		//verifServiceCompany();
+		// verifServiceCompany();
 		// verifServiceComputerUpdate();
-		 //verifServiceComputerDelete();
+		// verifServiceComputerDelete();
 		System.out.println(CompanyDAO.INSTANCE.findById(50));
 	}
-	
-	
-	
-
 
 	/* Verification des services */
 	public static void verifServiceComputerUpdate() {

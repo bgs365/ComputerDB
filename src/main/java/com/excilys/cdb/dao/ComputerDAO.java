@@ -16,13 +16,13 @@ import com.excilys.cdb.model.Computer;
 
 /**
  * *Classe qui permet de mettre en place la persistance d'une Company
+ *
  * @autor Beydi SANOGO
  */
 
 public enum ComputerDAO {
 	INSTANCE;
-	final static Logger logger = LoggerFactory.getLogger(Main.class);
-
+	
 	String requeteFindById = "SELECT * FROM computer LEFT JOIN company ON company.id = computer.company_id WHERE computer.id = ?";
 	String requeteFinfAll = "SELECT * FROM computer LEFT JOIN company ON company.id = computer.company_id ";
 	String requeteFindByName = "SELECT * FROM computer LEFT JOIN company ON company.id = computer.company_id  WHERE computer.name= ? ";
@@ -33,16 +33,19 @@ public enum ComputerDAO {
 	String requetedelete = "DELETE FROM computer WHERE id = ?";
 	String requeteUpdate = "UPDATE computer SET NAME = ? ,INTRODUCED = ? ,DISCONTINUED = ? ,COMPANY_ID = ? WHERE Id = ?";
 	String requeteUpdateChangerCompany = "UPDATE computer SET COMPANY_ID = ?  WHERE Id = ?";
-
+	static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
+	
 	/**
-	 * allow access to an computer with is id
+	 * allow access to an computer with is id.
+	 *
 	 * @param id
 	 * @return Computer
 	 */
 	public Computer findById(int id) {
 		Computer computer = new Computer();
 
-		try (Connection conn = Connexion.INSTANCE.getConnexion();PreparedStatement preparedStatement = conn.prepareStatement(requeteFindById)) {
+		try (Connection conn = Connexion.INSTANCE.getConnexion();
+				PreparedStatement preparedStatement = conn.prepareStatement(requeteFindById)) {
 
 			preparedStatement.setInt(1, id);
 			ResultSet result = preparedStatement.executeQuery();
@@ -65,16 +68,17 @@ public enum ComputerDAO {
 
 			}
 
-		} catch (SQLException | NullPointerException e ) {
-			logger.info("Erreur sur la requete find Computer by id : " + e.getMessage());
+		} catch (SQLException | NullPointerException e) {
+			LOGGER.info("Erreur sur la requete find Computer by id : " + e.getMessage());
 		}
 
 		return computer;
 
 	}
-	
+
 	/**
-	 * Allow access to all computers of database
+	 * Allow access to all computers of database.
+	 *
 	 * @return List<Computer>
 	 */
 	public List<Computer> findAll() {
@@ -106,15 +110,16 @@ public enum ComputerDAO {
 			}
 
 		} catch (SQLException e) {
-			logger.info("Erreur sur la requete findAll Computer  : " + e.getMessage());
+			LOGGER.info("Erreur sur la requete findAll Computer  : " + e.getMessage());
 		}
 
 		return computers;
 
 	}
-	
+
 	/**
-	 * Use to generate pages
+	 * Use to generate pages.
+	 *
 	 * @param pageIndex
 	 * @param numberOfResultByPage
 	 * @return List<Computer>
@@ -122,7 +127,8 @@ public enum ComputerDAO {
 	public List<Computer> findLimitNumberOfResult(int pageIndex, int numberOfResultByPage) {
 		List<Computer> computers = new ArrayList<Computer>();
 
-		try (Connection conn = Connexion.INSTANCE.getConnexion();PreparedStatement preparedStatement = conn.prepareStatement(requeteFindLimitNumberOfResult)) {
+		try (Connection conn = Connexion.INSTANCE.getConnexion();
+				PreparedStatement preparedStatement = conn.prepareStatement(requeteFindLimitNumberOfResult)) {
 
 			preparedStatement.setInt(1, pageIndex);
 			preparedStatement.setInt(2, numberOfResultByPage);
@@ -149,14 +155,15 @@ public enum ComputerDAO {
 			}
 
 		} catch (SQLException e) {
-			
-			logger.info("Erreur sur la requete find limit NUmber of computer  : " + e.getMessage());
+
+			LOGGER.info("Erreur sur la requete find limit NUmber of computer  : " + e.getMessage());
 		}
 		return computers;
 	}
 
 	/**
-	 * Return all computer whith name past as parameter
+	 * Return all computer with name past as parameter.
+	 *
 	 * @param name
 	 * @return List<Computer>
 	 */
@@ -166,7 +173,7 @@ public enum ComputerDAO {
 		try (Connection conn = Connexion.INSTANCE.getConnexion();
 				PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByName)) {
 
-			preparedStatement.setString(1, name );
+			preparedStatement.setString(1, name);
 			ResultSet result = preparedStatement.executeQuery();
 
 			while (result.next()) {
@@ -190,14 +197,15 @@ public enum ComputerDAO {
 			}
 
 		} catch (SQLException e) {
-			logger.info("Erreur sur la requete find Computer by name : " + e.getMessage());
+			LOGGER.info("Erreur sur la requete find Computer by name : " + e.getMessage());
 		}
 
 		return computers;
 	}
-	
+
 	/**
-	 * k
+	 * find company by id.
+	 *
 	 * @param companyId
 	 * @return List<Computer>
 	 */
@@ -230,14 +238,15 @@ public enum ComputerDAO {
 			}
 
 		} catch (SQLException e) {
-			logger.info("Erreur sur la requete find Computer by Company id : " + e.getMessage());
+			LOGGER.info("Erreur sur la requete find Computer by Company id : " + e.getMessage());
 		}
 
 		return computers;
 	}
 
 	/**
-	 * Save computer in Db and return 1 in case of success and 0 if not
+	 * Save computer in Db and return 1 in case of success and 0 if not.
+	 *
 	 * @param computer
 	 * @return (0 or 1)
 	 */
@@ -248,11 +257,11 @@ public enum ComputerDAO {
 		try {
 
 			if (computer.getCompany() != null) {
-				preparedStatement = (PreparedStatement) conn.prepareStatement(requeteInsert);
+				preparedStatement = conn.prepareStatement(requeteInsert);
 				preparedStatement.setInt(4, computer.getCompany().getId());
 
 			} else {
-				preparedStatement = (PreparedStatement) conn.prepareStatement(requeteInsertSansCompany);
+				preparedStatement = conn.prepareStatement(requeteInsertSansCompany);
 			}
 
 			preparedStatement.setString(1, computer.getName());
@@ -275,7 +284,7 @@ public enum ComputerDAO {
 			System.out.println(computer.getName() + " bien créee");
 
 		} catch (SQLException e) {
-			logger.info(computer.getCompany().getName() + " N'existe pas");
+			LOGGER.info(computer.getCompany().getName() + " N'existe pas");
 		} finally {
 
 			if (preparedStatement != null) {
@@ -297,9 +306,9 @@ public enum ComputerDAO {
 		return reussite;
 	}
 
-	
 	/**
-	 * Delete computer from Db and return 1 in case of success and 0 if not
+	 * Delete computer from Db and return 1 in case of success and 0 if not.
+	 *
 	 * @param computer
 	 * @return
 	 */
@@ -312,18 +321,19 @@ public enum ComputerDAO {
 			// execute delete SQL stetement
 			reussite = preparedStatement.executeUpdate();
 
-			logger.info(" le pc qui a pour id : "+id + " a été bien supprimé!");
+			LOGGER.info(" le pc qui a pour id : " + id + " a été bien supprimé!");
 
 		} catch (SQLException e) {
 
-			logger.info(e.getMessage());
+			LOGGER.info(e.getMessage());
 
 		}
 		return reussite;
 	}
 
 	/**
-	 * Update computer in Db and return 1 in case of success and 0 if not
+	 * Update computer in Db and return 1 in case of success and 0 if not.
+	 *
 	 * @param computer
 	 * @return (0 or 1)
 	 */
@@ -353,10 +363,10 @@ public enum ComputerDAO {
 
 			preparedStatement.setInt(5, computer.getId());
 			reussite = preparedStatement.executeUpdate();
-			logger.info(computer.getName() + " a été bien modifié!");
+			LOGGER.info(computer.getName() + " a été bien modifié!");
 
 		} catch (SQLException e) {
-			logger.info(e.getMessage());
+			LOGGER.info(e.getMessage());
 		}
 		return reussite;
 	}

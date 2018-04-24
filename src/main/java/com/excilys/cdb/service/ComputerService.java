@@ -35,35 +35,33 @@ public enum ComputerService {
 	}
 
 	public int save(Computer computer) {
-		if(computer.getName().length() < 5 ) {
+		if (computer.getName().length() < 5) {
 			logger.info("Le nom du computer doit faire au moins 5 carractères");
 			return 0;
-		}/*else if( ! computer.getDiscontinued().equals(null)) {
-			if( computer.getIntroduced().isAfter( computer.getDiscontinued() ) ) {
-				logger.info("La date d'intro doit être inferieur à la date de retrait");
-				return 0;
-			}else {
-				return ComputerDAO.INSTANCE.save(computer);
-			}
-		}*/else {
+		} /*
+			 * else if( ! computer.getDiscontinued().equals(null)) { if(
+			 * computer.getIntroduced().isAfter( computer.getDiscontinued() ) ) {
+			 * logger.info("La date d'intro doit être inferieur à la date de retrait");
+			 * return 0; }else { return ComputerDAO.INSTANCE.save(computer); } }
+			 */else {
 			return ComputerDAO.INSTANCE.save(computer);
 		}
 	}
 
 	public int delete(int id) {
-		if( findById(id).getId() == 0 ) {
+		if (findById(id).getId() == 0) {
 			logger.info("Le computer que vous voulez supprimer n'esxiste pas");
 			return 0;
-		}else {
+		} else {
 			return ComputerDAO.INSTANCE.delete(id);
 		}
 	}
 
 	public int update(Computer computer) {
-		if( findById(computer.getId()).getId() == 0 ) {
+		if (findById(computer.getId()).getId() == 0) {
 			logger.info("Le computer que vous voulez modifier n'esxiste pas");
 			return 0;
-		}else {
+		} else {
 			return ComputerDAO.INSTANCE.update(computer);
 		}
 	}
