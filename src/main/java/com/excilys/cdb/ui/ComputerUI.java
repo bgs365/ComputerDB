@@ -17,7 +17,7 @@ import com.excilys.cdb.service.ComputerService;
 public class ComputerUI {
 	private static ComputerService computerService = ComputerService.INSTANCE;
 	private static Scanner sc = new Scanner(System.in);
-	public static int nombrElementParPage = 10;
+	public static int nombrElementParPage = 50;
 	
 	/**
 	 * display a page of computer, allow to navigate between pages of computers.

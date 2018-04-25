@@ -40,7 +40,7 @@ public class Main {
 		// verifServiceCompany();
 		// verifServiceComputerUpdate();
 		// verifServiceComputerDelete();
-		//System.out.println(CompanyDAO.INSTANCE.findById(50));
+		//System.out.println(ComputerDAO.INSTANCE.findAll());
 	}
 
 	/**

@@ -33,14 +33,14 @@ public enum ComputerDAO {
 	String requeteUpdate = "UPDATE computer SET NAME = ? ,INTRODUCED = ? ,DISCONTINUED = ? ,COMPANY_ID = ? WHERE Id = ?";
 	String requeteUpdateChangerCompany = "UPDATE computer SET COMPANY_ID = ?  WHERE Id = ?";
 	static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
-	
+
 	/**
 	 * allow access to an computer with is id.
 	 *
 	 * @param id
 	 * @return Computer
 	 */
-	public Computer findById(int id){
+	public Computer findById(int id) {
 		Computer computer = new Computer();
 
 		try (Connection conn = Connexion.INSTANCE.getConnexion();
@@ -64,7 +64,6 @@ public enum ComputerDAO {
 					company.setName(result.getString("company.name"));
 				}
 				computer.setCompany(company);
-
 			}
 
 		} catch (SQLException | NullPointerException e) {
@@ -107,7 +106,6 @@ public enum ComputerDAO {
 				computer.setCompany(company);
 				computers.add(computer);
 			}
-
 		} catch (SQLException e) {
 			LOGGER.info("Erreur sur la requete findAll Computer  : " + e.getMessage());
 		}
@@ -123,7 +121,7 @@ public enum ComputerDAO {
 	 * @param numberOfResultByPage
 	 * @return List<Computer>
 	 */
-	public List<Computer> findLimitNumberOfResult(int pageIndex, int numberOfResultByPage){
+	public List<Computer> findLimitNumberOfResult(int pageIndex, int numberOfResultByPage) {
 		List<Computer> computers = new ArrayList<Computer>();
 
 		try (Connection conn = Connexion.INSTANCE.getConnexion();
@@ -166,7 +164,7 @@ public enum ComputerDAO {
 	 * @param name
 	 * @return List<Computer>
 	 */
-	public List<Computer> findByName(String name){
+	public List<Computer> findByName(String name) {
 		List<Computer> computers = new ArrayList<Computer>();
 
 		try (Connection conn = Connexion.INSTANCE.getConnexion();
@@ -208,7 +206,7 @@ public enum ComputerDAO {
 	 * @param companyId
 	 * @return List<Computer>
 	 */
-	public List<Computer> findByCompany(int companyId){
+	public List<Computer> findByCompany(int companyId) {
 		List<Computer> computers = new ArrayList<Computer>();
 
 		try (Connection conn = Connexion.INSTANCE.getConnexion();
@@ -249,7 +247,7 @@ public enum ComputerDAO {
 	 * @param computer
 	 * @return (0 or 1)
 	 */
-	public int save(Computer computer){
+	public int save(Computer computer) {
 		Connection conn = Connexion.INSTANCE.getConnexion();
 		int reussite = 0;
 		PreparedStatement preparedStatement = null;
@@ -311,7 +309,7 @@ public enum ComputerDAO {
 	 * @param id
 	 * @return (0 or 1)
 	 */
-	public int delete(int id){
+	public int delete(int id) {
 		int reussite = 0;
 		try (Connection conn = Connexion.INSTANCE.getConnexion();
 				PreparedStatement preparedStatement = conn.prepareStatement(requetedelete)) {
@@ -336,7 +334,7 @@ public enum ComputerDAO {
 	 * @param computer
 	 * @return (0 or 1)
 	 */
-	public int update(Computer computer){
+	public int update(Computer computer) {
 		int reussite = 0;
 		try (Connection conn = Connexion.INSTANCE.getConnexion();
 				PreparedStatement preparedStatement = conn.prepareStatement(requeteUpdate)) {
