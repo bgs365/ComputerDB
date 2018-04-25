@@ -17,15 +17,14 @@ public enum TransactionsOnTestData {
 
 	INSTANCE;
 
-	final static Logger logger = LoggerFactory.getLogger(ComputerDAOTest.class);
-
+	static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAOTest.class);
 	static String emptyComputer = "DROP TABLE computer";
 	static String emptyCompany = "DROP TABLE company";
 	static String aSQLScriptFilePath = System.getProperty("user.dir") + "/src/test/sql/3-ENTRIES.sql";
 	static String aSQLScriptFilePath2 = System.getProperty("user.dir") + "/src/test/sql/1-SCHEMA.sql";
 
 	/**
-	 * initialise test data
+	 * initialise test data.
 	 */
 	protected void initData() {
 		// Create MySql Connection
@@ -40,12 +39,12 @@ public enum TransactionsOnTestData {
 			sr.runScript(reader);
 
 		} catch (Exception e) {
-			logger.info("Failed to Execute" + aSQLScriptFilePath + " The error is " + e.getMessage());
+			LOGGER.info("Failed to Execute" + aSQLScriptFilePath + " The error is " + e.getMessage());
 		}
 	}
 
 	/**
-	 * Destroy data
+	 * Destroy data.
 	 */
 	protected void destroyDate() {
 		try (Connection connection = Connexion.INSTANCE.getConnexion();

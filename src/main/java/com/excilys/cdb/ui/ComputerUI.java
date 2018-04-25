@@ -9,11 +9,19 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.page.Page;
 import com.excilys.cdb.service.ComputerService;
 
+/**
+ * Computer User Interface class.
+ * @author sanogo
+ *
+ */
 public class ComputerUI {
 	private static ComputerService computerService = ComputerService.INSTANCE;
 	private static Scanner sc = new Scanner(System.in);
 	public static int nombrElementParPage = 10;
-
+	
+	/**
+	 * display a page of computer, allow to navigate between pages of computers.
+	 */
 	public static void listComputer() {
 
 		List<Computer> computers = computerService.findLimitNumberOfResult(0, nombrElementParPage);
@@ -64,7 +72,12 @@ public class ComputerUI {
 		System.out.println("******************* " + computers.size() + " PC *******************");
 
 	}
-
+	/**
+	 * take a group of computers and range them in a string.
+	 * 
+	 * @param computers
+	 * @return String
+	 */
 	private static String display(List<Computer> computers) {
 		String valeurRetour = "";
 		for (Computer indexOfComputers : computers) {
@@ -79,7 +92,10 @@ public class ComputerUI {
 		}
 		return valeurRetour;
 	}
-
+	
+	/**
+	 * reate computer menu.
+	 */
 	public static void createComputer() {
 
 		Computer computer = new Computer();
@@ -113,7 +129,10 @@ public class ComputerUI {
 
 		computerService.save(computer);
 	}
-
+	
+	/**
+	 * update computer menu.
+	 */
 	public static void updateComputer() {
 		Computer computer = new Computer();
 		String nom = null;
@@ -168,7 +187,10 @@ public class ComputerUI {
 		}
 
 	}
-
+	
+	/**
+	 * delete computer menu.
+	 */
 	public static void deleteComputer() {
 		Computer computer = new Computer();
 		String choix = null;

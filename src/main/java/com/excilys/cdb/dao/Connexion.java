@@ -16,7 +16,7 @@ public enum Connexion {
 	static String login = null;
 	static String motDePasse = null;
 	static final Logger LOGGER = LoggerFactory.getLogger(Connexion.class);
-	
+
 	/**
 	 * load connexion variables.
 	 */
@@ -29,9 +29,10 @@ public enum Connexion {
 		motDePasse = input.getString("dbpassword");
 
 	}
-	
+
 	/**
 	 * make connexion to db.
+	 * 
 	 * @return Connection
 	 */
 	public Connection getConnexion() {

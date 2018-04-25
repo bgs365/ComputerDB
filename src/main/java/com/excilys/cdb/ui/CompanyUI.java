@@ -13,6 +13,9 @@ public class CompanyUI {
 	static CompanyService companyService = CompanyService.INSTANCE;
 	public static int nombrElementParPage = 10;
 
+	/**
+	 * display a page of company, and allow to navigate between them.
+	 */
 	public static void listCompany() {
 		List<Company> companies = companyService.findLimitNumberOfResult(0, nombrElementParPage);
 		Page<Company> companyPage = new Page<Company>(companies, nombrElementParPage);
@@ -55,17 +58,19 @@ public class CompanyUI {
 		} while (!quiter);
 
 	}
-
+	
+	/**
+	 * take a group of company and rage them in a string.
+	 * 
+	 * @param company
+	 * @return String
+	 */
 	private static String display(List<Company> company) {
 		String valeurRetour = "";
 		for (Company indexOfCompany : company) {
 			valeurRetour += "------>" + indexOfCompany.toString() + "\n";
 		}
 		return valeurRetour;
-	}
-
-	public static void main(String[] args) {
-		listCompany();
 	}
 
 }

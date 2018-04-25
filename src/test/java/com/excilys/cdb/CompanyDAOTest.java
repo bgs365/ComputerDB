@@ -13,27 +13,26 @@ import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.model.Company;
 
 /**
- * Class test Company
+ * Class test Company persistance.
  *
  * @author sanogo
  *
  */
 public class CompanyDAOTest {
 
-	final static Logger logger = LoggerFactory.getLogger(ComputerDAOTest.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAOTest.class);
 
 	/**
-	 * init test data
+	 * init test data.
 	 */
 	@Before
 	public void init() {
 		// initialize database
 		TransactionsOnTestData.INSTANCE.initData();
-		;
 	}
 
 	/**
-	 * destroy test data
+	 * destroy test data.
 	 */
 	@After
 	public void destroy() {
@@ -41,7 +40,7 @@ public class CompanyDAOTest {
 	}
 
 	/**
-	 * Test find all method
+	 * Test find all method.
 	 */
 	@Test
 	public void testFindAll() {
@@ -52,7 +51,7 @@ public class CompanyDAOTest {
 	}
 
 	/**
-	 * Test find all method
+	 * Test find all method.
 	 */
 	@Test
 	public void testFindById() {
@@ -64,7 +63,7 @@ public class CompanyDAOTest {
 	}
 
 	/**
-	 * Test find by name method
+	 * Test find by name method.
 	 */
 	@Test
 	public void testFindByName() {
@@ -76,7 +75,7 @@ public class CompanyDAOTest {
 	}
 
 	/**
-	 * Test find Limit Number Of Result method
+	 * Test find Limit Number Of Result method.
 	 */
 	@Test
 	public void findLimitNumberOfResult() {

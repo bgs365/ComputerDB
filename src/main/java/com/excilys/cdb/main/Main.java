@@ -12,25 +12,40 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.ui.MainMenu;
 
+/**
+ * Main class, which allow to verify class.
+ *
+ * @author sanogo
+ *
+ */
 public class Main {
-	static ComputerService computerService = ComputerService.INSTANCE;
-	final static Logger logger = LoggerFactory.getLogger(Main.class);
+    static ComputerService computerService = ComputerService.INSTANCE;
+    static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-	public static void main(String[] args) {
-		/*
-		 * logger.info("Ouverture du Menu"); MainMenu.display();
-		 * logger.info("Fermeture du Menu");
-		 */
+    /**
+	 * Main method.
+	 *
+	 * @param args
+	 */
+	public static void main(String[] args){
+
+         LOGGER.info("Ouverture du Menu");
+		 MainMenu.display();
+		 LOGGER.info("Fermeture du Menu");
+
 		// verifServiceComputer();
 		// verifServiceComputerSave();
 		// verifServiceCompany();
 		// verifServiceComputerUpdate();
 		// verifServiceComputerDelete();
-		System.out.println(CompanyDAO.INSTANCE.findById(50));
+		//System.out.println(CompanyDAO.INSTANCE.findById(50));
 	}
 
-	/* Verification des services */
+	/**
+	 * test update method of computer Service.
+	 */
 	public static void verifServiceComputerUpdate() {
 		Computer computer = ComputerDAO.INSTANCE.findById(582);
 		computer.setName("Test apres");
@@ -41,11 +56,17 @@ public class Main {
 		System.out.println(computerService.update(computer));
 	}
 
+	/**
+	 * test delete method of Computer Service.
+	 */
 	public static void verifServiceComputerDelete() {
 		Computer computer = ComputerDAO.INSTANCE.findById(583);
 		System.out.println(computerService.delete(575));
 	}
 
+	/**
+	 * test save method of Computer service.
+	 */
 	public static void verifServiceComputerSave() {
 		Company company = CompanyDAO.INSTANCE.findById(5);
 		Computer computer1 = new Computer(0, "dell 1004 verif service avec company sans dateDisc.. ", null, null);
@@ -53,6 +74,9 @@ public class Main {
 		System.out.println(computerService.save(computer1));
 	}
 
+	/**
+	 * test select methods of Computer service.
+	 */
 	public static void verifServiceComputer() {
 		List<Computer> computers = new ArrayList<Computer>();
 		Computer computer = computerService.findById(200);
@@ -85,6 +109,9 @@ public class Main {
 
 	}
 
+    /**
+	 * test selects methods of company.
+	 */
 	public static void verifServiceCompany() {
 		CompanyService cs = CompanyService.INSTANCE;
 		Company company = cs.findById(1);

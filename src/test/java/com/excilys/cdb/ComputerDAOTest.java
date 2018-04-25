@@ -17,7 +17,7 @@ import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 
 /**
- * Test co
+ * Test computer persistance.
  *
  * @author sanogo
  *
@@ -25,17 +25,16 @@ import com.excilys.cdb.service.ComputerService;
 public class ComputerDAOTest {
 
 	/**
-	 * init test data
+	 * init test data.
 	 */
 	@Before
 	public void init() {
 		// initialize database
 		TransactionsOnTestData.INSTANCE.initData();
-		;
 	}
 
 	/**
-	 * destroy test data
+	 * destroy test data.
 	 */
 	@After
 	public void destroy() {
@@ -43,7 +42,7 @@ public class ComputerDAOTest {
 	}
 
 	/**
-	 * Test find all method
+	 * Test find all method.
 	 */
 	@Test
 	public void testFindAll() {
@@ -54,7 +53,7 @@ public class ComputerDAOTest {
 	}
 
 	/**
-	 * Test find by id method
+	 * Test find by id method.
 	 */
 	@Test
 	public void testFindbyId() {
@@ -68,7 +67,7 @@ public class ComputerDAOTest {
 	}
 
 	/**
-	 * Test find by name method
+	 * Test find by name method.
 	 */
 	@Test
 	public void testFindbyName() {
@@ -83,7 +82,7 @@ public class ComputerDAOTest {
 	}
 
 	/**
-	 * Test find by company
+	 * Test find by company.
 	 */
 	@Test
 	public void testFindbyCompany() {
@@ -104,7 +103,7 @@ public class ComputerDAOTest {
 	}
 
 	/**
-	 * Test find Limit Number Of Result method
+	 * Test find Limit Number Of Result method.
 	 */
 	@Test
 	public void findLimitNumberOfResult() {
@@ -121,7 +120,7 @@ public class ComputerDAOTest {
 	}
 
 	/**
-	 * Test save computer
+	 * Test save computer.
 	 */
 	@Test
 	public void testSave() {
@@ -141,7 +140,7 @@ public class ComputerDAOTest {
 	}
 
 	/**
-	 * Test update computer
+	 * Test update computer.
 	 */
 	@Test
 	public void testUpdate() {
@@ -158,7 +157,7 @@ public class ComputerDAOTest {
 	}
 
 	/**
-	 * Test delete computer
+	 * Test delete computer.
 	 */
 	@Test
 	public void testdelete() {

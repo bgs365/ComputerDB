@@ -10,19 +10,18 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.cdb.main.Main;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 
 /**
- * *Classe qui permet de mettre en place la persistance d'une Company
+ * *Classe qui permet de mettre en place la persistance d'une Company.
  *
  * @autor Beydi SANOGO
  */
 
 public enum ComputerDAO {
 	INSTANCE;
-	
+
 	String requeteFindById = "SELECT * FROM computer LEFT JOIN company ON company.id = computer.company_id WHERE computer.id = ?";
 	String requeteFinfAll = "SELECT * FROM computer LEFT JOIN company ON company.id = computer.company_id ";
 	String requeteFindByName = "SELECT * FROM computer LEFT JOIN company ON company.id = computer.company_id  WHERE computer.name= ? ";
@@ -41,7 +40,7 @@ public enum ComputerDAO {
 	 * @param id
 	 * @return Computer
 	 */
-	public Computer findById(int id) {
+	public Computer findById(int id){
 		Computer computer = new Computer();
 
 		try (Connection conn = Connexion.INSTANCE.getConnexion();
@@ -124,7 +123,7 @@ public enum ComputerDAO {
 	 * @param numberOfResultByPage
 	 * @return List<Computer>
 	 */
-	public List<Computer> findLimitNumberOfResult(int pageIndex, int numberOfResultByPage) {
+	public List<Computer> findLimitNumberOfResult(int pageIndex, int numberOfResultByPage){
 		List<Computer> computers = new ArrayList<Computer>();
 
 		try (Connection conn = Connexion.INSTANCE.getConnexion();
@@ -167,7 +166,7 @@ public enum ComputerDAO {
 	 * @param name
 	 * @return List<Computer>
 	 */
-	public List<Computer> findByName(String name) {
+	public List<Computer> findByName(String name){
 		List<Computer> computers = new ArrayList<Computer>();
 
 		try (Connection conn = Connexion.INSTANCE.getConnexion();
@@ -209,7 +208,7 @@ public enum ComputerDAO {
 	 * @param companyId
 	 * @return List<Computer>
 	 */
-	public List<Computer> findByCompany(int companyId) {
+	public List<Computer> findByCompany(int companyId){
 		List<Computer> computers = new ArrayList<Computer>();
 
 		try (Connection conn = Connexion.INSTANCE.getConnexion();
@@ -250,7 +249,7 @@ public enum ComputerDAO {
 	 * @param computer
 	 * @return (0 or 1)
 	 */
-	public int save(Computer computer) {
+	public int save(Computer computer){
 		Connection conn = Connexion.INSTANCE.getConnexion();
 		int reussite = 0;
 		PreparedStatement preparedStatement = null;
@@ -309,10 +308,10 @@ public enum ComputerDAO {
 	/**
 	 * Delete computer from Db and return 1 in case of success and 0 if not.
 	 *
-	 * @param computer
-	 * @return
+	 * @param id
+	 * @return (0 or 1)
 	 */
-	public int delete(int id) {
+	public int delete(int id){
 		int reussite = 0;
 		try (Connection conn = Connexion.INSTANCE.getConnexion();
 				PreparedStatement preparedStatement = conn.prepareStatement(requetedelete)) {
@@ -337,7 +336,7 @@ public enum ComputerDAO {
 	 * @param computer
 	 * @return (0 or 1)
 	 */
-	public int update(Computer computer) {
+	public int update(Computer computer){
 		int reussite = 0;
 		try (Connection conn = Connexion.INSTANCE.getConnexion();
 				PreparedStatement preparedStatement = conn.prepareStatement(requeteUpdate)) {

@@ -11,16 +11,27 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 
+/**
+ * Class which help and verify data enter by user.
+ * 
+ * @author sanogo
+ *
+ */
 public class SeizureVerification {
 	private static CompanyService companyService = CompanyService.INSTANCE;
 	private static ComputerService computerService = ComputerService.INSTANCE;
 	private static Scanner sc = new Scanner(System.in);
 
+	/**
+	 * constructor.
+	 */
 	public SeizureVerification() {
 	}
 
-	/*
-	 * Permet de rentrer et de verifier le nom entré par l'utilisateur
+	/**
+	 * Verify an mane gave by user to an computer.
+	 *
+	 * @return nom
 	 */
 	public static String saisieNom() {
 		String nom = null;
@@ -32,9 +43,12 @@ public class SeizureVerification {
 		return nom;
 	}
 
-	/*
-	 * Permet à l'utilisateur de saisir une date Verifie la date saisie par
-	 * l'utilisateur, et retourne une date au bon format
+	/**
+	 * allow to an user to enter date. verify the format of date enter by user,
+	 * until date have an correct one. user can choose to enter no date by choosing
+	 * "nc"
+	 * 
+	 * @return
 	 */
 	public static LocalDate saisieDate() {
 
@@ -67,10 +81,12 @@ public class SeizureVerification {
 
 	}
 
-	/*
-	 * Permet à l'utilisateur de saisir une company Verifie si la company existe
-	 * dans la bdd, sinon demande de ressaisir une company valid renvoie une company
-	 * null quand l'utilisateur entre "nc"
+	/**
+	 * allow user to enter company. verify existance of company. continue to asking
+	 * a valid one until the user gave a valid one. user cans qhose no company by
+	 * choosing "nc"
+	 * 
+	 * @return Company
 	 */
 	public static Company saisirCompany() {
 
@@ -98,6 +114,12 @@ public class SeizureVerification {
 		return company;
 	}
 
+	/**
+	 * Allow user to enter an company. use the same process of verification as
+	 * previous one.
+	 *
+	 * @return Computer
+	 */
 	public static Computer saisirComputerATrouver() {
 		Computer computer = null;
 		boolean computerValide = false;
@@ -110,7 +132,7 @@ public class SeizureVerification {
 				if (computer.getId() != 0) {
 					computerValide = true;
 				} else {
-					System.out.println("Cette Company n'existe Pas");
+					System.out.println("Cet pc n'existe Pas");
 					computer = null;
 				}
 			} else {
@@ -120,6 +142,11 @@ public class SeizureVerification {
 		return computer;
 	}
 
+	/**
+	 * Allow user to choice yes or no.
+	 *
+	 * @return String
+	 */
 	public static String choixBinaire() {
 		String choix = null;
 		boolean choixValide = false;
@@ -134,7 +161,4 @@ public class SeizureVerification {
 		return choix;
 	}
 
-	public static void main(String[] args) {
-		// choixBinaire();
-	}
 }

@@ -2,11 +2,17 @@ package com.excilys.cdb.ui;
 
 import java.util.Scanner;
 
+/**
+ * Menu class.
+ * @author sanogo
+ *
+ */
 public class MainMenu {
 	private static Scanner sc;
-	static CompanyUI uiCompany = new CompanyUI();
-	static ComputerUI uiComputer = new ComputerUI();
-
+	
+	/**
+	 * Display the principal menu.
+	 */
 	public static void display() {
 		boolean quitter = true;
 		while (quitter) {
