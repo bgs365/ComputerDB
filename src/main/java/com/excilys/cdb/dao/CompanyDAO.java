@@ -20,137 +20,137 @@ import com.excilys.cdb.model.Computer;
  */
 
 public enum CompanyDAO {
-	INSTANCE;
+  INSTANCE;
 
-	String requeteFindById = "SELECT * FROM company where id = ?";
-	String requeteFinfAll = "SELECT * FROM company";
-	String requeteFindLimitNumberOfResult = "SELECT * FROM company LIMIT ?, ?";
-	String requeteFindByName = "SELECT * FROM company WHERE name= ? ";
-	static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
+  String requeteFindById = "SELECT * FROM company where id = ?";
+  String requeteFinfAll = "SELECT * FROM company";
+  String requeteFindLimitNumberOfResult = "SELECT * FROM company LIMIT ?, ?";
+  String requeteFindByName = "SELECT * FROM company WHERE name= ? ";
+  static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
 
-	/**
-	 * Find an company by id.
-	 * 
-	 * @param id
-	 * @return Company
-	 */
-	public Company findById(int id) {
-		Company company = new Company();
+  /**
+   * Find an company by id.
+   *
+   * @param id Company.id
+   * @return Company
+   */
+  public Company findById(int id) {
+    Company company = new Company();
 
-		try (Connection conn = Connexion.INSTANCE.getConnexion();
-				PreparedStatement preparedStatement = conn.prepareStatement(requeteFindById)) {
+    try (Connection conn = Connexion.INSTANCE.getConnexion();
+        PreparedStatement preparedStatement = conn.prepareStatement(requeteFindById)) {
 
-			preparedStatement.setInt(1, id);
+      preparedStatement.setInt(1, id);
 
-			ResultSet result = preparedStatement.executeQuery();
+      ResultSet result = preparedStatement.executeQuery();
 
-			while (result.next()) {
-				company.setId(result.getInt("Id"));
-				company.setName(result.getString("Name"));
-				List<Computer> pComputers = ComputerDAO.INSTANCE.findByCompany(company.getId());
-				company.setComputer(pComputers);
-			}
+      while (result.next()) {
+        company.setId(result.getInt("Id"));
+        company.setName(result.getString("Name"));
+        List<Computer> pComputers = ComputerDAO.INSTANCE.findByCompany(company.getId());
+        company.setComputer(pComputers);
+      }
 
-		} catch (SQLException e) {
-			LOGGER.info("Erreur sur la requete find Company by id : " + e.getMessage());
-		}
+    } catch (SQLException e) {
+      LOGGER.info("Erreur sur la requete find Company by id : " + e.getMessage());
+    }
 
-		return company;
-	}
+    return company;
+  }
 
-	/**
-	 * find list of companies.
-	 * 
-	 * @return List<Company>
-	 */
-	public List<Company> findAll() {
-		List<Company> companies = new ArrayList<Company>();
+  /**
+   * find list of companies.
+   *
+   * @return List<Company>
+   */
+  public List<Company> findAll() {
+    List<Company> companies = new ArrayList<Company>();
 
-		try (Connection conn = Connexion.INSTANCE.getConnexion();
-				PreparedStatement preparedStatement = conn.prepareStatement(requeteFinfAll)) {
+    try (Connection conn = Connexion.INSTANCE.getConnexion();
+        PreparedStatement preparedStatement = conn.prepareStatement(requeteFinfAll)) {
 
-			ResultSet result = preparedStatement.executeQuery();
+      ResultSet result = preparedStatement.executeQuery();
 
-			while (result.next()) {
-				Company company = new Company();
-				company.setId(result.getInt("Id"));
-				company.setName(result.getString("Name"));
-				List<Computer> pComputers = ComputerDAO.INSTANCE.findByCompany(company.getId());
-				company.setComputer(pComputers);
-				companies.add(company);
+      while (result.next()) {
+        Company company = new Company();
+        company.setId(result.getInt("Id"));
+        company.setName(result.getString("Name"));
+        List<Computer> pComputers = ComputerDAO.INSTANCE.findByCompany(company.getId());
+        company.setComputer(pComputers);
+        companies.add(company);
 
-			}
+      }
 
-		} catch (SQLException e) {
-			LOGGER.info("Erreur sur la requete find all Company : " + e.getMessage());
-		}
+    } catch (SQLException e) {
+      LOGGER.info("Erreur sur la requete find all Company : " + e.getMessage());
+    }
 
-		return companies;
-	}
+    return companies;
+  }
 
-	/**
-	 * find a bunch numberOfResultByPage of companies in db, which first company is
-	 * pageIndex.
-	 * 
-	 * @param pageIndex
-	 * @param numberOfResultByPage
-	 * @return List<Company>
-	 */
-	public List<Company> findLimitNumberOfResult(int pageIndex, int numberOfResultByPage) {
+  /**
+   * find a bunch numberOfResultByPage of companies in db, which first company is
+   * pageIndex.
+   *
+   * @param pageIndex asName
+   * @param numberOfResultByPage asName
+   * @return List<Company>
+   */
+  public List<Company> findLimitNumberOfResult(int pageIndex, int numberOfResultByPage) {
 
-		List<Company> companies = new ArrayList<Company>();
+    List<Company> companies = new ArrayList<Company>();
 
-		try (Connection conn = Connexion.INSTANCE.getConnexion();
-				PreparedStatement preparedStatement = conn.prepareStatement(requeteFindLimitNumberOfResult)) {
-			preparedStatement.setInt(1, pageIndex);
-			preparedStatement.setInt(2, numberOfResultByPage);
-			ResultSet result = preparedStatement.executeQuery();
+    try (Connection conn = Connexion.INSTANCE.getConnexion();
+        PreparedStatement preparedStatement = conn.prepareStatement(requeteFindLimitNumberOfResult)) {
+      preparedStatement.setInt(1, pageIndex);
+      preparedStatement.setInt(2, numberOfResultByPage);
+      ResultSet result = preparedStatement.executeQuery();
 
-			while (result.next()) {
-				Company company = new Company();
-				company.setId(result.getInt("Id"));
-				company.setName(result.getString("Name"));
-				List<Computer> pComputers = ComputerDAO.INSTANCE.findByCompany(company.getId());
-				company.setComputer(pComputers);
-				companies.add(company);
+      while (result.next()) {
+        Company company = new Company();
+        company.setId(result.getInt("Id"));
+        company.setName(result.getString("Name"));
+        List<Computer> pComputers = ComputerDAO.INSTANCE.findByCompany(company.getId());
+        company.setComputer(pComputers);
+        companies.add(company);
 
-			}
+      }
 
-		} catch (SQLException e) {
-			LOGGER.info("Erreur sur la requete find company by name : " + e.getMessage());
-		}
+    } catch (SQLException e) {
+      LOGGER.info("Erreur sur la requete find company by name : " + e.getMessage());
+    }
 
-		return companies;
-	}
+    return companies;
+  }
 
-	/**
-	 * find company by name;
-	 * 
-	 * @param name
-	 * @return Company
-	 */
-	public Company findByName(String name) {
+  /**
+   * find company by name.
+   *
+   * @param name asName
+   * @return Company
+   */
+  public Company findByName(String name) {
 
-		Company company = new Company();
+    Company company = new Company();
 
-		try (Connection conn = Connexion.INSTANCE.getConnexion();
-				PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByName)) {
-			preparedStatement.setString(1, name);
-			ResultSet result = preparedStatement.executeQuery();
+    try (Connection conn = Connexion.INSTANCE.getConnexion();
+        PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByName)) {
+      preparedStatement.setString(1, name);
+      ResultSet result = preparedStatement.executeQuery();
 
-			while (result.next()) {
-				company.setId(result.getInt("Id"));
-				company.setName(result.getString("Name"));
-				List<Computer> pComputers = ComputerDAO.INSTANCE.findByCompany(company.getId());
-				company.setComputer(pComputers);
+      while (result.next()) {
+        company.setId(result.getInt("Id"));
+        company.setName(result.getString("Name"));
+        List<Computer> pComputers = ComputerDAO.INSTANCE.findByCompany(company.getId());
+        company.setComputer(pComputers);
 
-			}
+      }
 
-		} catch (SQLException e) {
-			LOGGER.info("Erreur sur la requete find company by name : " + e.getMessage());
-		}
+    } catch (SQLException e) {
+      LOGGER.info("Erreur sur la requete find company by name : " + e.getMessage());
+    }
 
-		return company;
-	}
+    return company;
+  }
 
 }

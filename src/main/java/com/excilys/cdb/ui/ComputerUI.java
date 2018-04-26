@@ -11,199 +11,197 @@ import com.excilys.cdb.service.ComputerService;
 
 /**
  * Computer User Interface class.
+ *
  * @author sanogo
  *
  */
 public class ComputerUI {
-	private static ComputerService computerService = ComputerService.INSTANCE;
-	private static Scanner sc = new Scanner(System.in);
-	public static int nombrElementParPage = 50;
-	
-	/**
-	 * display a page of computer, allow to navigate between pages of computers.
-	 */
-	public static void listComputer() {
+  private static ComputerService computerService = ComputerService.INSTANCE;
+  private static Scanner sc = new Scanner(System.in);
+  public static int nombrElementParPage = 50;
 
-		List<Computer> computers = computerService.findLimitNumberOfResult(0, nombrElementParPage);
-		Page<Computer> computerPage = new Page<Computer>(computers, nombrElementParPage);
-		String choix = null;
+  /**
+   * display a page of computer, allow to navigate between pages of computers.
+   */
+  public static void listComputer() {
 
-		System.out.println("******************* Liste of Computers *******************");
-		System.out.println("Page n° " + computerPage.getNumerosPage());
-		System.out.println(display(computers));
-		System.out.println(" << Page precedente 1 ** 0  Quitter ** 2 Page suivante >> ");
-		boolean quiter = false;
-		do {
-			choix = sc.nextLine();
-			if (choix.equals("1") | choix.equals("2") | choix.equals("0")) {
-				if (choix.equals("1") | choix.equals("2")) {
-					switch (choix) {
-					case "1":
-						computers = computerService.findLimitNumberOfResult(computerPage.previousPage(),
-								nombrElementParPage);
-						System.out.println("Page n° " + computerPage.getNumerosPage());
-						System.out.println(display(computers));
-						System.out.println(" << Page precedente 1 ** 0  Quitter ** 2 Page suivante >> ");
-						break;
+    List<Computer> computers = computerService.findLimitNumberOfResult(0, nombrElementParPage);
+    Page<Computer> computerPage = new Page<Computer>(computers, nombrElementParPage);
+    String choix = null;
 
-					case "2":
-						computers = computerService.findLimitNumberOfResult(computerPage.nextPage(),
-								nombrElementParPage);
-						System.out.println("Page n° " + computerPage.getNumerosPage());
-						System.out.println(display(computers));
-						System.out.println(" << Page precedente 1 ** 0  Quitter ** 2 Page suivante >> ");
-						break;
-					}
-					quiter = false;
-				} else {
-					quiter = true;
-				}
-			} else {
-				System.out.println("Choix non valide");
-				quiter = false;
-			}
+    System.out.println("******************* Liste of Computers *******************");
+    System.out.println("Page n° " + computerPage.getNumerosPage());
+    System.out.println(display(computers));
+    System.out.println(" << Page precedente 1 ** 0  Quitter ** 2 Page suivante >> ");
+    boolean quiter = false;
+    do {
+      choix = sc.nextLine();
+      if (choix.equals("1") | choix.equals("2") | choix.equals("0")) {
+        if (choix.equals("1") | choix.equals("2")) {
+          switch (choix) {
+          case "1":
+            computers = computerService.findLimitNumberOfResult(computerPage.previousPage(), nombrElementParPage);
+            System.out.println("Page n° " + computerPage.getNumerosPage());
+            System.out.println(display(computers));
+            System.out.println(" << Page precedente 1 ** 0  Quitter ** 2 Page suivante >> ");
+            break;
 
-		} while (!quiter);
+          case "2":
+            computers = computerService.findLimitNumberOfResult(computerPage.nextPage(), nombrElementParPage);
+            System.out.println("Page n° " + computerPage.getNumerosPage());
+            System.out.println(display(computers));
+            System.out.println(" << Page precedente 1 ** 0  Quitter ** 2 Page suivante >> ");
+            break;
+          }
+          quiter = false;
+        } else {
+          quiter = true;
+        }
+      } else {
+        System.out.println("Choix non valide");
+        quiter = false;
+      }
 
-		for (Computer cpt : computers) {
-			System.out.println("<-- " + cpt.getName() + " --> introduced = " + cpt.getIntroduced()
-					+ " | discontinued = " + cpt.getDiscontinued() + " | " + cpt.getCompany().getName() + " -->");
-		}
-		System.out.println("******************* " + computers.size() + " PC *******************");
+    } while (!quiter);
 
-	}
-	/**
-	 * take a group of computers and range them in a string.
-	 * 
-	 * @param computers
-	 * @return String
-	 */
-	private static String display(List<Computer> computers) {
-		String valeurRetour = "";
-		for (Computer indexOfComputers : computers) {
-			valeurRetour += "" + indexOfComputers.getId() + " -- "
-					+ (indexOfComputers.getName() != null ? "" + indexOfComputers.getName() + " -- " : "")
-					+ (indexOfComputers.getIntroduced() != null ? " " + indexOfComputers.getIntroduced() + " -- " : "")
-					+ (indexOfComputers.getDiscontinued() != null ? " " + indexOfComputers.getDiscontinued() + " -- "
-							: "")
-					+ (indexOfComputers.getCompany().getName() != null ? "" + indexOfComputers.getCompany().getName()
-							: "")
-					+ "]\n";
-		}
-		return valeurRetour;
-	}
-	
-	/**
-	 * reate computer menu.
-	 */
-	public static void createComputer() {
+    for (Computer cpt : computers) {
+      System.out.println("<-- " + cpt.getName() + " --> introduced = " + cpt.getIntroduced() + " | discontinued = "
+          + cpt.getDiscontinued() + " | " + cpt.getCompany().getName() + " -->");
+    }
+    System.out.println("******************* " + computers.size() + " PC *******************");
 
-		Computer computer = new Computer();
-		String nom = null;
-		LocalDate IntroducedDate = null;
-		LocalDate discontinuedDate = null;
-		Company company = null;
+  }
 
-		System.out.println("******************* Création de PC *******************");
+  /**
+   * take a group of computers and range them in a string.
+   *
+   * @param computers List<Computer>
+   * @return String
+   */
+  private static String display(List<Computer> computers) {
+    String valeurRetour = "";
+    for (Computer indexOfComputers : computers) {
+      valeurRetour += "" + indexOfComputers.getId() + " -- "
+          + (indexOfComputers.getName() != null ? "" + indexOfComputers.getName() + " -- " : "")
+          + (indexOfComputers.getIntroduced() != null ? " " + indexOfComputers.getIntroduced() + " -- " : "")
+          + (indexOfComputers.getDiscontinued() != null ? " " + indexOfComputers.getDiscontinued() + " -- " : "")
+          + (indexOfComputers.getCompany().getName() != null ? "" + indexOfComputers.getCompany().getName() : "")
+          + "]\n";
+    }
+    return valeurRetour;
+  }
 
-		System.out.println("--> Entrez le nom du PC : ");
-		nom = SeizureVerification.saisieNom();
-		System.out.println("--> Nom = " + nom);
+  /**
+   * reate computer menu.
+   */
+  public static void createComputer() {
 
-		System.out.println("--> Entrez la date d'introduction : ");
-		IntroducedDate = SeizureVerification.saisieDate();
-		System.out.println("--> Date d'intro = " + IntroducedDate);
+    Computer computer = new Computer();
+    String nom = null;
+    LocalDate introducedDate = null;
+    LocalDate discontinuedDate = null;
+    Company company = null;
 
-		System.out.println("--> Entrez la date de retait : ");
-		discontinuedDate = SeizureVerification.saisieDate();
-		System.out.println("--> Date de retrait = " + discontinuedDate);
+    System.out.println("******************* Création de PC *******************");
 
-		System.out.println("--> Entrez le nom de la company : ");
-		company = SeizureVerification.saisirCompany();
-		System.out.println("--> Company = " + company);
+    System.out.println("--> Entrez le nom du PC : ");
+    nom = SeizureVerification.saisieNom();
+    System.out.println("--> Nom = " + nom);
 
-		computer.setName(nom);
-		computer.setIntroduced(IntroducedDate);
-		computer.setDiscontinued(discontinuedDate);
-		computer.setCompany(company);
+    System.out.println("--> Entrez la date d'introduction : ");
+    introducedDate = SeizureVerification.saisieDate();
+    System.out.println("--> Date d'intro = " + introducedDate);
 
-		computerService.save(computer);
-	}
-	
-	/**
-	 * update computer menu.
-	 */
-	public static void updateComputer() {
-		Computer computer = new Computer();
-		String nom = null;
-		LocalDate IntroducedDate = null;
-		LocalDate discontinuedDate = null;
-		Company company = null;
-		String choix = null;
+    System.out.println("--> Entrez la date de retait : ");
+    discontinuedDate = SeizureVerification.saisieDate();
+    System.out.println("--> Date de retrait = " + discontinuedDate);
 
-		System.out.println("******************* Entrez l'id du pc à Modifier *******************");
-		computer = SeizureVerification.saisirComputerATrouver();
-		System.out.println("Le PC choisi est --> " + computer);
+    System.out.println("--> Entrez le nom de la company : ");
+    company = SeizureVerification.saisirCompany();
+    System.out.println("--> Company = " + company);
 
-		if (computer != null) {
-			System.out.println("--> Voulez vous modifier le nom ?");
-			choix = SeizureVerification.choixBinaire();
-			if (choix.equals("1")) {
-				System.out.println("--> Entrez le nom du PC : ");
-				nom = SeizureVerification.saisieNom();
-				System.out.println("--> Nom = " + nom);
-				computer.setName(nom);
-			}
+    computer.setName(nom);
+    computer.setIntroduced(introducedDate);
+    computer.setDiscontinued(discontinuedDate);
+    computer.setCompany(company);
 
-			System.out.println("--> Voulez vous modifier la date d'introduction ?");
-			choix = SeizureVerification.choixBinaire();
-			if (choix.equals("1")) {
-				System.out.println("--> Entrez la date d'introduction : ");
-				IntroducedDate = SeizureVerification.saisieDate();
-				System.out.println("--> Date d'intro = " + IntroducedDate);
-				computer.setIntroduced(IntroducedDate);
-			}
+    computerService.save(computer);
+  }
 
-			System.out.println("--> Voulez vous modifier la date de retait ?");
-			choix = SeizureVerification.choixBinaire();
-			if (choix.equals("1")) {
-				System.out.println("--> Entrez la date de retait : ");
-				discontinuedDate = SeizureVerification.saisieDate();
-				System.out.println("--> Date de retrait = " + discontinuedDate);
-				computer.setDiscontinued(discontinuedDate);
-			}
+  /**
+   * update computer menu.
+   */
+  public static void updateComputer() {
+    Computer computer = new Computer();
+    String nom = null;
+    LocalDate introducedDate = null;
+    LocalDate discontinuedDate = null;
+    Company company = null;
+    String choix = null;
 
-			System.out.println("--> Voulez vous modifier le nom de company ?");
-			choix = SeizureVerification.choixBinaire();
-			if (choix.equals("1")) {
-				System.out.println("--> Entrez le nom de la company : ");
-				company = SeizureVerification.saisirCompany();
-				System.out.println("--> Company = " + company);
+    System.out.println("******************* Entrez l'id du pc à Modifier *******************");
+    computer = SeizureVerification.saisirComputerATrouver();
+    System.out.println("Le PC choisi est --> " + computer);
 
-				computerService.update(computer);
-			}
+    if (computer != null) {
+      System.out.println("--> Voulez vous modifier le nom ?");
+      choix = SeizureVerification.choixBinaire();
+      if (choix.equals("1")) {
+        System.out.println("--> Entrez le nom du PC : ");
+        nom = SeizureVerification.saisieNom();
+        System.out.println("--> Nom = " + nom);
+        computer.setName(nom);
+      }
 
-			computer.setCompany(company);
-		}
+      System.out.println("--> Voulez vous modifier la date d'introduction ?");
+      choix = SeizureVerification.choixBinaire();
+      if (choix.equals("1")) {
+        System.out.println("--> Entrez la date d'introduction : ");
+        introducedDate = SeizureVerification.saisieDate();
+        System.out.println("--> Date d'intro = " + introducedDate);
+        computer.setIntroduced(introducedDate);
+      }
 
-	}
-	
-	/**
-	 * delete computer menu.
-	 */
-	public static void deleteComputer() {
-		Computer computer = new Computer();
-		String choix = null;
+      System.out.println("--> Voulez vous modifier la date de retait ?");
+      choix = SeizureVerification.choixBinaire();
+      if (choix.equals("1")) {
+        System.out.println("--> Entrez la date de retait : ");
+        discontinuedDate = SeizureVerification.saisieDate();
+        System.out.println("--> Date de retrait = " + discontinuedDate);
+        computer.setDiscontinued(discontinuedDate);
+      }
 
-		System.out.println("******************* Entrez l'id du pc à Suprimer *******************");
-		computer = SeizureVerification.saisirComputerATrouver();
-		System.out.println("Voulez vous vraiment effacer --> " + computer);
-		choix = SeizureVerification.choixBinaire();
-		if (choix.equals("1")) {
-			computerService.delete(computer.getId());
-		} else {
-			System.out.println("OK");
-		}
-	}
+      System.out.println("--> Voulez vous modifier le nom de company ?");
+      choix = SeizureVerification.choixBinaire();
+      if (choix.equals("1")) {
+        System.out.println("--> Entrez le nom de la company : ");
+        company = SeizureVerification.saisirCompany();
+        System.out.println("--> Company = " + company);
+
+        computerService.update(computer);
+      }
+
+      computer.setCompany(company);
+    }
+
+  }
+
+  /**
+   * delete computer menu.
+   */
+  public static void deleteComputer() {
+    Computer computer = new Computer();
+    String choix = null;
+
+    System.out.println("******************* Entrez l'id du pc à Suprimer *******************");
+    computer = SeizureVerification.saisirComputerATrouver();
+    System.out.println("Voulez vous vraiment effacer --> " + computer);
+    choix = SeizureVerification.choixBinaire();
+    if (choix.equals("1")) {
+      computerService.delete(computer.getId());
+    } else {
+      System.out.println("OK");
+    }
+  }
 
 }

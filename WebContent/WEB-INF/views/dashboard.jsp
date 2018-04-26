@@ -96,7 +96,9 @@
 				<li><a href="#">${computerPage.numerosPage+2}</a></li>
 				<li><a href="#">${computerPage.numerosPage+3}</a></li>
 				<li><a href="#">${computerPage.numerosPage+4}</a></li>
-				<li><a href="#" aria-label="dashboard?page=next"> <span aria-hidden="true">&raquo;</span>
+				
+				<li><a href="dashboard?page=next" aria-label="Next"> <span
+						aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>
 

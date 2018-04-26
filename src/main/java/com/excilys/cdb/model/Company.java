@@ -11,105 +11,77 @@ import java.util.List;
  */
 public class Company {
 
-	private int id;
-	private String name;
-	private List<Computer> computers = new ArrayList<Computer>();
+  private int id;
+  private String name;
+  private List<Computer> computers = new ArrayList<Computer>();
 
-	/**
-	 * Default Constructor.
-	 */
-	public Company() {
-	}
+  /**
+   * Default Constructor.
+   */
+  public Company() {
+  }
 
-	/**
-	 * Constructor which can take his list of computers.
-	 *
-	 * @param id
-	 * @param name
-	 * @param computer
-	 */
-	public Company(int id, String name, List<Computer> computer) {
-		this.id = id;
-		this.name = name;
-		this.computers = computer;
-	}
+  /**
+   * Constructor which can take his list of computers.
+   *
+   * @param id Company id
+   * @param name Company name
+   * @param computer Company List<Computers>
+   */
+  public Company(int id, String name, List<Computer> computer) {
+    this.id = id;
+    this.name = name;
+    this.computers = computer;
+  }
 
-	/**
-	 * Constructor which can take a list of computer.
-	 *
-	 * @param id
-	 * @param name
-	 */
-	public Company(int id, String name) {
-		this.id = id;
-		this.name = name;
-	}
+  /**
+   * Constructor which can take a list of computer.
+   *
+   * @param id asPreviews
+   * @param name asPreviews
+   */
+  public Company(int id, String name) {
+    this.id = id;
+    this.name = name;
+  }
 
-	/**
-	 * id getter.
-	 *
-	 * @return id.
-	 */
-	public int getId() {
-		return id;
-	}
 
-	/**
-	 * id setter.
-	 *
-	 * @param id
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
+  public int getId() {
+    return id;
+  }
 
-	/**
-	 * name getter.
-	 *
-	 * @return name
-	 */
-	public String getName() {
-		return name;
-	}
+  public void setId(int id) {
+    this.id = id;
+  }
 
-	/**
-	 * name setter.
-	 *
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	/**
-	 * company computers getter.
-	 *
-	 * @return List<Computer>
-	 */
-	public List<Computer> getComputer() {
-		return computers;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	/**
-	 * company computers setter.
-	 *
-	 * @param pComputers
-	 */
-	public void setComputer(List<Computer> pComputers) {
-		this.computers = pComputers;
-	}
+  public List<Computer> getComputer() {
+    return computers;
+  }
 
-	/**
-	 * add an computer to company.
-	 *
-	 * @param computer
-	 */
-	public void addComputer(Computer computer){
-		computers.add(computer);
-	}
+  public void setComputer(List<Computer> pComputers) {
+    this.computers = pComputers;
+  }
 
-	@Override
-	public String toString() {
-		return "[" + id + " -- " + name + "]";
-	}
+  /**
+   * add an computer to company.
+   *
+   * @param computer Computer
+   */
+  public void addComputer(Computer computer) {
+    computers.add(computer);
+  }
+
+  @Override
+  public String toString() {
+    return "[" + id + " -- " + name + "]";
+  }
 
 }
