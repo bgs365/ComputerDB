@@ -2,6 +2,9 @@ package com.excilys.cdb.page;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Generic Page generator.
  *
@@ -14,17 +17,24 @@ public class Page<T> {
   private int indexFirstPageElement;
   private int numerosPage;
   private int nombreElementParPage;
+  private int nombreElementTotal;
+  static final Logger LOGGER = LoggerFactory.getLogger(Page.class);
 
   /**
    * Page constructor.
    *
-   * @param t object
-   * @param nombreElementParPage asName
+   * @param t
+   *          object
+   * @param nombreElementParPage
+   *          asName
+   * @param nombreElementTotal
+   *          asName
    */
-  public Page(List<T> t, int nombreElementParPage) {
+  public Page(List<T> t, int nombreElementParPage, int nombreElementTotal) {
     this.numerosPage = 1;
     this.nombreElementParPage = nombreElementParPage;
     this.indexFirstPageElement = 0;
+    this.nombreElementTotal = nombreElementTotal;
     this.setObjetT(t);
   }
 
@@ -40,7 +50,8 @@ public class Page<T> {
   /**
    * nombreElementParPage setter.
    *
-   * @param nombreElementParPage asName
+   * @param nombreElementParPage
+   *          asName
    */
   public void setNombreElementParPage(int nombreElementParPage) {
     this.nombreElementParPage = nombreElementParPage;
@@ -58,7 +69,8 @@ public class Page<T> {
   /**
    * indexFirstPageElement setter.
    *
-   * @param indexFirstPageElement asName
+   * @param indexFirstPageElement
+   *          asName
    */
   public void setIndexFirstPageElement(int indexFirstPageElement) {
     this.indexFirstPageElement = indexFirstPageElement;
@@ -78,8 +90,15 @@ public class Page<T> {
    * @return indexFirstPageElement += nombreElementParPage
    */
   public int nextPage() {
-    numerosPage++;
-    return indexFirstPageElement += nombreElementParPage;
+    int indexRetour = indexFirstPageElement;
+    if (indexRetour < (nombreElementTotal - nombreElementParPage)) {
+      numerosPage++;
+      indexRetour = indexFirstPageElement += nombreElementParPage;
+
+    } else {
+      LOGGER.info("Operation impossible, vous êtes à la dernière page");
+    }
+    return indexRetour;
 
   }
 
@@ -95,7 +114,7 @@ public class Page<T> {
       indexRetour = indexFirstPageElement -= nombreElementParPage;
 
     } else {
-      System.out.println("Operation impossible, vous êtes à la première page");
+      LOGGER.info("Operation impossible, vous êtes à la première page");
     }
     return indexRetour;
   }

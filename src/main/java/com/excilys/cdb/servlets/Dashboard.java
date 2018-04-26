@@ -20,9 +20,10 @@ import com.excilys.cdb.service.ComputerService;
 public class Dashboard extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
-  int nombrElementParPage = 10;
+  int nombrElementParPage = 100;
   List<Computer> computers = ComputerService.INSTANCE.findLimitNumberOfResult(0, nombrElementParPage);
-  Page<Computer> computerPage = new Page<Computer>(computers, nombrElementParPage);
+  Page<Computer> computerPage = new Page<Computer>(computers, nombrElementParPage,
+      ComputerService.INSTANCE.findAll().size());
 
   /**
    * @see HttpServlet#HttpServlet()
@@ -32,18 +33,21 @@ public class Dashboard extends HttpServlet {
   }
 
   /**
-  *
-  * @param request a
-  * @param response a
-  * @throws ServletException a
-  * @throws IOException a
-  */
+   *
+   * @param request
+   *          a
+   * @param response
+   *          a
+   * @throws ServletException
+   *           a
+   * @throws IOException
+   *           a
+   */
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     /*
      * Instantiation of parameters to send to jsp.
      */
-
     int numberOfComputers = ComputerService.INSTANCE.findAll().size();
     String page = "";
 
@@ -87,14 +91,17 @@ public class Dashboard extends HttpServlet {
 
   /**
    *
-   * @param request a
-   * @param response a
-   * @throws ServletException a
-   * @throws IOException a
+   * @param request
+   *          a
+   * @param response
+   *          a
+   * @throws ServletException
+   *           a
+   * @throws IOException
+   *           a
    */
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     doGet(request, response);
   }
-
 
 }

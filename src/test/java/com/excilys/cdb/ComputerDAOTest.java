@@ -29,7 +29,6 @@ public class ComputerDAOTest {
    */
   @Before
   public void init() {
-    // initialize database
     TransactionsOnTestData.INSTANCE.initData();
   }
 

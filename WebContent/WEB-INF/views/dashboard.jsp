@@ -19,7 +19,7 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${numberOfComputers}Computers found</h1>
+			<h1 id="homeTitle">${numberOfComputers} Computers found</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -88,6 +88,7 @@
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
 			<ul class="pagination">
+			
 				<li><a href="dashboard?page=previews" aria-label="Previous"> <span
 						aria-hidden="true">&laquo;</span>
 				</a></li>

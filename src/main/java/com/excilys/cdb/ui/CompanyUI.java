@@ -18,7 +18,7 @@ public class CompanyUI {
    */
   public static void listCompany() {
     List<Company> companies = companyService.findLimitNumberOfResult(0, nombrElementParPage);
-    Page<Company> companyPage = new Page<Company>(companies, nombrElementParPage);
+    Page<Company> companyPage = new Page<Company>(companies, nombrElementParPage, companyService.findAll().size());
     String choix = null;
 
     System.out.println("*******************Listing company *******************");
@@ -61,7 +61,8 @@ public class CompanyUI {
   /**
    * take a group of company and rage them in a string.
    *
-   * @param company asName
+   * @param company
+   *          asName
    * @return String
    */
   private static String display(List<Company> company) {
