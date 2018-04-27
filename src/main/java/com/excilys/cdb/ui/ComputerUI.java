@@ -26,7 +26,7 @@ public class ComputerUI {
   public static void listComputer() {
 
     List<Computer> computers = computerService.findLimitNumberOfResult(0, nombrElementParPage);
-    Page<Computer> computerPage = new Page<Computer>(computers, nombrElementParPage);
+    Page<Computer> computerPage = new Page<Computer>(computers, nombrElementParPage, computerService.findAll().size());
     String choix = null;
 
     System.out.println("******************* Liste of Computers *******************");
@@ -75,7 +75,8 @@ public class ComputerUI {
   /**
    * take a group of computers and range them in a string.
    *
-   * @param computers List<Computer>
+   * @param computers
+   *          List<Computer>
    * @return String
    */
   private static String display(List<Computer> computers) {

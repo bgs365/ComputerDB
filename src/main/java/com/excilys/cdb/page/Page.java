@@ -55,6 +55,7 @@ public class Page<T> {
    */
   public void setNombreElementParPage(int nombreElementParPage) {
     this.nombreElementParPage = nombreElementParPage;
+    numerosPage = (this.nombreElementParPage + indexFirstPageElement) / this.nombreElementParPage;
   }
 
   /**
@@ -117,6 +118,20 @@ public class Page<T> {
       LOGGER.info("Operation impossible, vous êtes à la première page");
     }
     return indexRetour;
+  }
+
+  /**
+   *
+   * @param pageToReach
+   *          asName
+   */
+  public void setCurentPage(int pageToReach) {
+    if ((indexFirstPageElement < (nombreElementTotal - nombreElementParPage)) && (numerosPage > 0)) {
+      numerosPage = pageToReach;
+      indexFirstPageElement = (numerosPage - 1) * nombreElementParPage;
+    } else {
+      LOGGER.info("Operation impossible, la page recherché n'est pas disponible");
+    }
   }
 
   /**

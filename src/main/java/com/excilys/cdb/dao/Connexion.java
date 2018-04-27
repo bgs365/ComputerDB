@@ -42,8 +42,7 @@ public enum Connexion {
     try {
       Class.forName(driver);
     } catch (ClassNotFoundException e) {
-      LOGGER.info("Where is your MySQL JDBC Driver?");
-      e.printStackTrace();
+      LOGGER.error("Where is your MySQL JDBC Driver?", e);
     }
     LOGGER.info("MySQL JDBC Driver Registered!");
     Connection connection = null;
@@ -51,8 +50,8 @@ public enum Connexion {
     try {
       connection = DriverManager.getConnection(baseDeDonnee, login, motDePasse);
     } catch (SQLException e) {
-      LOGGER.info("Connection Failed! Check output console");
-      e.printStackTrace();
+      LOGGER.error("Connection Failed! Check output console", e);
+
     }
 
     return connection;

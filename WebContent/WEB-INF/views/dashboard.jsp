@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +20,7 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${numberOfComputers} Computers found</h1>
+			<h1 id="homeTitle">${numberOfComputers}Computersfound</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -68,7 +69,7 @@
 				<!-- Browse attribute computers -->
 				<tbody id="results">
 					<c:forEach items="${computers}" var="record">
-						
+
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="0"></td>
@@ -86,29 +87,64 @@
 	</section>
 
 	<footer class="navbar-fixed-bottom">
+		
 		<div class="container text-center">
+
 			<ul class="pagination">
-			
-				<li><a href="dashboard?page=previews" aria-label="Previous"> <span
-						aria-hidden="true">&laquo;</span>
+
+				<li><a href="dashboard?page=previews" aria-label="Previous">
+						<span aria-hidden="true">&laquo;</span>
 				</a></li>
-				<li><a href="#">${computerPage.numerosPage}</a></li>
-				<li><a href="#">${computerPage.numerosPage+1}</a></li>
-				<li><a href="#">${computerPage.numerosPage+2}</a></li>
-				<li><a href="#">${computerPage.numerosPage+3}</a></li>
-				<li><a href="#">${computerPage.numerosPage+4}</a></li>
-				
+
+				<li class="active"><a
+					href="dashboard?pageNumber=${computerPage.numerosPage}">${computerPage.numerosPage}</a></li>
+				<li><a
+					href="dashboard?pageNumber=${computerPage.numerosPage+1}">${computerPage.numerosPage+1}</a></li>
+				<li><a
+					href="dashboard?pageNumber=${computerPage.numerosPage+2}">${computerPage.numerosPage+2}</a></li>
+				<li><a
+					href="dashboard?pageNumber=${computerPage.numerosPage+3}">${computerPage.numerosPage+3}</a></li>
+				<li><a
+					href="dashboard?pageNumber=${computerPage.numerosPage+4}">${computerPage.numerosPage+4}</a></li>
+
 				<li><a href="dashboard?page=next" aria-label="Next"> <span
 						aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>
+<!--  -->
+		<ul class="pagination">
+			<li class="page-item disabled"><a class="page-link" href="#"
+				tabindex="-1">Previous</a></li>
+			<li class="page-item"><a class="page-link" href="#">${computerPage.numerosPage-2}</a></li>	
+			<li class="page-item"><a class="page-link" href="#">${computerPage.numerosPage-1}</a></li>
+			<li class="page-item active"><a class="page-link" href="#">${computerPage.numerosPage}
+					<span class="sr-only">(current)</span>
+			</a></li>
+			<li class="page-item"><a class="page-link" href="#">${computerPage.numerosPage+1}</a></li>
+			<li class="page-item"><a class="page-link" href="#">${computerPage.numerosPage+2}</a></li>
+			<li class="page-item"><a class="page-link" href="#">Next</a></li>
+		</ul>
+		<!--  -->
+		
 
 			<div class="btn-group btn-group-sm pull-right" role="group">
-				<button type="button" class="btn btn-default">10</button>
-				<button type="button" class="btn btn-default">50</button>
-				<button type="button" class="btn btn-default">100</button>
+
+				<form action="${pageContext.request.contextPath}/dashboard"
+					method="get">
+					<button type="submit" name="buttonSetNumberElementDisplayed"
+						value="10" class="btn btn-default">10</button>
+					<button type="submit" name="buttonSetNumberElementDisplayed"
+						value="50" class="btn btn-default">50</button>
+					<button type="submit" name="buttonSetNumberElementDisplayed"
+						value="100" class="btn btn-default">100</button>
+				</form>
+
 			</div>
+
+		</div>
+
 	</footer>
+
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/dashboard.js"></script>

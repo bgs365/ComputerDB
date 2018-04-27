@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.page.Page;
 import com.excilys.cdb.service.ComputerService;
@@ -20,10 +24,12 @@ import com.excilys.cdb.service.ComputerService;
 public class Dashboard extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
-  int nombrElementParPage = 100;
-  List<Computer> computers = ComputerService.INSTANCE.findLimitNumberOfResult(0, nombrElementParPage);
-  Page<Computer> computerPage = new Page<Computer>(computers, nombrElementParPage,
+  int nombrElementParPage = 50;
+  private List<Computer> computers = ComputerService.INSTANCE.findLimitNumberOfResult(0, nombrElementParPage);
+  private Page<Computer> computerPage = new Page<Computer>(computers, nombrElementParPage,
       ComputerService.INSTANCE.findAll().size());
+
+  static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
 
   /**
    * @see HttpServlet#HttpServlet()
@@ -50,27 +56,70 @@ public class Dashboard extends HttpServlet {
      */
     int numberOfComputers = ComputerService.INSTANCE.findAll().size();
     String page = "";
+    String pageNumber = "";
+    String button = "";
 
     /*
      * Admission of parameters send by jsp.
      */
     page = (request.getParameter("page") != null) ? request.getParameter("page") : "null";
 
+    pageNumber = (request.getParameter("pageNumber") != null) ? request.getParameter("pageNumber") : "null";
+
+    button = (request.getParameter("buttonSetNumberElementDisplayed") != null)
+        ? request.getParameter("buttonSetNumberElementDisplayed")
+        : "null";
+
     /*
      * Treatment of send parameters.
      */
 
+    /* Switch page */
     switch (page) {
     case "next":
-      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.nextPage(), nombrElementParPage);
+      computerPage.nextPage();
+      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
+          computerPage.getNombreElementParPage());
       break;
 
     case "previews":
-      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.previousPage(), nombrElementParPage);
+      computerPage.previousPage();
+      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
+          computerPage.getNombreElementParPage());
       break;
 
     default:
-      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getNumerosPage(), nombrElementParPage);
+      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
+          computerPage.getNombreElementParPage());
+      break;
+    }
+
+    /* Switch page by number */
+    if (!pageNumber.equals("null")) {
+      computerPage.setCurentPage(Integer.parseInt(pageNumber));
+      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
+          computerPage.getNombreElementParPage());
+    }
+
+
+    /* Change number of displayed elements */
+    switch (button) {
+    case "10":
+      computerPage.setNombreElementParPage(10);
+      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
+          computerPage.getNombreElementParPage());
+      break;
+
+    case "50":
+      computerPage.setNombreElementParPage(50);
+      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
+          computerPage.getNombreElementParPage());
+      break;
+
+    case "100":
+      computerPage.setNombreElementParPage(100);
+      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
+          computerPage.getNombreElementParPage());
       break;
     }
 
@@ -101,7 +150,7 @@ public class Dashboard extends HttpServlet {
    *           a
    */
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    doGet(request, response);
+
   }
 
 }
