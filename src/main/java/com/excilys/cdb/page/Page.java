@@ -18,6 +18,14 @@ public class Page<T> {
   private int numerosPage;
   private int nombreElementParPage;
   private int nombreElementTotal;
+  public int getNombreElementTotal() {
+    return nombreElementTotal;
+  }
+
+  public void setNombreElementTotal(int nombreElementTotal) {
+    this.nombreElementTotal = nombreElementTotal;
+  }
+
   static final Logger LOGGER = LoggerFactory.getLogger(Page.class);
 
   /**

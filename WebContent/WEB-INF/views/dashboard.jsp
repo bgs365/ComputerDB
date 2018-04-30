@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@ taglib prefix="pagination" uri="/WEB-INF/taglibs/pagination.tld"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,7 +32,7 @@
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="addComputer.html">Add
+					<a class="btn btn-success" id="addComputer" href="addComputer">Add
 						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
 						onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
@@ -86,16 +86,20 @@
 		</div>
 	</section>
 
+			
+			
 	<footer class="navbar-fixed-bottom">
-		
+
 		<div class="container text-center">
 
-			<ul class="pagination">
 
+				
+				<c:url var="searchUri" value="dashboard?pageNumber=##" />
+				<pagination:display maxLinks="10" currPage="${computerPage.numerosPage}" totalPages="${numberTotalOfPages}" uri="${searchUri}" />
+				<!--  
 				<li><a href="dashboard?page=previews" aria-label="Previous">
 						<span aria-hidden="true">&laquo;</span>
 				</a></li>
-
 				<li class="active"><a
 					href="dashboard?pageNumber=${computerPage.numerosPage}">${computerPage.numerosPage}</a></li>
 				<li><a
@@ -110,22 +114,9 @@
 				<li><a href="dashboard?page=next" aria-label="Next"> <span
 						aria-hidden="true">&raquo;</span>
 				</a></li>
-			</ul>
-<!--  -->
-		<ul class="pagination">
-			<li class="page-item disabled"><a class="page-link" href="#"
-				tabindex="-1">Previous</a></li>
-			<li class="page-item"><a class="page-link" href="#">${computerPage.numerosPage-2}</a></li>	
-			<li class="page-item"><a class="page-link" href="#">${computerPage.numerosPage-1}</a></li>
-			<li class="page-item active"><a class="page-link" href="#">${computerPage.numerosPage}
-					<span class="sr-only">(current)</span>
-			</a></li>
-			<li class="page-item"><a class="page-link" href="#">${computerPage.numerosPage+1}</a></li>
-			<li class="page-item"><a class="page-link" href="#">${computerPage.numerosPage+2}</a></li>
-			<li class="page-item"><a class="page-link" href="#">Next</a></li>
-		</ul>
-		<!--  -->
-		
+				-->
+			
+
 
 			<div class="btn-group btn-group-sm pull-right" role="group">
 

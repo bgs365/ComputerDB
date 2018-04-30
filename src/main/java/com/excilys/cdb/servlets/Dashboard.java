@@ -101,7 +101,6 @@ public class Dashboard extends HttpServlet {
           computerPage.getNombreElementParPage());
     }
 
-
     /* Change number of displayed elements */
     switch (button) {
     case "10":
@@ -123,14 +122,16 @@ public class Dashboard extends HttpServlet {
       break;
     }
 
+    int numberTotalOfPages = computerPage.getNombreElementTotal() / computerPage.getNombreElementParPage();
+
     /*
      * Send parameters.
      */
 
     request.setAttribute("numberOfComputers", numberOfComputers);
-
     request.setAttribute("computers", computers);
     request.setAttribute("computerPage", computerPage);
+    request.setAttribute("numberTotalOfPages", numberTotalOfPages);
 
     /*
      * Transmission of data to jsp.
