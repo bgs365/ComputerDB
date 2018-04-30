@@ -23,7 +23,8 @@ public enum ComputerService {
   /**
    * find computer by id.
    *
-   * @param id asName
+   * @param id
+   *          asName
    * @return Computer
    */
   public Computer findById(int id) {
@@ -42,7 +43,8 @@ public enum ComputerService {
   /**
    * find a list of computers by theirs names.
    *
-   * @param name asName
+   * @param name
+   *          asName
    * @return List<Computer>
    */
   public List<Computer> findByName(String name) {
@@ -52,7 +54,8 @@ public enum ComputerService {
   /**
    * find a list of computer by their company id.
    *
-   * @param id asName
+   * @param id
+   *          asName
    * @return List<Computer>
    */
   public List<Computer> findByCompany(int id) {
@@ -62,8 +65,10 @@ public enum ComputerService {
   /**
    * find a list a computer to generate pages.
    *
-   * @param pageIndex asName
-   * @param numberOfResultByPage asName
+   * @param pageIndex
+   *          asName
+   * @param numberOfResultByPage
+   *          asName
    * @return List<Computer>
    */
   public List<Computer> findLimitNumberOfResult(int pageIndex, int numberOfResultByPage) {
@@ -73,7 +78,8 @@ public enum ComputerService {
   /**
    * Save computer.
    *
-   * @param computer asName
+   * @param computer
+   *          asName
    * @return (0 or 1)
    */
   public int save(Computer computer) {
@@ -88,7 +94,8 @@ public enum ComputerService {
   /**
    * delete computer.
    *
-   * @param id asName
+   * @param id
+   *          asName
    * @return (0 or 1)
    */
   public int delete(int id) {
@@ -103,7 +110,8 @@ public enum ComputerService {
   /**
    * update computer.
    *
-   * @param computer asName
+   * @param computer
+   *          asName
    * @return (0 or 1)
    */
   public int update(Computer computer) {

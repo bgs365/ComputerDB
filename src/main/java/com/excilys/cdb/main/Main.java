@@ -30,15 +30,15 @@ public class Main {
    * @param args asName
    */
   public static void main(String[] args) {
-
+/*
     LOGGER.info("Ouverture du Menu");
     MainMenu.display();
     LOGGER.info("Fermeture du Menu");
-
+*/
     // verifServiceComputer();
-    // verifServiceComputerSave();
+     //verifServiceComputerSave();
     // verifServiceCompany();
-    // verifServiceComputerUpdate();
+     verifServiceComputerUpdate();
     // verifServiceComputerDelete();
     // System.out.println(ComputerDAO.INSTANCE.findAll());
   }
@@ -47,7 +47,7 @@ public class Main {
    * test update method of computer Service.
    */
   public static void verifServiceComputerUpdate() {
-    Computer computer = ComputerDAO.INSTANCE.findById(582);
+    Computer computer = ComputerDAO.INSTANCE.findById(602);
     computer.setName("Test apres");
     Company company = CompanyDAO.INSTANCE.findById(17);
     computer.setDiscontinued(LocalDate.of(2018, 3, 18));

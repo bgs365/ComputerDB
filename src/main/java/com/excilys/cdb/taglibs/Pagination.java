@@ -50,8 +50,8 @@ public class Pagination extends SimpleTagSupport {
 
       for (int i = pgStart; i < pgEnd; i++) {
         if (i == currPage) {
-          out.write("<li class=\"" + (lastPage && i == totalPages ? " paginatorLast" : "") + "\">"
-              + currPage + "</li>");
+          out.write("<li class=\"active\" " + (lastPage && i == totalPages ? " paginatorLast" : "") + "\">" + "<span class=\"badge badge-primary\" > "
+              + currPage + "</span>" + "</li>");
         } else {
           out.write(constructLink(i));
         }

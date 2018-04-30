@@ -3,7 +3,7 @@ package com.excilys.cdb.model;
 import java.time.LocalDate;
 
 /**
- *Computer Class.
+ * Computer Class.
  *
  * @author sanogo
  *
@@ -25,10 +25,14 @@ public class Computer {
   /**
    * Constructeur sans company.
    *
-   * @param id asName
-   * @param name asName
-   * @param introduced asName
-   * @param discontinued asName
+   * @param id
+   *          asName
+   * @param name
+   *          asName
+   * @param introduced
+   *          asName
+   * @param discontinued
+   *          asName
    */
   public Computer(int id, String name, LocalDate introduced, LocalDate discontinued) {
     this.id = id;
@@ -40,14 +44,22 @@ public class Computer {
   /**
    * Constructeur avec company.
    *
-   * @param id asName
-   * @param name asName
-   * @param introduced date
-   * @param discontinued date
-   * @param company asName
+   * @param id
+   *          asName
+   * @param name
+   *          asName
+   * @param introduced
+   *          date
+   * @param discontinued
+   *          date
+   * @param company
+   *          asName
    */
   public Computer(int id, String name, LocalDate introduced, LocalDate discontinued, Company company) {
-    super();
+    this.id = id;
+    this.name = name;
+    this.introduced = introduced;
+    this.discontinued = discontinued;
     this.company = company;
   }
 

@@ -1,8 +1,6 @@
 package com.excilys.cdb.servlets;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -19,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
+import com.excilys.cdb.service.ComputerService;
 
 /**
  * Servlet implementation class AddComputer.
@@ -26,15 +25,21 @@ import com.excilys.cdb.service.CompanyService;
 @WebServlet("/addComputer")
 public class AddComputer extends HttpServlet {
   private static final long serialVersionUID = 1L;
-  static final Logger LOGGER = LoggerFactory.getLogger(AddComputer.class);
   private List<Company> companies = CompanyService.INSTANCE.findAll();
+  private String name = null;
+  private String receiveIntroduced = null;
+  private String receiveDiscontinued = null;
+  private Company receiveCompany = null;
+  private String saveState = null;
+  private boolean success = false;
+
+  static final Logger LOGGER = LoggerFactory.getLogger(AddComputer.class);
 
   /**
    * @see HttpServlet#HttpServlet()
    */
   public AddComputer() {
     super();
-    // TODO Auto-generated constructor stub
   }
 
   /**
@@ -53,6 +58,7 @@ public class AddComputer extends HttpServlet {
     /*
      * Send parameters.
      */
+
     request.setAttribute("companies", companies);
     /*
      * Transmission of data to jsp.
@@ -73,53 +79,65 @@ public class AddComputer extends HttpServlet {
    */
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     LOGGER.info("Creation of new computer");
-    String name = (request.getParameter("computerName") != null) ? request.getParameter("computerName") : null;
-    String receiveIntroduced = (request.getParameter("introduced") != null) ? request.getParameter("introduced")
-        : "null";
-    String receiveDiscontinued = (request.getParameter("discontinued") != null) ? request.getParameter("discontinued")
+    name = (request.getParameter("computerName") != null) ? request.getParameter("computerName") : null;
+    receiveIntroduced = (request.getParameter("introduced") != null) ? request.getParameter("introduced") : "null";
+    receiveDiscontinued = (request.getParameter("discontinued") != null) ? request.getParameter("discontinued")
         : "null";
     String companyId = (request.getParameter("companyId") != null) ? request.getParameter("companyId") : "null";
 
     LocalDate introduced = null;
     LocalDate discontinued = null;
-    Company company = new Company();
-    SimpleDateFormat sdf = new SimpleDateFormat("mm/dd/yyyy");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    if (receiveIntroduced.equals("null")) {
-      try {
-        sdf.parse(receiveIntroduced);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("mm/dd/yyyy");
-        introduced = LocalDate.parse(receiveIntroduced, formatter);
-      } catch (ParseException e) {
-        LOGGER.info("Error because of introduced date :" + e);
-      }
-    }
-
-    if (!receiveDiscontinued.equals("null")) {
-      try {
-        sdf.parse(receiveDiscontinued);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("mm/dd/yyyy");
-        discontinued = LocalDate.parse(receiveDiscontinued, formatter);
-      } catch (ParseException e) {
-        LOGGER.info("Error because of introduced date :" + e);
-      }
-    }
-
-    if (companyId.equals("null")) {
-      LOGGER.info("You are creating a computer whitout company");
+    if (receiveIntroduced.equals("null") || (receiveIntroduced.length() < 10)) {
+      LOGGER.info("No introduced date");
     } else {
-      company.setId(Integer.parseInt(companyId));
+      introduced = LocalDate.parse(receiveIntroduced, formatter);
     }
 
-    Computer computer = new Computer(0, name, introduced, discontinued, company);
-    System.out.println(computer);
+    if (receiveDiscontinued.equals("null") || (receiveDiscontinued.length() < 10)) {
+      LOGGER.info("No discontinued date");
+    } else {
+      discontinued = LocalDate.parse(receiveDiscontinued, formatter);
+    }
+
+    try {
+      receiveCompany = CompanyService.INSTANCE.findById(Integer.parseInt(companyId));
+    } catch (NumberFormatException e) {
+      LOGGER.info("ou are creating a computer whitout company" + e);
+    }
+
+    if (verifComputerNameBeforeSave(name) & verifDate(introduced, discontinued)) {
+      Computer computer = new Computer(0, name, introduced, discontinued, receiveCompany);
+      if (ComputerService.INSTANCE.save(computer) == 1) {
+        success = true;
+        LOGGER.info(computer + "");
+      } else {
+        success = false;
+      }
+    } else {
+      success = false;
+    }
+
+    if (success) {
+      request.setAttribute("success", success);
+      doGet(request, response);
+    } else {
+      request.setAttribute("computerName", name);
+      request.setAttribute("introduced", receiveIntroduced);
+      request.setAttribute("discontinued", receiveDiscontinued);
+      request.setAttribute("company", receiveCompany);
+      request.setAttribute("success", success);
+      doGet(request, response);
+    }
 
   }
 
   /**
    *
    * @param name
-   * @return validComputer computerNameValidator
+   *          compuerName
+   * @return (true or false)
    */
   private boolean verifComputerNameBeforeSave(String name) {
     boolean validComputer = false;
@@ -129,6 +147,30 @@ public class AddComputer extends HttpServlet {
       validComputer = true;
     }
     return validComputer;
+  }
+
+  /**
+   *
+   * @param introduced
+   *          asName
+   * @param discounted
+   *          asName
+   * @return (true or false)
+   */
+  private boolean verifDate(LocalDate introduced, LocalDate discounted) {
+    boolean validDate = false;
+    if (introduced == null & discounted == null) {
+      validDate = true;
+    } else if (introduced != null & discounted != null) {
+      if (introduced.isBefore(discounted)) {
+        validDate = true;
+      } else {
+        LOGGER.info("Date problems");
+      }
+    } else if (introduced != null & discounted == null) {
+      validDate = true;
+    }
+    return validDate;
   }
 
 }

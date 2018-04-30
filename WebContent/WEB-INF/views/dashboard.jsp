@@ -90,34 +90,9 @@
 			
 	<footer class="navbar-fixed-bottom">
 
-		<div class="container text-center">
-
-
-				
+		<div class="container text-center">				
 				<c:url var="searchUri" value="dashboard?pageNumber=##" />
 				<pagination:display maxLinks="10" currPage="${computerPage.numerosPage}" totalPages="${numberTotalOfPages}" uri="${searchUri}" />
-				<!--  
-				<li><a href="dashboard?page=previews" aria-label="Previous">
-						<span aria-hidden="true">&laquo;</span>
-				</a></li>
-				<li class="active"><a
-					href="dashboard?pageNumber=${computerPage.numerosPage}">${computerPage.numerosPage}</a></li>
-				<li><a
-					href="dashboard?pageNumber=${computerPage.numerosPage+1}">${computerPage.numerosPage+1}</a></li>
-				<li><a
-					href="dashboard?pageNumber=${computerPage.numerosPage+2}">${computerPage.numerosPage+2}</a></li>
-				<li><a
-					href="dashboard?pageNumber=${computerPage.numerosPage+3}">${computerPage.numerosPage+3}</a></li>
-				<li><a
-					href="dashboard?pageNumber=${computerPage.numerosPage+4}">${computerPage.numerosPage+4}</a></li>
-
-				<li><a href="dashboard?page=next" aria-label="Next"> <span
-						aria-hidden="true">&raquo;</span>
-				</a></li>
-				-->
-			
-
-
 			<div class="btn-group btn-group-sm pull-right" role="group">
 
 				<form action="${pageContext.request.contextPath}/dashboard"

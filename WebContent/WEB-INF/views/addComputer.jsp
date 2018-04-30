@@ -26,23 +26,26 @@
 						<fieldset>
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
-									type="text" class="form-control" id="computerName" name="computerName"
-									placeholder="Computer name">
+									type="text" class="form-control" id="computerName"
+									name="computerName" placeholder="Computer name"
+									value="${computerName}">
 							</div>
 							<div class="form-group">
 								<label for="introduced">Introduced date</label> <input
-									type="date" class="form-control" id="introduced" name="introduced"
-									placeholder="Introduced date">
+									type="date" class="form-control" id="introduced"
+									name="introduced" placeholder="Introduced date"
+									value="${introduced}">
 							</div>
 							<div class="form-group">
 								<label for="discontinued">Discontinued date</label> <input
-									type="date" class="form-control" id="discontinued" name="discontinued"
-									placeholder="Discontinued date">
+									type="date" class="form-control" id="discontinued"
+									name="discontinued" placeholder="Discontinued date"
+									value="${discontinued}">
 							</div>
 							<div class="form-group">
 								<label for="companyId">Company</label> <select
 									class="form-control" id="companyId" name="companyId">
-									<option value="0">--</option>
+									<option value="${company.id}">${company.name}</option>
 									<c:forEach items="${companies}" var="record">
 										<option value="${record.id }">${record.name }</option>
 									</c:forEach>
@@ -58,7 +61,28 @@
 				</div>
 			</div>
 		</div>
+		<div>
+			<c:choose>
+				<c:when test="${success=='true'}">
+					<div class="alertalert-success">
+						<strong>Computer saved!</strong>
+					</div>
+					<br />
+				</c:when>
+				<c:when test="${success=='false'}">
+					<div class="alertalert-danger">
+						<strong>Sommes field are not well fill!</strong>
+					</div>
+					<br />
+				</c:when>
+				<c:otherwise>
+					<br />
+				</c:otherwise>
+			</c:choose>
+		</div>
 	</section>
+
+
 
 </body>
 </html>

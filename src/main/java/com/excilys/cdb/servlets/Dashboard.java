@@ -122,7 +122,8 @@ public class Dashboard extends HttpServlet {
       break;
     }
 
-    int numberTotalOfPages = computerPage.getNombreElementTotal() / computerPage.getNombreElementParPage();
+    int numberTotalOfPages = (int) Math
+        .ceil(computerPage.getNombreElementTotal() / Double.valueOf(computerPage.getNombreElementParPage()));
 
     /*
      * Send parameters.
