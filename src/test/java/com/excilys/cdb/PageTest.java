@@ -20,6 +20,7 @@ import com.excilys.cdb.page.Page;
 @RunWith(MockitoJUnitRunner.class)
 public class PageTest {
 
+  @SuppressWarnings("unchecked")
   @Mock
   private Page<Company> companyMock = (Page<Company>) mock(Page.class);
 

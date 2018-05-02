@@ -1,5 +1,6 @@
 package com.excilys.cdb.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -83,11 +84,13 @@ public enum ComputerService {
    * @return (0 or 1)
    */
   public int save(Computer computer) {
-    if (computer.getName().length() < 5) {
-      LOGGER.info("Le nom du computer doit faire au moins 5 carractères");
-      return 0;
-    } else {
+    if (verifComputerNameBeforeSave(computer.getName())
+        & verifDate(computer.getIntroduced(), computer.getDiscontinued())
+        & verifPresenceOfIllegalExpressionBeforeSave(computer.getName())) {
       return ComputerDAO.INSTANCE.save(computer);
+    } else {
+      LOGGER.info("Name could not be saved");
+      return 0;
     }
   }
 
@@ -115,12 +118,83 @@ public enum ComputerService {
    * @return (0 or 1)
    */
   public int update(Computer computer) {
-    if (findById(computer.getId()).getId() == 0) {
+    if (findById(computer.getId()).getId() != 0 & verifComputerNameBeforeSave(computer.getName())
+        & verifDate(computer.getIntroduced(), computer.getDiscontinued())
+        & verifPresenceOfIllegalExpressionBeforeSave(computer.getName())) {
+      return ComputerDAO.INSTANCE.update(computer);
+    } else {
       LOGGER.info("Le computer que vous voulez modifier n'esxiste pas");
       return 0;
-    } else {
-      return ComputerDAO.INSTANCE.update(computer);
     }
+  }
+
+  /**
+   *
+   * @param name
+   *          compuerName
+   * @return (true or false)
+   */
+  public boolean verifComputerNameBeforeSave(String name) {
+    boolean validComputer = false;
+    if ((name.length() < 5)) {
+      LOGGER.info("Name too short :" + name + " it should have at the less 5 caracters");
+    } else {
+      validComputer = true;
+    }
+    return validComputer;
+  }
+
+  /**
+   *
+   * @param name
+   *          compuerName
+   * @return (true or false)
+   */
+  public boolean verifPresenceOfIllegalExpressionBeforeSave(String name) {
+    boolean validComputer = false;
+    if (name.contains("<") || name.contains(">") || name.contains("//") || name.contains("\\") || name.contains("/*")
+        || name.contains("*/")) {
+      LOGGER.info("Illegal expression in name");
+    } else {
+      validComputer = true;
+    }
+    return validComputer;
+  }
+
+  /**
+   *
+   * @param introduced
+   *          asName
+   * @param discounted
+   *          asName
+   * @return (true or false)
+   */
+  public boolean verifDate(LocalDate introduced, LocalDate discounted) {
+    boolean validDate = false;
+    if (introduced == null && discounted == null) {
+      validDate = true;
+    } else if (introduced != null & discounted != null) {
+      if (introduced.isBefore(discounted)) {
+        validDate = true;
+      } else {
+        LOGGER.info("Date problems");
+      }
+    } else if (introduced != null && discounted == null) {
+      validDate = true;
+    }
+    return validDate;
+  }
+
+  /**
+   * sryy.
+   *
+   * @param args
+   *          asName
+   */
+  public static void main(String[] args) {
+    System.out.println(ComputerService.INSTANCE.verifPresenceOfIllegalExpressionBeforeSave("as>etsr"));
+    System.out.println(ComputerService.INSTANCE.verifPresenceOfIllegalExpressionBeforeSave("as<etsr"));
+    System.out.println(ComputerService.INSTANCE.verifPresenceOfIllegalExpressionBeforeSave("/****asetsr"));
   }
 
 }

@@ -30,15 +30,15 @@ public class Main {
    * @param args asName
    */
   public static void main(String[] args) {
-/*
+
     LOGGER.info("Ouverture du Menu");
     MainMenu.display();
     LOGGER.info("Fermeture du Menu");
-*/
+
     // verifServiceComputer();
      //verifServiceComputerSave();
     // verifServiceCompany();
-     verifServiceComputerUpdate();
+     //verifServiceComputerUpdate();
     // verifServiceComputerDelete();
     // System.out.println(ComputerDAO.INSTANCE.findAll());
   }
@@ -61,7 +61,7 @@ public class Main {
    */
   public static void verifServiceComputerDelete() {
     Computer computer = ComputerDAO.INSTANCE.findById(583);
-    System.out.println(computerService.delete(575));
+    System.out.println(computerService.delete(computer.getId()));
   }
 
   /**

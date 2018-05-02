@@ -71,7 +71,7 @@
 				</c:when>
 				<c:when test="${success=='false'}">
 					<div class="alertalert-danger">
-						<strong>Sommes field are not well fill!</strong>
+						<strong>Some field are not well fill!</strong>
 					</div>
 					<br />
 				</c:when>

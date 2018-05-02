@@ -56,7 +56,7 @@ public class Page<T> {
   }
 
   /**
-   * nombreElementParPage setter.
+   * update pageNumber too.
    *
    * @param nombreElementParPage
    *          asName
@@ -66,21 +66,10 @@ public class Page<T> {
     numerosPage = (this.nombreElementParPage + indexFirstPageElement) / this.nombreElementParPage;
   }
 
-  /**
-   * indexFirstPageElement getter.
-   *
-   * @return indexFirstPageElement
-   */
   public int getIndexFirstPageElement() {
     return indexFirstPageElement;
   }
 
-  /**
-   * indexFirstPageElement setter.
-   *
-   * @param indexFirstPageElement
-   *          asName
-   */
   public void setIndexFirstPageElement(int indexFirstPageElement) {
     this.indexFirstPageElement = indexFirstPageElement;
   }

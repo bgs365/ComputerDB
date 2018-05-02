@@ -30,7 +30,6 @@ public class AddComputer extends HttpServlet {
   private String receiveIntroduced = null;
   private String receiveDiscontinued = null;
   private Company receiveCompany = null;
-  private String saveState = null;
   private boolean success = false;
 
   static final Logger LOGGER = LoggerFactory.getLogger(AddComputer.class);
@@ -79,7 +78,7 @@ public class AddComputer extends HttpServlet {
    */
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     LOGGER.info("Creation of new computer");
-    name = (request.getParameter("computerName") != null) ? request.getParameter("computerName") : null;
+    name = (request.getParameter("computerName") != null) ? request.getParameter("computerName") : "54554";
     receiveIntroduced = (request.getParameter("introduced") != null) ? request.getParameter("introduced") : "null";
     receiveDiscontinued = (request.getParameter("discontinued") != null) ? request.getParameter("discontinued")
         : "null";
@@ -104,17 +103,13 @@ public class AddComputer extends HttpServlet {
     try {
       receiveCompany = CompanyService.INSTANCE.findById(Integer.parseInt(companyId));
     } catch (NumberFormatException e) {
-      LOGGER.info("ou are creating a computer whitout company" + e);
+      LOGGER.info("you are creating a computer whitout company" + e);
     }
 
-    if (verifComputerNameBeforeSave(name) & verifDate(introduced, discontinued)) {
-      Computer computer = new Computer(0, name, introduced, discontinued, receiveCompany);
-      if (ComputerService.INSTANCE.save(computer) == 1) {
-        success = true;
-        LOGGER.info(computer + "");
-      } else {
-        success = false;
-      }
+    Computer computer = new Computer(0, name, introduced, discontinued, receiveCompany);
+    if (ComputerService.INSTANCE.save(computer) == 1) {
+      success = true;
+      LOGGER.info(computer + "");
     } else {
       success = false;
     }
@@ -131,46 +126,6 @@ public class AddComputer extends HttpServlet {
       doGet(request, response);
     }
 
-  }
-
-  /**
-   *
-   * @param name
-   *          compuerName
-   * @return (true or false)
-   */
-  private boolean verifComputerNameBeforeSave(String name) {
-    boolean validComputer = false;
-    if (name.length() < 5) {
-      LOGGER.info("Name too short :" + name);
-    } else {
-      validComputer = true;
-    }
-    return validComputer;
-  }
-
-  /**
-   *
-   * @param introduced
-   *          asName
-   * @param discounted
-   *          asName
-   * @return (true or false)
-   */
-  private boolean verifDate(LocalDate introduced, LocalDate discounted) {
-    boolean validDate = false;
-    if (introduced == null & discounted == null) {
-      validDate = true;
-    } else if (introduced != null & discounted != null) {
-      if (introduced.isBefore(discounted)) {
-        validDate = true;
-      } else {
-        LOGGER.info("Date problems");
-      }
-    } else if (introduced != null & discounted == null) {
-      validDate = true;
-    }
-    return validDate;
   }
 
 }
