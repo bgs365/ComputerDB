@@ -8,6 +8,9 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.dao.ComputerDAO;
+import com.excilys.cdb.exceptions.ComputerServiceDateException;
+import com.excilys.cdb.exceptions.ComputerServiceIllegalExpression;
+import com.excilys.cdb.exceptions.ComputerServiceNameTooShortException;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
@@ -27,7 +30,8 @@ public class Main {
   /**
    * Main method.
    *
-   * @param args asName
+   * @param args
+   *          asName
    */
   public static void main(String[] args) {
 
@@ -36,15 +40,18 @@ public class Main {
     LOGGER.info("Fermeture du Menu");
 
     // verifServiceComputer();
-     //verifServiceComputerSave();
+    // verifServiceComputerSave();
     // verifServiceCompany();
-     //verifServiceComputerUpdate();
+    // verifServiceComputerUpdate();
     // verifServiceComputerDelete();
     // System.out.println(ComputerDAO.INSTANCE.findAll());
   }
 
   /**
    * test update method of computer Service.
+   *
+   * @throws ComputerServiceIllegalExpression
+   * @throws ComputerServiceNameTooShortException
    */
   public static void verifServiceComputerUpdate() {
     Computer computer = ComputerDAO.INSTANCE.findById(602);
@@ -53,7 +60,16 @@ public class Main {
     computer.setDiscontinued(LocalDate.of(2018, 3, 18));
     computer.setIntroduced(null);
     computer.setCompany(company);
-    System.out.println(computerService.update(computer));
+    try {
+      System.out.println(computerService.update(computer));
+
+    } catch (ComputerServiceNameTooShortException e) {
+      LOGGER.info(e.getMessage());
+    } catch (ComputerServiceIllegalExpression e) {
+      LOGGER.info(e.getMessage());
+    } catch (ComputerServiceDateException e) {
+      LOGGER.info(e.getMessage());
+    }
   }
 
   /**
@@ -71,7 +87,15 @@ public class Main {
     Company company = CompanyDAO.INSTANCE.findById(5);
     Computer computer1 = new Computer(0, "dell 1004 verif service avec company sans dateDisc.. ", null, null);
     computer1.setCompany(company);
-    System.out.println(computerService.save(computer1));
+    try {
+      System.out.println(computerService.save(computer1));
+    } catch (ComputerServiceNameTooShortException e) {
+      LOGGER.info(e.getMessage());
+    } catch (ComputerServiceIllegalExpression e) {
+      LOGGER.info(e.getMessage());
+    } catch (ComputerServiceDateException e) {
+      LOGGER.info(e.getMessage());
+    }
   }
 
   /**

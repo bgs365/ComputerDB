@@ -3,7 +3,7 @@
   <tlib-version>1.0</tlib-version>
   <short-name>pagination</short-name>
   <uri>/WEB-INF/taglibs/pagination.tld</uri>
-   
+
   <tag>
     <name>display</name>
     <tag-class>com.excilys.cdb.taglibs.Pagination</tag-class>

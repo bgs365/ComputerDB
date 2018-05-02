@@ -7,6 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.dao.ComputerDAO;
+import com.excilys.cdb.exceptions.ComputerServiceDateException;
+import com.excilys.cdb.exceptions.ComputerServiceIllegalExpression;
+import com.excilys.cdb.exceptions.ComputerServiceNameTooShortException;
 import com.excilys.cdb.main.Main;
 import com.excilys.cdb.model.Computer;
 
@@ -82,8 +85,15 @@ public enum ComputerService {
    * @param computer
    *          asName
    * @return (0 or 1)
+   * @throws ComputerServiceNameTooShortException
+   *           asName
+   * @throws ComputerServiceIllegalExpression
+   *           asName
+   * @throws ComputerServiceDateException
+   *           asName
    */
-  public int save(Computer computer) {
+  public int save(Computer computer)
+      throws ComputerServiceNameTooShortException, ComputerServiceIllegalExpression, ComputerServiceDateException {
     if (verifComputerNameBeforeSave(computer.getName())
         & verifDate(computer.getIntroduced(), computer.getDiscontinued())
         & verifPresenceOfIllegalExpressionBeforeSave(computer.getName())) {
@@ -116,8 +126,16 @@ public enum ComputerService {
    * @param computer
    *          asName
    * @return (0 or 1)
+   * @throws ComputerServiceNameTooShortException
+   *           asName
+   * @throws ComputerServiceIllegalExpression
+   *           as Name
+   * @throws ComputerServiceDateException
+   *           asName
    */
-  public int update(Computer computer) {
+  public int update(Computer computer)
+      throws ComputerServiceNameTooShortException, ComputerServiceIllegalExpression, ComputerServiceDateException {
+
     if (findById(computer.getId()).getId() != 0 & verifComputerNameBeforeSave(computer.getName())
         & verifDate(computer.getIntroduced(), computer.getDiscontinued())
         & verifPresenceOfIllegalExpressionBeforeSave(computer.getName())) {
@@ -126,18 +144,21 @@ public enum ComputerService {
       LOGGER.info("Le computer que vous voulez modifier n'esxiste pas");
       return 0;
     }
+
   }
 
   /**
    *
    * @param name
-   *          compuerName
+   *          asName
    * @return (true or false)
+   * @throws ComputerServiceNameTooShortException
+   *           asName
    */
-  public boolean verifComputerNameBeforeSave(String name) {
+  public boolean verifComputerNameBeforeSave(String name) throws ComputerServiceNameTooShortException {
     boolean validComputer = false;
     if ((name.length() < 5)) {
-      LOGGER.info("Name too short :" + name + " it should have at the less 5 caracters");
+      throw new ComputerServiceNameTooShortException(name);
     } else {
       validComputer = true;
     }
@@ -149,12 +170,14 @@ public enum ComputerService {
    * @param name
    *          compuerName
    * @return (true or false)
+   * @throws ComputerServiceIllegalExpression
+   *           asName
    */
-  public boolean verifPresenceOfIllegalExpressionBeforeSave(String name) {
+  public boolean verifPresenceOfIllegalExpressionBeforeSave(String name) throws ComputerServiceIllegalExpression {
     boolean validComputer = false;
     if (name.contains("<") || name.contains(">") || name.contains("//") || name.contains("\\") || name.contains("/*")
         || name.contains("*/")) {
-      LOGGER.info("Illegal expression in name");
+      throw new ComputerServiceIllegalExpression(name);
     } else {
       validComputer = true;
     }
@@ -168,8 +191,10 @@ public enum ComputerService {
    * @param discounted
    *          asName
    * @return (true or false)
+   * @throws ComputerServiceDateException
+   *           asName
    */
-  public boolean verifDate(LocalDate introduced, LocalDate discounted) {
+  public boolean verifDate(LocalDate introduced, LocalDate discounted) throws ComputerServiceDateException {
     boolean validDate = false;
     if (introduced == null && discounted == null) {
       validDate = true;
@@ -177,7 +202,7 @@ public enum ComputerService {
       if (introduced.isBefore(discounted)) {
         validDate = true;
       } else {
-        LOGGER.info("Date problems");
+        throw new ComputerServiceDateException();
       }
     } else if (introduced != null && discounted == null) {
       validDate = true;
@@ -189,12 +214,20 @@ public enum ComputerService {
    * sryy.
    *
    * @param args
-   *          asName
+   *          asName @throws
    */
   public static void main(String[] args) {
-    System.out.println(ComputerService.INSTANCE.verifPresenceOfIllegalExpressionBeforeSave("as>etsr"));
-    System.out.println(ComputerService.INSTANCE.verifPresenceOfIllegalExpressionBeforeSave("as<etsr"));
-    System.out.println(ComputerService.INSTANCE.verifPresenceOfIllegalExpressionBeforeSave("/****asetsr"));
+
+    try {
+      System.out.println(ComputerService.INSTANCE.verifComputerNameBeforeSave("argfg"));
+      System.out.println(ComputerService.INSTANCE.verifPresenceOfIllegalExpressionBeforeSave("argfg"));
+      System.out.println(ComputerService.INSTANCE.verifPresenceOfIllegalExpressionBeforeSave("hu/***/"));
+    } catch (ComputerServiceIllegalExpression e) {
+      LOGGER.info(e.getMessage());
+    } catch (ComputerServiceNameTooShortException e) {
+      LOGGER.info(e.getMessage());
+    }
+
   }
 
 }

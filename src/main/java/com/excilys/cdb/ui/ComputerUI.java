@@ -4,6 +4,13 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.excilys.cdb.exceptions.ComputerServiceDateException;
+import com.excilys.cdb.exceptions.ComputerServiceIllegalExpression;
+import com.excilys.cdb.exceptions.ComputerServiceNameTooShortException;
+import com.excilys.cdb.main.Main;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.page.Page;
@@ -19,6 +26,7 @@ public class ComputerUI {
   private static ComputerService computerService = ComputerService.INSTANCE;
   private static Scanner sc = new Scanner(System.in);
   public static int nombrElementParPage = 50;
+  static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
   /**
    * display a page of computer, allow to navigate between pages of computers.
@@ -126,7 +134,12 @@ public class ComputerUI {
     computer.setDiscontinued(discontinuedDate);
     computer.setCompany(company);
 
-    computerService.save(computer);
+    try {
+      computerService.save(computer);
+    } catch (ComputerServiceNameTooShortException | ComputerServiceIllegalExpression | ComputerServiceDateException e) {
+      LOGGER.info(e.getMessage());
+    }
+
   }
 
   /**
@@ -179,7 +192,13 @@ public class ComputerUI {
         company = SeizureVerification.saisirCompany();
         System.out.println("--> Company = " + company);
 
-        computerService.update(computer);
+          try {
+            computerService.update(computer);
+          } catch (ComputerServiceNameTooShortException | ComputerServiceIllegalExpression
+              | ComputerServiceDateException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
       }
 
       computer.setCompany(company);

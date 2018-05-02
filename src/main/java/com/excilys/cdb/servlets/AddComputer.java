@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.cdb.exceptions.ComputerServiceDateException;
+import com.excilys.cdb.exceptions.ComputerServiceIllegalExpression;
+import com.excilys.cdb.exceptions.ComputerServiceNameTooShortException;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
@@ -31,6 +34,7 @@ public class AddComputer extends HttpServlet {
   private String receiveDiscontinued = null;
   private Company receiveCompany = null;
   private boolean success = false;
+
 
   static final Logger LOGGER = LoggerFactory.getLogger(AddComputer.class);
 
@@ -77,6 +81,7 @@ public class AddComputer extends HttpServlet {
    *           a
    */
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    String errors = "";
     LOGGER.info("Creation of new computer");
     name = (request.getParameter("computerName") != null) ? request.getParameter("computerName") : "54554";
     receiveIntroduced = (request.getParameter("introduced") != null) ? request.getParameter("introduced") : "null";
@@ -107,11 +112,19 @@ public class AddComputer extends HttpServlet {
     }
 
     Computer computer = new Computer(0, name, introduced, discontinued, receiveCompany);
-    if (ComputerService.INSTANCE.save(computer) == 1) {
-      success = true;
-      LOGGER.info(computer + "");
-    } else {
-      success = false;
+    try {
+      if (ComputerService.INSTANCE.save(computer) == 1) {
+        success = true;
+        LOGGER.info(computer + "");
+      } else {
+        success = false;
+      }
+    } catch (ComputerServiceNameTooShortException e) {
+      errors += e.getMessage();
+    } catch (ComputerServiceIllegalExpression e) {
+      errors += e.getMessage();
+    } catch (ComputerServiceDateException e) {
+      errors += e.getMessage();
     }
 
     if (success) {
@@ -123,6 +136,7 @@ public class AddComputer extends HttpServlet {
       request.setAttribute("discontinued", receiveDiscontinued);
       request.setAttribute("company", receiveCompany);
       request.setAttribute("success", success);
+      request.setAttribute("errors", errors);
       doGet(request, response);
     }
 
