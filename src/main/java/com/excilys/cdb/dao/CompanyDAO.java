@@ -22,10 +22,10 @@ import com.excilys.cdb.model.Computer;
 public enum CompanyDAO {
   INSTANCE;
 
-  String requeteFindById = "SELECT * FROM company where id = ?";
-  String requeteFinfAll = "SELECT * FROM company";
-  String requeteFindLimitNumberOfResult = "SELECT * FROM company LIMIT ?, ?";
-  String requeteFindByName = "SELECT * FROM company WHERE name= ? ";
+  String requeteFindById = "SELECT id,name FROM company where id = ?";
+  String requeteFinfAll = "SELECT id,name FROM company";
+  String requeteFindLimitNumberOfResult = "SELECT id,name FROM company LIMIT ?, ?";
+  String requeteFindByName = "SELECT id,name FROM company WHERE name= ? ";
   static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
 
   /**

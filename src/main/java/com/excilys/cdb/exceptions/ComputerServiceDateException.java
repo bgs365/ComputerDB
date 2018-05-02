@@ -1,6 +1,6 @@
 package com.excilys.cdb.exceptions;
 
-public class ComputerServiceDateException extends Exception {
+public class ComputerServiceDateException extends CdbException {
 
   /**
   *

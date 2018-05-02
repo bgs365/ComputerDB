@@ -3,12 +3,13 @@ package com.excilys.cdb.main;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.dao.ComputerDAO;
-import com.excilys.cdb.exceptions.ComputerServiceDateException;
+import com.excilys.cdb.exceptions.CdbException;
 import com.excilys.cdb.exceptions.ComputerServiceIllegalExpression;
 import com.excilys.cdb.exceptions.ComputerServiceNameTooShortException;
 import com.excilys.cdb.model.Company;
@@ -63,11 +64,7 @@ public class Main {
     try {
       System.out.println(computerService.update(computer));
 
-    } catch (ComputerServiceNameTooShortException e) {
-      LOGGER.info(e.getMessage());
-    } catch (ComputerServiceIllegalExpression e) {
-      LOGGER.info(e.getMessage());
-    } catch (ComputerServiceDateException e) {
+    } catch (CdbException e) {
       LOGGER.info(e.getMessage());
     }
   }
@@ -89,11 +86,7 @@ public class Main {
     computer1.setCompany(company);
     try {
       System.out.println(computerService.save(computer1));
-    } catch (ComputerServiceNameTooShortException e) {
-      LOGGER.info(e.getMessage());
-    } catch (ComputerServiceIllegalExpression e) {
-      LOGGER.info(e.getMessage());
-    } catch (ComputerServiceDateException e) {
+    } catch (CdbException e) {
       LOGGER.info(e.getMessage());
     }
   }

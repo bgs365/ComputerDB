@@ -70,30 +70,6 @@ public class Dashboard extends HttpServlet {
         ? request.getParameter("buttonSetNumberElementDisplayed")
         : "null";
 
-    /*
-     * Treatment of send parameters.
-     */
-
-    /* Switch page */
-    switch (page) {
-    case "next":
-      computerPage.nextPage();
-      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
-          computerPage.getNombreElementParPage());
-      break;
-
-    case "previews":
-      computerPage.previousPage();
-      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
-          computerPage.getNombreElementParPage());
-      break;
-
-    default:
-      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
-          computerPage.getNombreElementParPage());
-      break;
-    }
-
     /* Switch page by number */
     if (!pageNumber.equals("null")) {
       computerPage.setCurentPage(Integer.parseInt(pageNumber));
@@ -102,25 +78,7 @@ public class Dashboard extends HttpServlet {
     }
 
     /* Change number of displayed elements */
-    switch (button) {
-    case "10":
-      computerPage.setNombreElementParPage(10);
-      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
-          computerPage.getNombreElementParPage());
-      break;
-
-    case "50":
-      computerPage.setNombreElementParPage(50);
-      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
-          computerPage.getNombreElementParPage());
-      break;
-
-    case "100":
-      computerPage.setNombreElementParPage(100);
-      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
-          computerPage.getNombreElementParPage());
-      break;
-    }
+    switchNumberElementByPage( button);
 
     int numberTotalOfPages = (int) Math
         .ceil(computerPage.getNombreElementTotal() / Double.valueOf(computerPage.getNombreElementParPage()));
@@ -153,6 +111,49 @@ public class Dashboard extends HttpServlet {
    */
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+  }
+
+  private void switchPage(String page) {
+    switch (page) {
+    case "next":
+      computerPage.nextPage();
+      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
+          computerPage.getNombreElementParPage());
+      break;
+
+    case "previews":
+      computerPage.previousPage();
+      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
+          computerPage.getNombreElementParPage());
+      break;
+
+    default:
+      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
+          computerPage.getNombreElementParPage());
+      break;
+    }
+  }
+
+  private void switchNumberElementByPage(String button) {
+    switch (button) {
+    case "10":
+      computerPage.setNombreElementParPage(10);
+      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
+          computerPage.getNombreElementParPage());
+      break;
+
+    case "50":
+      computerPage.setNombreElementParPage(50);
+      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
+          computerPage.getNombreElementParPage());
+      break;
+
+    case "100":
+      computerPage.setNombreElementParPage(100);
+      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
+          computerPage.getNombreElementParPage());
+      break;
+    }
   }
 
 }

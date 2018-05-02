@@ -6,7 +6,7 @@ package com.excilys.cdb.exceptions;
  * @author sanogo
  *
  */
-public class ComputerServiceNameTooShortException extends Exception {
+public class ComputerServiceNameTooShortException extends CdbException {
 
   /**
    *

@@ -1,6 +1,6 @@
 package com.excilys.cdb.exceptions;
 
-public class ComputerServiceIllegalExpression  extends Exception {
+public class ComputerServiceIllegalExpression  extends CdbException {
 
   /**
   *

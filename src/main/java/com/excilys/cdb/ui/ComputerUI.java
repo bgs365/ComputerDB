@@ -7,9 +7,7 @@ import java.util.Scanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.cdb.exceptions.ComputerServiceDateException;
-import com.excilys.cdb.exceptions.ComputerServiceIllegalExpression;
-import com.excilys.cdb.exceptions.ComputerServiceNameTooShortException;
+import com.excilys.cdb.exceptions.CdbException;
 import com.excilys.cdb.main.Main;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
@@ -136,7 +134,7 @@ public class ComputerUI {
 
     try {
       computerService.save(computer);
-    } catch (ComputerServiceNameTooShortException | ComputerServiceIllegalExpression | ComputerServiceDateException e) {
+    } catch (CdbException e) {
       LOGGER.info(e.getMessage());
     }
 
@@ -192,13 +190,11 @@ public class ComputerUI {
         company = SeizureVerification.saisirCompany();
         System.out.println("--> Company = " + company);
 
-          try {
-            computerService.update(computer);
-          } catch (ComputerServiceNameTooShortException | ComputerServiceIllegalExpression
-              | ComputerServiceDateException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-          }
+        try {
+          computerService.update(computer);
+        } catch (CdbException e) {
+          e.printStackTrace();
+        }
       }
 
       computer.setCompany(company);

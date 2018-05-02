@@ -22,11 +22,11 @@ import com.excilys.cdb.model.Computer;
 public enum ComputerDAO {
   INSTANCE;
 
-  String requeteFindById = "SELECT * FROM computer LEFT JOIN company ON company.id = computer.company_id WHERE computer.id = ?";
-  String requeteFinfAll = "SELECT * FROM computer LEFT JOIN company ON company.id = computer.company_id ";
-  String requeteFindByName = "SELECT * FROM computer LEFT JOIN company ON company.id = computer.company_id  WHERE computer.name= ? ";
-  String requeteFindLimitNumberOfResult = "SELECT * FROM computer LEFT JOIN company ON company.id = computer.company_id LIMIT ?, ?";
-  String requeteFindByCompany = "SELECT * FROM computer LEFT JOIN company ON company.id = computer.company_id WHERE computer.company_id = ?";
+  String requeteFindById = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id WHERE computer.id = ?";
+  String requeteFinfAll = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id ";
+  String requeteFindByName = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id  WHERE computer.name= ? ";
+  String requeteFindLimitNumberOfResult = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id LIMIT ?, ?";
+  String requeteFindByCompany = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id WHERE computer.company_id = ?";
   String requeteInsert = "INSERT INTO computer (NAME, INTRODUCED, DISCONTINUED, COMPANY_ID) VALUES (?,?,?,?)";
   String requeteInsertSansCompany = "INSERT INTO computer (NAME, INTRODUCED, DISCONTINUED) VALUES (?,?,?)";
   String requetedelete = "DELETE FROM computer WHERE id = ?";
