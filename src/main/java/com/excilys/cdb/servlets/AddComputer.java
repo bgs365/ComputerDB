@@ -110,6 +110,7 @@ public class AddComputer extends HttpServlet {
 
     Computer computer = new Computer(0, name, introduced, discontinued, receiveCompany);
     try {
+    	 LOGGER.info(computer+"");
       if (ComputerService.INSTANCE.save(computer) == 1) {
         success = true;
         LOGGER.info(computer + "");

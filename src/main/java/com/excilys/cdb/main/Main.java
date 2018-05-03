@@ -40,7 +40,7 @@ public class Main {
     LOGGER.info("Fermeture du Menu");
 
     // verifServiceComputer();
-    // verifServiceComputerSave();
+    //verifServiceComputerSave();
     // verifServiceCompany();
     // verifServiceComputerUpdate();
     // verifServiceComputerDelete();
@@ -81,7 +81,7 @@ public class Main {
    */
   public static void verifServiceComputerSave() {
     Company company = companyService.findById(5);
-    Computer computer1 = new Computer(0, "dell 1004 verif service avec company sans dateDisc.. ", null, null);
+    Computer computer1 = new Computer(0, "dell 1004 verif 3 service avec company sans dateDisc.. ", null, null);
     computer1.setCompany(company);
     try {
       System.out.println(computerService.save(computer1));

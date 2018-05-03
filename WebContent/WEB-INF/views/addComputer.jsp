@@ -8,6 +8,16 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="css/font-awesome.css" rel="stylesheet" media="screen">
 <link href="css/main.css" rel="stylesheet" media="screen">
+<script src="WebContent/js/jquery.min.js"></script>
+<script src="WebContent/js/bootstrap.min.js"></script>
+<script
+	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+
+<script type='text/javascript'
+	src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js'></script>
+	<script
+	src="js/validator.js"></script>
+
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
@@ -22,11 +32,11 @@
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
 					<h1>Add Computer</h1>
-					<form action="addComputer" method="POST">
+					<form action="addComputer" method="POST" id="addComputerForm">
 						<fieldset>
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
-									type="text" class="form-control" id="computerName"
+									type="text" class="form-control" id="computerName" 
 									name="computerName" placeholder="Computer name"
 									value="${computerName}">
 							</div>
@@ -60,28 +70,28 @@
 					</form>
 				</div>
 			</div>
-		</div>
-		<div>
-			<c:choose>
-				<c:when test="${success=='true'}">
-					<div class="alertalert-success">
-						<strong>Computer saved!</strong>
-					</div>
-					<br />
-				</c:when>
-				<c:when test="${success=='false'}">
-					<div class="alertalert-danger">
-						<strong>Some field are not well fill! ${errors}</strong>
-					</div>
-					<br />
-				</c:when>
-				<c:otherwise>
-					<br />
-				</c:otherwise>
-			</c:choose>
+
+			<div>
+				<c:choose>
+					<c:when test="${success=='true'}">
+						<div class="alert alert-success">
+							<strong>Computer saved!</strong>
+						</div>
+						<br />
+					</c:when>
+					<c:when test="${success=='false'}">
+						<div class="alert alert-danger">
+							<strong>Some field are not well fill! ${errors}</strong>
+						</div>
+						<br />
+					</c:when>
+					<c:otherwise>
+						<br />
+					</c:otherwise>
+				</c:choose>
+			</div>
 		</div>
 	</section>
-
 
 
 </body>
