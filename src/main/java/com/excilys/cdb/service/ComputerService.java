@@ -31,7 +31,7 @@ public enum ComputerService {
    * @return Computer
    */
   public Computer findById(int id) {
-    return ComputerDAO.INSTANCE.findById(id);
+    return ComputerDAO.INSTANCE.findById(id).get();
   }
 
   /**

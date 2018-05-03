@@ -21,7 +21,7 @@ public enum CompanyService {
    * @return Company
    */
   public Company findById(int id) {
-    return CompanyDAO.INSTANCE.findById(id);
+    return CompanyDAO.INSTANCE.findById(id).get();
   }
 
   /**
@@ -51,7 +51,7 @@ public enum CompanyService {
    * @return Company
    */
   public Company findbyName(String name) {
-    return CompanyDAO.INSTANCE.findByName(name);
+    return CompanyDAO.INSTANCE.findByName(name).get();
   }
 
 }

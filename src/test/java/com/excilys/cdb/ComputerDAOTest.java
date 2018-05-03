@@ -56,12 +56,12 @@ public class ComputerDAOTest {
    */
   @Test
   public void testFindbyId() {
-    Computer computer = ComputerDAO.INSTANCE.findById(16);
+    Computer computer = ComputerDAO.INSTANCE.findById(16).get();
     assertEquals("Apple II", computer.getName());
     assertEquals(LocalDate.parse("1977-04-01"), computer.getIntroduced());
     assertEquals(LocalDate.parse("1993-10-01"), computer.getDiscontinued());
     assertEquals(1, computer.getCompany().getId());
-    computer = ComputerDAO.INSTANCE.findById(1000);
+    computer = ComputerDAO.INSTANCE.findById(1000).get();
     assertFalse(computer.getId() != 0);
   }
 
@@ -161,7 +161,8 @@ public class ComputerDAOTest {
   @Test
   public void testdelete() {
     ComputerDAO.INSTANCE.delete(575);
-    assertEquals(0, ComputerDAO.INSTANCE.findById(575).getId());
+    assertEquals(0, ComputerDAO.INSTANCE.findById(575).get().getId());
+    assertEquals(null, ComputerDAO.INSTANCE.findById(575).get().getName());
   }
 
 }

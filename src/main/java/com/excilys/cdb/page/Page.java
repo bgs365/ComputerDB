@@ -18,6 +18,7 @@ public class Page<T> {
   private int numerosPage;
   private int nombreElementParPage;
   private int nombreElementTotal;
+
   public int getNombreElementTotal() {
     return nombreElementTotal;
   }
@@ -107,10 +108,10 @@ public class Page<T> {
    */
   public int previousPage() {
     int indexRetour = indexFirstPageElement;
+    LOGGER.debug(" " + numerosPage);
     if (numerosPage > 1) {
       numerosPage--;
       indexRetour = indexFirstPageElement -= nombreElementParPage;
-
     } else {
       LOGGER.info("Operation impossible, vous êtes à la première page");
     }
@@ -123,12 +124,20 @@ public class Page<T> {
    *          asName
    */
   public void setCurentPage(int pageToReach) {
-    if ((indexFirstPageElement < (nombreElementTotal - nombreElementParPage)) && (numerosPage > 0)) {
-      numerosPage = pageToReach;
-      indexFirstPageElement = (numerosPage - 1) * nombreElementParPage;
+    if (pageToReach > numerosPage) {
+      if ((indexFirstPageElement < (nombreElementTotal - nombreElementParPage))) {
+        numerosPage = pageToReach;
+        indexFirstPageElement = (numerosPage - 1) * nombreElementParPage;
+      } else {
+        LOGGER.info("Operation impossible, la page recherché n'est pas disponible");
+      }
     } else {
-      LOGGER.info("Operation impossible, la page recherché n'est pas disponible");
+      if (numerosPage > 0) {
+        numerosPage = pageToReach;
+        indexFirstPageElement = (numerosPage - 1) * nombreElementParPage;
+      }
     }
+
   }
 
   /**

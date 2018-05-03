@@ -7,8 +7,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.cdb.dao.CompanyDAO;
-import com.excilys.cdb.dao.ComputerDAO;
 import com.excilys.cdb.exceptions.CdbException;
 import com.excilys.cdb.exceptions.ComputerServiceIllegalExpression;
 import com.excilys.cdb.exceptions.ComputerServiceNameTooShortException;
@@ -26,6 +24,7 @@ import com.excilys.cdb.ui.MainMenu;
  */
 public class Main {
   static ComputerService computerService = ComputerService.INSTANCE;
+  static CompanyService companyService = CompanyService.INSTANCE;
   static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
   /**
@@ -55,9 +54,9 @@ public class Main {
    * @throws ComputerServiceNameTooShortException
    */
   public static void verifServiceComputerUpdate() {
-    Computer computer = ComputerDAO.INSTANCE.findById(602);
+    Computer computer = computerService.findById(602);
     computer.setName("Test apres");
-    Company company = CompanyDAO.INSTANCE.findById(17);
+    Company company = companyService.findById(17);
     computer.setDiscontinued(LocalDate.of(2018, 3, 18));
     computer.setIntroduced(null);
     computer.setCompany(company);
@@ -73,7 +72,7 @@ public class Main {
    * test delete method of Computer Service.
    */
   public static void verifServiceComputerDelete() {
-    Computer computer = ComputerDAO.INSTANCE.findById(583);
+    Computer computer = computerService.findById(583);
     System.out.println(computerService.delete(computer.getId()));
   }
 
@@ -81,7 +80,7 @@ public class Main {
    * test save method of Computer service.
    */
   public static void verifServiceComputerSave() {
-    Company company = CompanyDAO.INSTANCE.findById(5);
+    Company company = companyService.findById(5);
     Computer computer1 = new Computer(0, "dell 1004 verif service avec company sans dateDisc.. ", null, null);
     computer1.setCompany(company);
     try {
@@ -96,7 +95,7 @@ public class Main {
    */
   public static void verifServiceComputer() {
     List<Computer> computers = new ArrayList<Computer>();
-    Computer computer = computerService.findById(200);
+    Computer computer = computerService.findById(1000);
     System.out.println(computer);
 
     computers = computerService.findAll();
@@ -130,20 +129,19 @@ public class Main {
    * test selects methods of company.
    */
   public static void verifServiceCompany() {
-    CompanyService cs = CompanyService.INSTANCE;
-    Company company = cs.findById(1);
+    Company company = companyService.findById(500);
     System.out.println(company);
 
     List<Company> companies = new ArrayList<Company>();
-    companies = cs.findAll();
+    companies = companyService.findAll();
     System.out.println(companies);
 
     company = null;
-    company = cs.findbyName("Samsung Electronics");
+    company = companyService.findbyName("Samsung");
     System.out.println(company);
 
     companies = null;
-    companies = cs.findLimitNumberOfResult(0, 10);
+    companies = companyService.findLimitNumberOfResult(0, 10);
     System.out.println(companies);
 
   }

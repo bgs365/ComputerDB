@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,10 +38,11 @@ public enum ComputerDAO {
   /**
    * allow access to an computer with is id.
    *
-   * @param id asName
+   * @param id
+   *          asName
    * @return Computer
    */
-  public Computer findById(int id) {
+  public Optional<Computer> findById(int id) {
     Computer computer = new Computer();
 
     try (Connection conn = Connexion.INSTANCE.getConnexion();
@@ -70,7 +72,7 @@ public enum ComputerDAO {
       LOGGER.info("Erreur sur la requete find Computer by id : " + e.getMessage());
     }
 
-    return computer;
+    return Optional.ofNullable(computer);
 
   }
 
@@ -117,8 +119,10 @@ public enum ComputerDAO {
   /**
    * Use to generate pages.
    *
-   * @param pageIndex asName
-   * @param numberOfResultByPage asName
+   * @param pageIndex
+   *          asName
+   * @param numberOfResultByPage
+   *          asName
    * @return List<Computer>
    */
   public List<Computer> findLimitNumberOfResult(int pageIndex, int numberOfResultByPage) {
@@ -161,7 +165,8 @@ public enum ComputerDAO {
   /**
    * Return all computer with name past as parameter.
    *
-   * @param name asName
+   * @param name
+   *          asName
    * @return List<Computer>
    */
   public List<Computer> findByName(String name) {
@@ -203,7 +208,8 @@ public enum ComputerDAO {
   /**
    * find company by id.
    *
-   * @param companyId asName
+   * @param companyId
+   *          asName
    * @return List<Computer>
    */
   public List<Computer> findByCompany(int companyId) {
@@ -244,7 +250,8 @@ public enum ComputerDAO {
   /**
    * Save computer in Db and return 1 in case of success and 0 if not.
    *
-   * @param computer asName
+   * @param computer
+   *          asName
    * @return (0 or 1)
    */
   public int save(Computer computer) {
@@ -306,7 +313,8 @@ public enum ComputerDAO {
   /**
    * Delete computer from Db and return 1 in case of success and 0 if not.
    *
-   * @param id asName
+   * @param id
+   *          asName
    * @return (0 or 1)
    */
   public int delete(int id) {
@@ -331,7 +339,8 @@ public enum ComputerDAO {
   /**
    * Update computer in Db and return 1 in case of success and 0 if not.
    *
-   * @param computer asName
+   * @param computer
+   *          asName
    * @return (0 or 1)
    */
   public int update(Computer computer) {

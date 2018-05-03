@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.page.Page;
 import com.excilys.cdb.service.ComputerService;
@@ -29,7 +28,7 @@ public class Dashboard extends HttpServlet {
   private Page<Computer> computerPage = new Page<Computer>(computers, nombrElementParPage,
       ComputerService.INSTANCE.findAll().size());
 
-  static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
+  static final Logger LOGGER = LoggerFactory.getLogger(Dashboard.class);
 
   /**
    * @see HttpServlet#HttpServlet()
@@ -55,20 +54,22 @@ public class Dashboard extends HttpServlet {
      * Instantiation of parameters to send to jsp.
      */
     int numberOfComputers = ComputerService.INSTANCE.findAll().size();
-    String page = "";
     String pageNumber = "";
     String button = "";
 
     /*
      * Admission of parameters send by jsp.
      */
-    page = (request.getParameter("page") != null) ? request.getParameter("page") : "null";
 
     pageNumber = (request.getParameter("pageNumber") != null) ? request.getParameter("pageNumber") : "null";
 
     button = (request.getParameter("buttonSetNumberElementDisplayed") != null)
         ? request.getParameter("buttonSetNumberElementDisplayed")
         : "null";
+
+    /*
+     * Treatment of send parameters.
+     */
 
     /* Switch page by number */
     if (!pageNumber.equals("null")) {
@@ -77,8 +78,7 @@ public class Dashboard extends HttpServlet {
           computerPage.getNombreElementParPage());
     }
 
-    /* Change number of displayed elements */
-    switchNumberElementByPage( button);
+    switchNumberOfElementsByPage(button);
 
     int numberTotalOfPages = (int) Math
         .ceil(computerPage.getNombreElementTotal() / Double.valueOf(computerPage.getNombreElementParPage()));
@@ -113,28 +113,13 @@ public class Dashboard extends HttpServlet {
 
   }
 
-  private void switchPage(String page) {
-    switch (page) {
-    case "next":
-      computerPage.nextPage();
-      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
-          computerPage.getNombreElementParPage());
-      break;
-
-    case "previews":
-      computerPage.previousPage();
-      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
-          computerPage.getNombreElementParPage());
-      break;
-
-    default:
-      computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
-          computerPage.getNombreElementParPage());
-      break;
-    }
-  }
-
-  private void switchNumberElementByPage(String button) {
+  /**
+   * Change number of displayed elements.
+   *
+   * @param button
+   *          numberOfPages
+   */
+  private void switchNumberOfElementsByPage(String button) {
     switch (button) {
     case "10":
       computerPage.setNombreElementParPage(10);

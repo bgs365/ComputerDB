@@ -55,10 +55,10 @@ public class CompanyDAOTest {
    */
   @Test
   public void testFindById() {
-    Company company = CompanyDAO.INSTANCE.findById(1);
+    Company company = CompanyDAO.INSTANCE.findById(1).get();
     assertFalse(company.equals(null));
     assertEquals("Apple Inc.", company.getName());
-    company = CompanyDAO.INSTANCE.findById(50);
+    company = CompanyDAO.INSTANCE.findById(50).get();
     assertFalse(company.getId() != 0);
   }
 
@@ -67,10 +67,10 @@ public class CompanyDAOTest {
    */
   @Test
   public void testFindByName() {
-    Company company = CompanyDAO.INSTANCE.findByName("Samsung Electronics");
+    Company company = CompanyDAO.INSTANCE.findByName("Samsung Electronics").get();
     assertFalse(company.equals(null));
     assertEquals("Samsung Electronics", company.getName());
-    company = CompanyDAO.INSTANCE.findByName("Ce nom n'existe pas");
+    company = CompanyDAO.INSTANCE.findByName("Ce nom n'existe pas").get();
     assertFalse(company.getId() != 0);
   }
 

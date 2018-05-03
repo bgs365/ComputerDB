@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +35,7 @@ public enum CompanyDAO {
    * @param id Company.id
    * @return Company
    */
-  public Company findById(int id) {
+  public Optional<Company> findById(int id) {
     Company company = new Company();
 
     try (Connection conn = Connexion.INSTANCE.getConnexion();
@@ -55,7 +56,7 @@ public enum CompanyDAO {
       LOGGER.info("Erreur sur la requete find Company by id : " + e.getMessage());
     }
 
-    return company;
+    return Optional.ofNullable(company);
   }
 
   /**
@@ -129,7 +130,7 @@ public enum CompanyDAO {
    * @param name asName
    * @return Company
    */
-  public Company findByName(String name) {
+  public Optional<Company> findByName(String name) {
 
     Company company = new Company();
 
@@ -150,7 +151,7 @@ public enum CompanyDAO {
       LOGGER.info("Erreur sur la requete find company by name : " + e.getMessage());
     }
 
-    return company;
+    return Optional.ofNullable(company);
   }
 
 }
