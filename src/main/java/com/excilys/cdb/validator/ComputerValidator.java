@@ -73,6 +73,8 @@ public enum ComputerValidator {
       }
     } else if (introduced != null && discounted == null) {
       validDate = true;
+    }else {
+    	throw new ComputerServiceDateException();
     }
     return validDate;
   }

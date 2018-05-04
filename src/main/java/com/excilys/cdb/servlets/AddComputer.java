@@ -25,115 +25,108 @@ import com.excilys.cdb.service.ComputerService;
  */
 @WebServlet("/addComputer")
 public class AddComputer extends HttpServlet {
-  private static final long serialVersionUID = 1L;
-  private List<Company> companies = CompanyService.INSTANCE.findAll();
-  private String name = null;
-  private String receiveIntroduced = null;
-  private String receiveDiscontinued = null;
-  private Company receiveCompany = null;
-  private boolean success = false;
+	private static final long serialVersionUID = 1L;
+	private List<Company> companies = CompanyService.INSTANCE.findAll();
 
-  static final Logger LOGGER = LoggerFactory.getLogger(AddComputer.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(AddComputer.class);
 
-  /**
-   * @see HttpServlet#HttpServlet()
-   */
-  public AddComputer() {
-    super();
-  }
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public AddComputer() {
+		super();
+	}
 
-  /**
-   *
-   * @param request
-   *          a
-   * @param response
-   *          a
-   * @throws ServletException
-   *           a
-   * @throws IOException
-   *           a
-   */
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	/**
+	 *
+	 * @param request
+	 *          a
+	 * @param response
+	 *          a
+	 * @throws ServletException
+	 *           a
+	 * @throws IOException
+	 *           a
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setAttribute("companies", companies);
+		this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
+	}
 
-    /*
-     * Send parameters.
-     */
+	/**
+	 *
+	 * @param request
+	 *          a
+	 * @param response
+	 *          a
+	 * @throws ServletException
+	 *           a
+	 * @throws IOException
+	 *           a
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String name = null;
+		String receiveIntroduced = null;
+		String receiveDiscontinued = null;
+		Company receiveCompany = null;
+		boolean success = false;
+		String errors = "";
+		LOGGER.info("Creation of new computer");
+		name = (request.getParameter("computerName") != null) ? request.getParameter("computerName") : "54554";
+		receiveIntroduced = (request.getParameter("introduced") != null) ? request.getParameter("introduced") : "null";
+		receiveDiscontinued = (request.getParameter("discontinued") != null) ? request.getParameter("discontinued")
+		    : "null";
+		String companyId = (request.getParameter("companyId") != null) ? request.getParameter("companyId") : "null";
 
-    request.setAttribute("companies", companies);
-    /*
-     * Transmission of data to jsp.
-     */
-    this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
-  }
+		LocalDate introduced = null;
+		LocalDate discontinued = null;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-  /**
-   *
-   * @param request
-   *          a
-   * @param response
-   *          a
-   * @throws ServletException
-   *           a
-   * @throws IOException
-   *           a
-   */
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String errors = "";
-    LOGGER.info("Creation of new computer");
-    name = (request.getParameter("computerName") != null) ? request.getParameter("computerName") : "54554";
-    receiveIntroduced = (request.getParameter("introduced") != null) ? request.getParameter("introduced") : "null";
-    receiveDiscontinued = (request.getParameter("discontinued") != null) ? request.getParameter("discontinued")
-        : "null";
-    String companyId = (request.getParameter("companyId") != null) ? request.getParameter("companyId") : "null";
+		if (receiveIntroduced.equals("null") || (receiveIntroduced.length() < 10)) {
+			LOGGER.info("No introduced date");
+		} else {
+			introduced = LocalDate.parse(receiveIntroduced, formatter);
+		}
 
-    LocalDate introduced = null;
-    LocalDate discontinued = null;
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		if (receiveDiscontinued.equals("null") || (receiveDiscontinued.length() < 10)) {
+			LOGGER.info("No discontinued date");
+		} else {
+			discontinued = LocalDate.parse(receiveDiscontinued, formatter);
+		}
 
-    if (receiveIntroduced.equals("null") || (receiveIntroduced.length() < 10)) {
-      LOGGER.info("No introduced date");
-    } else {
-      introduced = LocalDate.parse(receiveIntroduced, formatter);
-    }
+		try {
+			receiveCompany = CompanyService.INSTANCE.findById(Integer.parseInt(companyId));
+		} catch (NumberFormatException e) {
+			LOGGER.info("you are creating a computer whitout company" + e);
+		}
 
-    if (receiveDiscontinued.equals("null") || (receiveDiscontinued.length() < 10)) {
-      LOGGER.info("No discontinued date");
-    } else {
-      discontinued = LocalDate.parse(receiveDiscontinued, formatter);
-    }
+		Computer computer = new Computer(0, name, introduced, discontinued, receiveCompany);
+		LOGGER.info(computer + " ");
+		try {
+			LOGGER.info(computer + "");
+			if (ComputerService.INSTANCE.save(computer) == 1) {
+				success = true;
+				LOGGER.info(computer + "");
+			} else {
+				success = false;
+			}
+		} catch (CdbException e) {
+			errors += e.getMessage();
+		}
 
-    try {
-      receiveCompany = CompanyService.INSTANCE.findById(Integer.parseInt(companyId));
-    } catch (NumberFormatException e) {
-      LOGGER.info("you are creating a computer whitout company" + e);
-    }
+		if (success) {
+			request.setAttribute("success", success);
+			doGet(request, response);
+		} else {
+			request.setAttribute("computerName", name);
+			request.setAttribute("introduced", receiveIntroduced);
+			request.setAttribute("discontinued", receiveDiscontinued);
+			request.setAttribute("company", receiveCompany);
+			request.setAttribute("success", success);
+			request.setAttribute("errors", errors);
+			doGet(request, response);
+		}
 
-    Computer computer = new Computer(0, name, introduced, discontinued, receiveCompany);
-    try {
-    	 LOGGER.info(computer+"");
-      if (ComputerService.INSTANCE.save(computer) == 1) {
-        success = true;
-        LOGGER.info(computer + "");
-      } else {
-        success = false;
-      }
-    } catch (CdbException e) {
-      errors += e.getMessage();
-    }
-
-    if (success) {
-      request.setAttribute("success", success);
-      doGet(request, response);
-    } else {
-      request.setAttribute("computerName", name);
-      request.setAttribute("introduced", receiveIntroduced);
-      request.setAttribute("discontinued", receiveDiscontinued);
-      request.setAttribute("company", receiveCompany);
-      request.setAttribute("success", success);
-      request.setAttribute("errors", errors);
-      doGet(request, response);
-    }
-
-  }
+	}
 
 }

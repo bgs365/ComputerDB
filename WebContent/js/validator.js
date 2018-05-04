@@ -4,10 +4,9 @@
 $(document)
 		.ready(
 				function() {
-					$('#addComputerForm')
-							.submit(
+					$('#Add')
+							.click(
 									function(e) {
-										e.preventDefault();
 										var computerName = $('#computerName')
 												.val();
 										var introduced = $('#introduced').val();
@@ -20,14 +19,26 @@ $(document)
 										if (computerName.length < 5) {
 											$('#computerName')
 													.after(
-															'<span  class="error" style="color:blue;font-weight:bold">This field is required</span>');
+															'<span  class="error" style="color:blue;font-weight:bold"> This field must contain must than 5 carraters </span>');
+
+											e.preventDefault();
+										}
+										
+										if(computerName.search("<") >= 0  || computerName.search("/") >= 0 || computerName.search(">") >= 0 || computerName.search("*") >= 0 ){
+											$('#computerName')
+											.after(
+													'<span  class="error" style="color:blue;font-weight:bold"> Illegal carracter detected </span>');
+
+												e.preventDefault();
 										}
 
-										if (introduced == ""
-												&& discontinued != "") {
+										if (introduced == ''
+												&& discontinued != '') {
 											$('#introduced')
 													.after(
 															'<span class="error" style="color:blue;font-weight:bold">You must enter and introduced date</span>');
+
+											e.preventDefault();
 										}
 
 										if (discontinued != ''
@@ -39,6 +50,8 @@ $(document)
 												$('#discontinued')
 														.after(
 																'<span class="error" style="color:blue;font-weight:bold">Dicounted date must be after introduced date</span>');
+
+												e.preventDefault();
 											}
 										}
 

@@ -89,8 +89,8 @@ public enum ComputerService {
    */
   public int save(Computer computer) throws CdbException {
     if (computerValidator.verifComputerNameBeforeSave(computer.getName())
-        & computerValidator.verifDate(computer.getIntroduced(), computer.getDiscontinued())
-        & computerValidator.verifPresenceOfIllegalExpressionBeforeSave(computer.getName())) {
+        && computerValidator.verifDate(computer.getIntroduced(), computer.getDiscontinued())
+        && computerValidator.verifPresenceOfIllegalExpressionBeforeSave(computer.getName())) {
       return ComputerDAO.INSTANCE.save(computer);
     } else {
       LOGGER.info("Name could not be saved");

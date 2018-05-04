@@ -15,7 +15,7 @@
 
 <script type='text/javascript'
 	src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js'></script>
-	<script
+	  <script
 	src="js/validator.js"></script>
 
 </head>
@@ -63,7 +63,7 @@
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
-							<input type="submit" value="Add" class="btn btn-primary"
+							<input type="submit" value="Add" class="btn btn-primary" id="Add"
 								name="save"> or <a href="dashboard"
 								class="btn btn-default">Cancel</a>
 						</div>
