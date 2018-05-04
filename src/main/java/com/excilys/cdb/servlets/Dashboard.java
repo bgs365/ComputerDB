@@ -24,7 +24,8 @@ public class Dashboard extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	int nombrElementParPage = 50;
-	private List<Computer> computers = ComputerService.INSTANCE.findLimitNumberOfResult(0, nombrElementParPage);
+	private ComputerService computerService = ComputerService.INSTANCE;
+	private List<Computer> computers = computerService.findLimitNumberOfResult(0, nombrElementParPage);
 	private Page<Computer> computerPage = new Page<Computer>(computers, nombrElementParPage,
 	    ComputerService.INSTANCE.findAll().size());
 
@@ -53,7 +54,7 @@ public class Dashboard extends HttpServlet {
 		/*
 		 * Instantiation of parameters to send to jsp.
 		 */
-		int numberOfComputers = ComputerService.INSTANCE.findAll().size();
+		int numberOfComputers = computerService.findAll().size();
 		String pageNumber = "";
 		String button = "";
 
@@ -74,7 +75,7 @@ public class Dashboard extends HttpServlet {
 		/* Switch page by number */
 		if (!pageNumber.equals("null")) {
 			computerPage.setCurentPage(Integer.parseInt(pageNumber));
-			computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
+			computers = computerService.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
 			    computerPage.getNombreElementParPage());
 		}
 
@@ -123,19 +124,19 @@ public class Dashboard extends HttpServlet {
 		switch (button) {
 			case "10":
 				computerPage.setNombreElementParPage(10);
-				computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
+				computers = computerService.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
 				    computerPage.getNombreElementParPage());
 			break;
 
 			case "50":
 				computerPage.setNombreElementParPage(50);
-				computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
+				computers = computerService.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
 				    computerPage.getNombreElementParPage());
 			break;
 
 			case "100":
 				computerPage.setNombreElementParPage(100);
-				computers = ComputerService.INSTANCE.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
+				computers = computerService.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
 				    computerPage.getNombreElementParPage());
 			break;
 		}

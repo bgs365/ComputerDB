@@ -21,50 +21,54 @@ import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 
 /**
- * Servlet implementation class AddComputer.
+ * Servlet implementation class EditComputer
  */
-@WebServlet("/addComputer")
-public class AddComputer extends HttpServlet {
+@WebServlet("/editComputer")
+public class EditComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private List<Company> companies = CompanyService.INSTANCE.findAll();
-
-	static final Logger LOGGER = LoggerFactory.getLogger(AddComputer.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(EditComputer.class);
+	private ComputerService computerService = ComputerService.INSTANCE;
+	private CompanyService companyService = CompanyService.INSTANCE;
+	private Computer computer = new Computer();
+	private List<Company> companies = companyService.findAll();
+	private boolean firstConnection = true;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public AddComputer() {
+	public EditComputer() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
-	 *
-	 * @param request
-	 *          a
-	 * @param response
-	 *          a
-	 * @throws ServletException
-	 *           a
-	 * @throws IOException
-	 *           a
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String ReceiveComputerId = null;
+		if(firstConnection) {
+			ReceiveComputerId = (request.getParameter("ComputerId") != null) ? request.getParameter("ComputerId") : "0";
+			LOGGER.info(ReceiveComputerId);
+			int computerId = Integer.parseInt(ReceiveComputerId);
+			computer = computerService.findById(computerId);
+	
+			request.setAttribute("computerName", computer.getName());
+			request.setAttribute("introduced", computer.getIntroduced());
+			request.setAttribute("discontinued", computer.getDiscontinued());
+			request.setAttribute("company", computer.getCompany());
+		}
+		
 		request.setAttribute("companies", companies);
-		this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
+		this.getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(request, response);
 	}
 
 	/**
-	 *
-	 * @param request
-	 *          a
-	 * @param response
-	 *          a
-	 * @throws ServletException
-	 *           a
-	 * @throws IOException
-	 *           a
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		firstConnection = false;
 		String name = null;
 		String receiveIntroduced = null;
 		String receiveDiscontinued = null;
@@ -104,7 +108,7 @@ public class AddComputer extends HttpServlet {
 		LOGGER.info(computer + " ");
 		try {
 			LOGGER.info(computer + "");
-			if (ComputerService.INSTANCE.save(computer) == 1) {
+			if (ComputerService.INSTANCE.update(computer) == 1) {
 				success = true;
 				LOGGER.info(computer + "");
 			} else {
@@ -126,7 +130,6 @@ public class AddComputer extends HttpServlet {
 			request.setAttribute("errors", errors);
 			doGet(request, response);
 		}
-
 	}
 
 }

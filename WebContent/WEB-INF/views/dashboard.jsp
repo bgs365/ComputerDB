@@ -73,7 +73,7 @@
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="0"></td>
-							<td><a href="editComputer.html" onclick="">${record.name }</a>
+							<td><a href="editComputer?ComputerId=${record.id }" onclick="">${record.name }</a>
 							</td>
 							<td>${record.introduced }</td>
 							<td>${record.discontinued }</td>
