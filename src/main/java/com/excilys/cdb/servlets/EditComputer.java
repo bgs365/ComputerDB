@@ -30,6 +30,7 @@ public class EditComputer extends HttpServlet {
 	private ComputerService computerService = ComputerService.INSTANCE;
 	private CompanyService companyService = CompanyService.INSTANCE;
 	private Computer computer = new Computer();
+	private Computer oldComputer = new Computer();
 	private List<Company> companies = companyService.findAll();
 	private boolean firstConnection = true;
 
@@ -51,11 +52,9 @@ public class EditComputer extends HttpServlet {
 			ReceiveComputerId = (request.getParameter("ComputerId") != null) ? request.getParameter("ComputerId") : "0";
 			LOGGER.info(ReceiveComputerId);
 			int computerId = Integer.parseInt(ReceiveComputerId);
-			computer = computerService.findById(computerId);
+			oldComputer = computerService.findById(computerId);
 	
-			request.setAttribute("computerName", computer.getName());
-			request.setAttribute("introduced", computer.getIntroduced());
-			request.setAttribute("discontinued", computer.getDiscontinued());
+			request.setAttribute("computer", oldComputer);
 			request.setAttribute("company", computer.getCompany());
 		}
 		
@@ -69,6 +68,7 @@ public class EditComputer extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		firstConnection = false;
+		String receiveId = null;
 		String name = null;
 		String receiveIntroduced = null;
 		String receiveDiscontinued = null;
@@ -76,6 +76,7 @@ public class EditComputer extends HttpServlet {
 		boolean success = false;
 		String errors = "";
 		LOGGER.info("Creation of new computer");
+		receiveId = (request.getParameter("computerId") != null) ? request.getParameter("computerId") : "null";
 		name = (request.getParameter("computerName") != null) ? request.getParameter("computerName") : "null";
 		receiveIntroduced = (request.getParameter("introduced") != null) ? request.getParameter("introduced") : "null";
 		receiveDiscontinued = (request.getParameter("discontinued") != null) ? request.getParameter("discontinued")
@@ -84,7 +85,14 @@ public class EditComputer extends HttpServlet {
 
 		LocalDate introduced = null;
 		LocalDate discontinued = null;
+		int id = 0;
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		
+		if (receiveId.equals("null")) {
+			LOGGER.info("id non valid");
+		} else {
+			id = Integer.parseInt(receiveId);
+		}
 
 		if (receiveIntroduced.equals("null") || (receiveIntroduced.length() < 10)) {
 			LOGGER.info("No introduced date");
@@ -104,7 +112,7 @@ public class EditComputer extends HttpServlet {
 			LOGGER.info("you are creating a computer whitout company" + e);
 		}
 
-		Computer computer = new Computer(0, name, introduced, discontinued, receiveCompany);
+		Computer computer = new Computer(id, name, introduced, discontinued, receiveCompany);
 		LOGGER.info(computer + " ");
 		try {
 			LOGGER.info(computer + "");
@@ -122,10 +130,7 @@ public class EditComputer extends HttpServlet {
 			request.setAttribute("success", success);
 			doGet(request, response);
 		} else {
-			request.setAttribute("computerName", name);
-			request.setAttribute("introduced", receiveIntroduced);
-			request.setAttribute("discontinued", receiveDiscontinued);
-			request.setAttribute("company", receiveCompany);
+			request.setAttribute("computer", computer);
 			request.setAttribute("success", success);
 			request.setAttribute("errors", errors);
 			doGet(request, response);
