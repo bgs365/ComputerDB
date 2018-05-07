@@ -135,4 +135,8 @@ public enum ComputerService {
     }
 
   }
+
+	public List<Computer> FindByComputerAndCompanyName(String search) {
+		return ComputerDAO.INSTANCE.findByComputerAndCompanyName(search);
+	}
 }

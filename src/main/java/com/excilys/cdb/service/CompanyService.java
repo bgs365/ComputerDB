@@ -50,8 +50,8 @@ public enum CompanyService {
    * @param name asName
    * @return Company
    */
-  public Company findbyName(String name) {
-    return CompanyDAO.INSTANCE.findByName(name).get();
+  public List<Company> findbyName(String name) {
+    return CompanyDAO.INSTANCE.findByName(name);
   }
 
 }

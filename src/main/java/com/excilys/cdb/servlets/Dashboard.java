@@ -1,6 +1,8 @@
 package com.excilys.cdb.servlets;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -12,8 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.page.Page;
+import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 
 /**
@@ -25,6 +29,7 @@ public class Dashboard extends HttpServlet {
 
 	int nombrElementParPage = 50;
 	private ComputerService computerService = ComputerService.INSTANCE;
+	private CompanyService companyService = CompanyService.INSTANCE;
 	private List<Computer> computers ;
 	private Page<Computer> computerPage ;
 
@@ -59,6 +64,7 @@ public class Dashboard extends HttpServlet {
 		int numberOfComputers = computerService.findAll().size();
 		String pageNumber = "";
 		String button = "";
+		String search;
 
 		/*
 		 * Admission of parameters send by jsp.
@@ -69,6 +75,17 @@ public class Dashboard extends HttpServlet {
 		button = (request.getParameter("buttonSetNumberElementDisplayed") != null)
 		    ? request.getParameter("buttonSetNumberElementDisplayed")
 		    : "null";
+		    
+    search = (request.getParameter("search") != null) ? request.getParameter("search") : "null";
+    
+    if(!search.equals("null")) {
+    	computers = computerService.FindByComputerAndCompanyName(search);
+    	
+    	numberOfComputers = computers.size();
+    	computerPage.setCurentPage(1);
+    	computerPage = new Page<Computer>(computers, numberOfComputers,numberOfComputers);
+    	
+    }
 
 		/*
 		 * Treatment of send parameters.
@@ -89,7 +106,8 @@ public class Dashboard extends HttpServlet {
 		/*
 		 * Send parameters.
 		 */
-
+		
+		request.setAttribute("search", search);
 		request.setAttribute("numberOfComputers", numberOfComputers);
 		request.setAttribute("computers", computers);
 		request.setAttribute("computerPage", computerPage);
@@ -155,6 +173,7 @@ public class Dashboard extends HttpServlet {
 			break;
 		}
 	}
+	
 	
 
 }

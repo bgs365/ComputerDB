@@ -34,12 +34,12 @@ public class Main {
    *          asName
    */
   public static void main(String[] args) {
-
+/*
     LOGGER.info("Ouverture du Menu");
     MainMenu.display();
     LOGGER.info("Fermeture du Menu");
-
-    // verifServiceComputer();
+*/
+     verifServiceComputer();
     // verifServiceComputerSave();
     // verifServiceCompany();
     // verifServiceComputerUpdate();
@@ -95,7 +95,7 @@ public class Main {
    */
   public static void verifServiceComputer() {
     List<Computer> computers = new ArrayList<Computer>();
-    Computer computer = computerService.findById(1000);
+    /*Computer computer = computerService.findById(1000);
     System.out.println(computer);
 
     computers = computerService.findAll();
@@ -121,6 +121,12 @@ public class Main {
     for (Computer cpt : computers) {
       System.out.println("<-- " + cpt.getName() + " --> introduced = " + cpt.getIntroduced() + " | discontinued = "
           + cpt.getDiscontinued() + " | " + cpt.getCompany().getName() + " -->");
+    }*/
+    
+    computers = computerService.FindByComputerAndCompanyName("Sun");
+    for (Computer cpt : computers) {
+      System.out.println("<-- " + cpt.getName() + " --> introduced = " + cpt.getIntroduced() + " | discontinued = "
+          + cpt.getDiscontinued() + " | " + cpt.getCompany().getName() + " -->");
     }
 
   }
@@ -136,9 +142,9 @@ public class Main {
     companies = companyService.findAll();
     System.out.println(companies);
 
-    company = null;
-    company = companyService.findbyName("Samsung");
-    System.out.println(company);
+    companies = null;
+    companies = companyService.findbyName("Samsung");
+    System.out.println(companies);
 
     companies = null;
     companies = companyService.findLimitNumberOfResult(0, 10);

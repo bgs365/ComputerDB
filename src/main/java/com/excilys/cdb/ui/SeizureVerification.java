@@ -97,7 +97,7 @@ public class SeizureVerification {
       System.out.println("Entrez une company existante ou *nc* pour aucune company");
       nomCompany = sc.nextLine();
       if (!nomCompany.equals("nc")) {
-        company = companyService.findbyName(nomCompany);
+        company = companyService.findbyName(nomCompany).get(0);
         if (company.getId() != 0) {
           companyValide = true;
         } else {

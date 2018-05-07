@@ -67,11 +67,13 @@ public class CompanyDAOTest {
    */
   @Test
   public void testFindByName() {
-    Company company = CompanyDAO.INSTANCE.findByName("Samsung Electronics").get();
-    assertFalse(company.equals(null));
-    assertEquals("Samsung Electronics", company.getName());
-    company = CompanyDAO.INSTANCE.findByName("Ce nom n'existe pas").get();
-    assertFalse(company.getId() != 0);
+    List<Company> companies = CompanyDAO.INSTANCE.findByName("Samsung Electronics");
+    assertFalse(companies.equals(null));
+    assertEquals("Samsung Electronics", companies.get(0).getName());
+    companies = CompanyDAO.INSTANCE.findByName("Ce nom n'existe pas");
+    assertFalse(companies.size() != 0);
+    companies = CompanyDAO.INSTANCE.findByName("Sun");
+    assertEquals(2, companies.size());
   }
 
   /**

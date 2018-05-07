@@ -26,7 +26,7 @@ public enum CompanyDAO {
   String requeteFindById = "SELECT id,name FROM company where id = ?";
   String requeteFinfAll = "SELECT id,name FROM company";
   String requeteFindLimitNumberOfResult = "SELECT id,name FROM company LIMIT ?, ?";
-  String requeteFindByName = "SELECT id,name FROM company WHERE name= ? ";
+  String requeteFindByName = "SELECT id,name FROM company WHERE name LIKE ? ";
   static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
 
   /**
@@ -130,28 +130,29 @@ public enum CompanyDAO {
    * @param name asName
    * @return Company
    */
-  public Optional<Company> findByName(String name) {
+  public List<Company> findByName(String name) {
 
-    Company company = new Company();
+    List<Company> companies = new ArrayList<Company>();
 
     try (Connection conn = Connexion.INSTANCE.getConnexion();
         PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByName)) {
-      preparedStatement.setString(1, name);
+      preparedStatement.setString(1, "%"+name+"%");
       ResultSet result = preparedStatement.executeQuery();
 
       while (result.next()) {
+      	Company company = new Company();
         company.setId(result.getInt("Id"));
         company.setName(result.getString("Name"));
         List<Computer> pComputers = ComputerDAO.INSTANCE.findByCompany(company.getId());
         company.setComputer(pComputers);
-
+        companies.add(company);
       }
 
     } catch (SQLException e) {
       LOGGER.info("Erreur sur la requete find company by name : " + e.getMessage());
     }
 
-    return Optional.ofNullable(company);
+    return companies;
   }
 
 }

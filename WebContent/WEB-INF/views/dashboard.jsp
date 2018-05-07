@@ -20,13 +20,13 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${numberOfComputers} Computersfound</h1>
+			<h1 id="homeTitle">${numberOfComputers} Computers found</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
 
 						<input type="search" id="searchbox" name="search"
-							class="form-control" placeholder="Search name" /> <input
+							class="form-control" placeholder="Search name" value="${search}"/> <input
 							type="submit" id="searchsubmit" value="Filter by name"
 							class="btn btn-primary" />
 					</form>
@@ -73,8 +73,8 @@
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="${record.id }"></td>
-							<td><a href="editComputer?ComputerToModifie=${record.id }" onclick="">${record.name }</a>
-							</td>
+							<td><a href="editComputer?ComputerToModifie=${record.id }"
+								onclick="">${record.name }</a></td>
 							<td>${record.introduced }</td>
 							<td>${record.discontinued }</td>
 							<td>${record.company.name }</td>
@@ -86,13 +86,15 @@
 		</div>
 	</section>
 
-			
-			
+
+
 	<footer class="navbar-fixed-bottom">
 
-		<div class="container text-center">				
-				<c:url var="searchUri" value="dashboard?pageNumber=##" />
-				<pagination:display maxLinks="10" currPage="${computerPage.numerosPage}" totalPages="${numberTotalOfPages}" uri="${searchUri}" />
+		<div class="container text-center">
+			<c:url var="searchUri" value="dashboard?pageNumber=##" />
+			<pagination:display maxLinks="10"
+				currPage="${computerPage.numerosPage}"
+				totalPages="${numberTotalOfPages}" uri="${searchUri}" />
 			<div class="btn-group btn-group-sm pull-right" role="group">
 
 				<form action="${pageContext.request.contextPath}/dashboard"
