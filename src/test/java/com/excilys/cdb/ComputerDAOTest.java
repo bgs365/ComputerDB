@@ -72,11 +72,11 @@ public class ComputerDAOTest {
   @Test
   public void testFindbyName() {
     List<Computer> computers = ComputerDAO.INSTANCE.findByName("Apple II");
-    assertEquals(1, computers.size());
-    assertEquals(16, computers.get(0).getId());
-    assertEquals(LocalDate.parse("1977-04-01"), computers.get(0).getIntroduced());
-    assertEquals(LocalDate.parse("1993-10-01"), computers.get(0).getDiscontinued());
-    assertEquals(1, computers.get(0).getCompany().getId());
+    assertEquals(8, computers.size());
+    assertEquals(16, computers.get(6).getId());
+    assertEquals(LocalDate.parse("1977-04-01"), computers.get(6).getIntroduced());
+    assertEquals(LocalDate.parse("1993-10-01"), computers.get(6).getDiscontinued());
+    assertEquals(1, computers.get(6).getCompany().getId());
     computers = ComputerDAO.INSTANCE.findByName("ce nom n'est pas dans la bdd");
     assertEquals(0, computers.size());
   }

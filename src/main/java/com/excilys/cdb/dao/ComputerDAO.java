@@ -25,7 +25,7 @@ public enum ComputerDAO {
 
   String requeteFindById = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id WHERE computer.id = ?";
   String requeteFinfAll = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id ";
-  String requeteFindByName = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id  WHERE computer.name= ? ";
+  String requeteFindByName = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id  WHERE computer.name LIKE ?  ";
   String requeteFindLimitNumberOfResult = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id LIMIT ?, ?";
   String requeteFindByCompany = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id WHERE computer.company_id = ?";
   String requeteInsert = "INSERT INTO computer (NAME, INTRODUCED, DISCONTINUED, COMPANY_ID) VALUES (?,?,?,?)";
@@ -175,7 +175,7 @@ public enum ComputerDAO {
     try (Connection conn = Connexion.INSTANCE.getConnexion();
         PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByName)) {
 
-      preparedStatement.setString(1, name);
+      preparedStatement.setString(1, "%"+name+"%");
       ResultSet result = preparedStatement.executeQuery();
 
       while (result.next()) {

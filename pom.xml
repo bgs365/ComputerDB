@@ -17,17 +17,14 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<junit.version>4.12</junit.version>
 		<mysql.version>5.1.6</mysql.version>
-		<org.slf4j.version>1.7.5</org.slf4j.version>
 		<ch.qos.logback.version>1.0.9</ch.qos.logback.version>
 		<org.mockito.version>1.9.5</org.mockito.version>
 		<org.apache.ibatis.version>2.3.4.726</org.apache.ibatis.version>
 		<javax.servlet.version>3.1.0</javax.servlet.version>
 		<javax.servlet.jsp.version>2.3.1</javax.servlet.jsp.version>
-		<jstl.version>1.2</jstl.version>
 		<slf4j-jdk14.version>1.7.25</slf4j-jdk14.version>
 		<HikariCP.version>2.7.8</HikariCP.version>
 	</properties>
-
 
 	<dependencies>
 
@@ -42,12 +39,6 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${org.slf4j.version}</version>
 		</dependency>
 
 		<dependency>
@@ -76,9 +67,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>javax.servlet</groupId>
+			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
-			<version>${jstl.version}</version>
+			<version>1.2</version>
 		</dependency>
 
 		<dependency>
@@ -93,7 +84,7 @@
 			<artifactId>slf4j-jdk14</artifactId>
 			<version>${slf4j-jdk14.version}</version>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
@@ -112,6 +103,14 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
 

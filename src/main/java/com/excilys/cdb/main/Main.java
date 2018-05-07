@@ -34,15 +34,15 @@ public class Main {
    *          asName
    */
   public static void main(String[] args) {
-/*
+
     LOGGER.info("Ouverture du Menu");
     MainMenu.display();
     LOGGER.info("Fermeture du Menu");
-*/
+
     // verifServiceComputer();
     // verifServiceComputerSave();
     // verifServiceCompany();
-     verifServiceComputerUpdate();
+    // verifServiceComputerUpdate();
     // verifServiceComputerDelete();
     // System.out.println(ComputerDAO.INSTANCE.findAll());
   }
