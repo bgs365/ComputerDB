@@ -20,7 +20,7 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${numberOfComputers}Computersfound</h1>
+			<h1 id="homeTitle">${numberOfComputers} Computersfound</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -39,7 +39,7 @@
 			</div>
 		</div>
 
-		<form id="deleteForm" action="#" method="POST">
+		<form id="deleteForm" action="dashboard" method="POST">
 			<input type="hidden" name="selection" value="">
 		</form>
 
@@ -72,7 +72,7 @@
 
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
-								class="cb" value="0"></td>
+								class="cb" value="${record.id }"></td>
 							<td><a href="editComputer?ComputerToModifie=${record.id }" onclick="">${record.name }</a>
 							</td>
 							<td>${record.introduced }</td>

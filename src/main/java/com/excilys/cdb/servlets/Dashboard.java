@@ -113,7 +113,19 @@ public class Dashboard extends HttpServlet {
 	 *           a
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		String deleteState = "Delete fail";
+		String selection = "";
+		selection = (request.getParameter("selection") != null) ? request.getParameter("selection") : "null";
+		int computerId = Integer.parseInt(selection);
+		LOGGER.info(selection+" "+computerId);
+		if (computerService.delete(computerId) != 0) {
+			deleteState = "Delete success";
+			LOGGER.info(deleteState);
+		}else {
+			LOGGER.info(deleteState);
+		}
+		request.setAttribute("deleteState", deleteState);
+		doGet(request,response);
 	}
 
 	/**
@@ -143,5 +155,6 @@ public class Dashboard extends HttpServlet {
 			break;
 		}
 	}
+	
 
 }

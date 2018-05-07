@@ -37,14 +37,12 @@ public enum Connexion {
    */
   public Connection getConnexion() {
 
-    LOGGER.info("-------- MySQL JDBC Connection Testing ------------");
     getConnexionVariables();
     try {
       Class.forName(driver);
     } catch (ClassNotFoundException e) {
       LOGGER.error("Where is your MySQL JDBC Driver?", e);
     }
-    LOGGER.info("MySQL JDBC Driver Registered!");
     Connection connection = null;
 
     try {
