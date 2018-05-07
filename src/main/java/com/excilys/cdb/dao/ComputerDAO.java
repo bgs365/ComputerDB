@@ -361,10 +361,12 @@ public enum ComputerDAO {
         preparedStatement.setDate(3, null);
       }
 
-      if (computer.getCompany() != null) {
-        preparedStatement.setInt(4, computer.getCompany().getId());
+      if (computer.getCompany() == null) {
+        preparedStatement.setString(4, null);
+      }else if(findByCompany(computer.getCompany().getId()).isEmpty()) {
+      	 preparedStatement.setString(4, null);
       } else {
-        preparedStatement.setInt(4, 0);
+        preparedStatement.setInt(4, computer.getCompany().getId());
       }
 
       preparedStatement.setInt(5, computer.getId());

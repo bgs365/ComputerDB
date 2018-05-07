@@ -34,15 +34,15 @@ public class Main {
    *          asName
    */
   public static void main(String[] args) {
-
+/*
     LOGGER.info("Ouverture du Menu");
     MainMenu.display();
     LOGGER.info("Fermeture du Menu");
-
+*/
     // verifServiceComputer();
-    //verifServiceComputerSave();
+    // verifServiceComputerSave();
     // verifServiceCompany();
-    // verifServiceComputerUpdate();
+     verifServiceComputerUpdate();
     // verifServiceComputerDelete();
     // System.out.println(ComputerDAO.INSTANCE.findAll());
   }
@@ -54,12 +54,12 @@ public class Main {
    * @throws ComputerServiceNameTooShortException
    */
   public static void verifServiceComputerUpdate() {
-    Computer computer = computerService.findById(602);
-    computer.setName("Test apres");
-    Company company = companyService.findById(17);
-    computer.setDiscontinued(LocalDate.of(2018, 3, 18));
-    computer.setIntroduced(null);
-    computer.setCompany(company);
+    Computer computer = computerService.findById(614);
+    computer.setName("Test update sans company");
+   // Company company = companyService.findById(17);
+    computer.setIntroduced(LocalDate.of(2018, 3, 18));
+    computer.setDiscontinued(null);
+    computer.setCompany(new Company(0,null));
     try {
       System.out.println(computerService.update(computer));
 

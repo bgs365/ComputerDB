@@ -8,6 +8,12 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="css/font-awesome.css" rel="stylesheet" media="screen">
 <link href="css/main.css" rel="stylesheet" media="screen">
+<script
+	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+
+<script type='text/javascript'
+	src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js'></script>
+<script src="js/updateComputerValidator.js"></script>
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
@@ -25,8 +31,8 @@
 					<h1>Edit Computer</h1>
 
 					<form action="editComputer" method="POST">
-						<input type="hidden" value="${computer.id}" id="id" name="computerId"/>
-						<!-- TODO: Change this value with the computer id -->
+						<input type="hidden" value="${computer.id}" id="id"
+							name="computerId" />
 						<fieldset>
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
@@ -50,6 +56,7 @@
 								<label for="companyId">Company</label> <select
 									class="form-control" id="companyId" name="companyId">
 									<option value="${computer.company.id}">${computer.company.name}</option>
+									<option value="0">--</option>
 									<c:forEach items="${companies}" var="record">
 										<option value="${record.id }">${record.name }</option>
 									</c:forEach>
@@ -57,8 +64,9 @@
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
-							<input type="submit" value="Edit" class="btn btn-primary">
-							or <a href="dashboard.html" class="btn btn-default">Cancel</a>
+							<input type="submit" value="Edit" class="btn btn-primary"
+								id="update"> or <a href="dashboard"
+								class="btn btn-default">Cancel</a>
 						</div>
 					</form>
 				</div>
@@ -67,7 +75,7 @@
 				<c:choose>
 					<c:when test="${success=='true'}">
 						<div class="alert alert-success">
-							<strong>Computer update!</strong>
+							<strong>Computer updated!</strong>
 						</div>
 						<br />
 					</c:when>

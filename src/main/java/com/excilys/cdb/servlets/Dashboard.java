@@ -25,9 +25,8 @@ public class Dashboard extends HttpServlet {
 
 	int nombrElementParPage = 50;
 	private ComputerService computerService = ComputerService.INSTANCE;
-	private List<Computer> computers = computerService.findLimitNumberOfResult(0, nombrElementParPage);
-	private Page<Computer> computerPage = new Page<Computer>(computers, nombrElementParPage,
-	    ComputerService.INSTANCE.findAll().size());
+	private List<Computer> computers ;
+	private Page<Computer> computerPage ;
 
 	static final Logger LOGGER = LoggerFactory.getLogger(Dashboard.class);
 
@@ -50,7 +49,10 @@ public class Dashboard extends HttpServlet {
 	 *           a
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		
+		computers = computerService.findLimitNumberOfResult(0, nombrElementParPage);
+		computerPage = new Page<Computer>(computers, nombrElementParPage,
+		    ComputerService.INSTANCE.findAll().size());
 		/*
 		 * Instantiation of parameters to send to jsp.
 		 */

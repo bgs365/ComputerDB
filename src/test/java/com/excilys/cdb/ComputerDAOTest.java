@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.excilys.cdb.dao.ComputerDAO;
+import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
@@ -153,6 +154,18 @@ public class ComputerDAOTest {
     assertEquals(LocalDate.parse("2007-02-11"), computer.getIntroduced());
     assertEquals(LocalDate.parse("2013-02-11"), computer.getDiscontinued());
     assertEquals(2, computer.getCompany().getId());
+    
+    computer = ComputerService.INSTANCE.findById(1);
+    computer.setName("Test change macbook");
+    computer.setCompany(null);
+    assertEquals(1,ComputerDAO.INSTANCE.update(computer));
+    assertEquals("Test change macbook", computer.getName());
+    
+    computer = ComputerService.INSTANCE.findById(2);
+    computer.setName("Test change 2");
+    computer.setCompany(new Company(0,null));
+    assertEquals(1,ComputerDAO.INSTANCE.update(computer));
+    assertEquals("Test change 2", computer.getName());
   }
 
   /**
