@@ -120,7 +120,7 @@ public class SeizureVerification {
    * @return Computer
    */
   public static Computer saisirComputerATrouver() {
-    Computer computer = null;
+    Computer computer = new Computer();
     boolean computerValide = false;
     int idComputer = 0;
     do {
@@ -140,6 +140,31 @@ public class SeizureVerification {
     } while (!computerValide);
     return computer;
   }
+  
+  /**
+   * as previous but for company.
+   * @return Company valid company
+   */
+  public static Company saisirCompanyATrouver() {
+		Company company =new Company();
+		boolean companyValide = false;
+    int idCompany = 0;
+    do {
+      System.out.println("Entrez une computer existante ou *0* pour sortir");
+      idCompany= sc.nextInt();
+      if (idCompany != 0) {
+      	company = companyService.findById(idCompany);
+        if (company.getId() != 0) {
+        	companyValide = true;
+        } else {
+          System.out.println("Cet pc n'existe Pas");
+        }
+      } else {
+      	companyValide = true;
+      }
+    } while (!companyValide);
+		return company;
+	}
 
   /**
    * Allow user to choice yes or no.
@@ -159,5 +184,7 @@ public class SeizureVerification {
     } while (!choixValide);
     return choix;
   }
+
+	
 
 }

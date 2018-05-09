@@ -15,8 +15,7 @@
 
 <script type='text/javascript'
 	src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js'></script>
-	  <script
-	src="js/addComputerValidator.js"></script>
+<script src="js/addComputerValidator.js"></script>
 
 </head>
 <body>
@@ -28,6 +27,25 @@
 	</header>
 
 	<section id="main">
+		<div>
+			<c:choose>
+				<c:when test="${success=='true'}">
+					<div class="alert alert-success">
+						<strong>Computer saved!</strong>
+					</div>
+					<br />
+				</c:when>
+				<c:when test="${success=='false'}">
+					<div class="alert alert-danger">
+						<strong>Some field are not well fill! ${errors}</strong>
+					</div>
+					<br />
+				</c:when>
+				<c:otherwise>
+					<br />
+				</c:otherwise>
+			</c:choose>
+		</div>
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
@@ -36,7 +54,7 @@
 						<fieldset>
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
-									type="text" class="form-control" id="computerName" 
+									type="text" class="form-control" id="computerName"
 									name="computerName" placeholder="Computer name"
 									value="${computerName}">
 							</div>
@@ -71,25 +89,7 @@
 				</div>
 			</div>
 
-			<div>
-				<c:choose>
-					<c:when test="${success=='true'}">
-						<div class="alert alert-success">
-							<strong>Computer saved!</strong>
-						</div>
-						<br />
-					</c:when>
-					<c:when test="${success=='false'}">
-						<div class="alert alert-danger">
-							<strong>Some field are not well fill! ${errors}</strong>
-						</div>
-						<br />
-					</c:when>
-					<c:otherwise>
-						<br />
-					</c:otherwise>
-				</c:choose>
-			</div>
+
 		</div>
 	</section>
 

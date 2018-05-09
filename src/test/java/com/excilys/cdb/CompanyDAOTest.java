@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.dao.CompanyDAO;
+import com.excilys.cdb.dao.ComputerDAO;
 import com.excilys.cdb.model.Company;
 
 /**
@@ -21,6 +22,8 @@ import com.excilys.cdb.model.Company;
 public class CompanyDAOTest {
 
   static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAOTest.class);
+  CompanyDAO companyDAO = CompanyDAO.INSTANCE;
+  ComputerDAO computerDAO = ComputerDAO.INSTANCE;
 
   /**
    * init test data.
@@ -55,10 +58,10 @@ public class CompanyDAOTest {
    */
   @Test
   public void testFindById() {
-    Company company = CompanyDAO.INSTANCE.findById(1).get();
+    Company company = companyDAO.findById(1).get();
     assertFalse(company.equals(null));
     assertEquals("Apple Inc.", company.getName());
-    company = CompanyDAO.INSTANCE.findById(50).get();
+    company = companyDAO.findById(50).get();
     assertFalse(company.getId() != 0);
   }
 
@@ -67,12 +70,12 @@ public class CompanyDAOTest {
    */
   @Test
   public void testFindByName() {
-    List<Company> companies = CompanyDAO.INSTANCE.findByName("Samsung Electronics");
+    List<Company> companies = companyDAO.findByName("Samsung Electronics");
     assertFalse(companies.equals(null));
     assertEquals("Samsung Electronics", companies.get(0).getName());
-    companies = CompanyDAO.INSTANCE.findByName("Ce nom n'existe pas");
+    companies = companyDAO.findByName("Ce nom n'existe pas");
     assertFalse(companies.size() != 0);
-    companies = CompanyDAO.INSTANCE.findByName("Sun");
+    companies = companyDAO.findByName("Sun");
     assertEquals(2, companies.size());
   }
 
@@ -81,14 +84,25 @@ public class CompanyDAOTest {
    */
   @Test
   public void findLimitNumberOfResult() {
-    List<Company> companies = CompanyDAO.INSTANCE.findLimitNumberOfResult(0, 10);
+    List<Company> companies = companyDAO.findLimitNumberOfResult(0, 10);
     assertEquals(10, companies.size());
     assertEquals("Apple Inc.", companies.get(0).getName());
     assertEquals("Digital Equipment Corporation", companies.get(9).getName());
-    companies = CompanyDAO.INSTANCE.findLimitNumberOfResult(38, 10);
+    companies = companyDAO.findLimitNumberOfResult(38, 10);
     assertEquals(4, companies.size());
     assertEquals("Texas Instruments", companies.get(0).getName());
     assertEquals("Samsung Electronics", companies.get(3).getName());
+  }
+  
+  /**
+   * Test delete company.
+   */
+  @Test
+  public void testdelete() {
+  	assertEquals(1, companyDAO.delete(1));
+    assertEquals(0, companyDAO.findById(1).get().getId());
+    assertEquals(null, computerDAO.findById(6).get().getName());
+    assertEquals(0, companyDAO.delete(1));
   }
 
 }

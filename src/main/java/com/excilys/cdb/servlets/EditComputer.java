@@ -29,10 +29,7 @@ public class EditComputer extends HttpServlet {
 	static final Logger LOGGER = LoggerFactory.getLogger(EditComputer.class);
 	private ComputerService computerService = ComputerService.INSTANCE;
 	private CompanyService companyService = CompanyService.INSTANCE;
-	// private int computerId = 0;
-	// private Computer computer = new Computer();
-	private List<Company> companies = companyService.findAll();
-	// private boolean premiereConexion = true;
+	private List<Company> companies;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -53,7 +50,7 @@ public class EditComputer extends HttpServlet {
 	 *           a
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		companies = companyService.findAll();
 		String receiveComputerIdFromDashboard = null;
 		receiveComputerIdFromDashboard = (request.getParameter("ComputerToModifie") != null)
 		    ? request.getParameter("ComputerToModifie")
@@ -110,7 +107,7 @@ public class EditComputer extends HttpServlet {
 			LOGGER.info("No introduced date");
 			introduced = null;
 		} else {
-			introduced = LocalDate.parse(receiveIntroduced, formatter);	
+			introduced = LocalDate.parse(receiveIntroduced, formatter);
 		}
 		computer.setIntroduced(introduced);
 

@@ -24,6 +24,7 @@ public class Dashboard extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private int nombrElementPerPage = 10;
+	private int numberOfComputers = 0;
 	private ComputerService computerService = ComputerService.INSTANCE;
 	private List<Computer> computers;
 	private Page<Computer> computerPage;
@@ -54,13 +55,9 @@ public class Dashboard extends HttpServlet {
 		/*
 		 * Instantiation of parameters to send to jsp.
 		 */
-		int numberOfComputers = 0;
+
 		String pageNumber = "";
 		String button = "";
-
-		/*
-		 * Admission of parameters send by jsp.
-		 */
 
 		pageNumber = (request.getParameter("pageNumber") != null) ? request.getParameter("pageNumber") : "null";
 
@@ -70,35 +67,17 @@ public class Dashboard extends HttpServlet {
 
 		search = (request.getParameter("search") != null) ? request.getParameter("search") : "";
 
-		if (!search.equals("")) {
-			numberOfComputers = computerService.findByComputerAndCompanyName(search).size();
-			computers = computerService.findByComputerAndCompanyNameLimit(search,0,nombrElementPerPage);
+		setPageContent(search, 0, nombrElementPerPage);
 
-		} else {
-			numberOfComputers = computerService.findAll().size();
-			computers = computerService.findLimitNumberOfResult(0, nombrElementPerPage);
-			
-		}
 		computerPage = new Page<Computer>(computers, nombrElementPerPage, numberOfComputers);
 
-		/*
-		 * Treatment of send parameters.
-		 */
+		switchNumberOfElementsByPage(button);
 
-		/* Switch page by number */
+		/* Switch page */
 		if (!pageNumber.equals("null")) {
 			computerPage.setCurentPage(Integer.parseInt(pageNumber));
-			if (!search.equals("")) {
-				computers = computerService.findByComputerAndCompanyNameLimit(search,computerPage.getIndexFirstPageElement(),
-						 computerPage.getNombreElementParPage());
-			}else {
-				computers = computerService.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
-				    computerPage.getNombreElementParPage());
-			}
-		
+			setPageContent(search, computerPage.getIndexFirstPageElement(), computerPage.getNombreElementParPage());
 		}
-		
-		switchNumberOfElementsByPage(button);
 
 		int numberTotalOfPages = (int) Math
 		    .ceil(computerPage.getNombreElementTotal() / Double.valueOf(computerPage.getNombreElementParPage()));
@@ -136,7 +115,6 @@ public class Dashboard extends HttpServlet {
 		String selection = "";
 		selection = (request.getParameter("selection") != null) ? request.getParameter("selection") : "null";
 		int computerId = Integer.parseInt(selection);
-		LOGGER.info(selection + " " + computerId);
 		if (computerService.delete(computerId) != 0) {
 			deleteState = "Delete success";
 			LOGGER.info(deleteState);
@@ -156,33 +134,40 @@ public class Dashboard extends HttpServlet {
 	private void switchNumberOfElementsByPage(String button) {
 		switch (button) {
 			case "10":
-				computerPage.setNombreElementParPage(10);
 				nombrElementPerPage = 10;
-				if (!search.equals("")) {
-					computers = computerService.findByComputerAndCompanyNameLimit(search,computerPage.getIndexFirstPageElement(),
-					    computerPage.getNombreElementParPage());
-				}else {
-					computers = computerService.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
-					    computerPage.getNombreElementParPage());
-				}
-				
 			break;
 
 			case "50":
 				nombrElementPerPage = 50;
-				computerPage.setNombreElementParPage(50);
-				computers = computerService.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
-				    computerPage.getNombreElementParPage());
 			break;
 
 			case "100":
 				nombrElementPerPage = 100;
-				computerPage.setNombreElementParPage(100);
-				computers = computerService.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
-				    computerPage.getNombreElementParPage());
 			break;
 		}
-		
+		computerPage.setNombreElementParPage(nombrElementPerPage);
+
+	}
+
+	/**
+	 * 
+	 * @param pSearch
+	 *          name of computer or company
+	 * @param pIndexFirstPageElement
+	 *          asName
+	 * @param pNombrElementPerPageasName
+	 */
+	private void setPageContent(String pSearch, int pIndexFirstPageElement, int pNombrElementPerPage) {
+		if (!search.equals("")) {
+			numberOfComputers = computerService.findByComputerAndCompanyName(pSearch).size();
+			computers = computerService.findByComputerAndCompanyNameLimit(pSearch, pIndexFirstPageElement,
+			    nombrElementPerPage);
+
+		} else {
+			numberOfComputers = computerService.findAll().size();
+			computers = computerService.findLimitNumberOfResult(pIndexFirstPageElement, pNombrElementPerPage);
+
+		}
 	}
 
 }

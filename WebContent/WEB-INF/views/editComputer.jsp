@@ -23,6 +23,25 @@
 		</div>
 	</header>
 	<section id="main">
+		<div>
+			<c:choose>
+				<c:when test="${success=='true'}">
+					<div class="alert alert-success">
+						<strong>Computer updated!</strong>
+					</div>
+					<br />
+				</c:when>
+				<c:when test="${success=='false'}">
+					<div class="alert alert-danger">
+						<strong>Some field are not well fill! ${errors}</strong>
+					</div>
+					<br />
+				</c:when>
+				<c:otherwise>
+					<br />
+				</c:otherwise>
+			</c:choose>
+		</div>
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
@@ -71,25 +90,7 @@
 					</form>
 				</div>
 			</div>
-			<div>
-				<c:choose>
-					<c:when test="${success=='true'}">
-						<div class="alert alert-success">
-							<strong>Computer updated!</strong>
-						</div>
-						<br />
-					</c:when>
-					<c:when test="${success=='false'}">
-						<div class="alert alert-danger">
-							<strong>Some field are not well fill! ${errors}</strong>
-						</div>
-						<br />
-					</c:when>
-					<c:otherwise>
-						<br />
-					</c:otherwise>
-				</c:choose>
-			</div>
+
 		</div>
 	</section>
 </body>

@@ -2,6 +2,9 @@ package com.excilys.cdb.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.model.Company;
 
@@ -13,6 +16,9 @@ import com.excilys.cdb.model.Company;
  */
 public enum CompanyService {
   INSTANCE;
+  static final Logger LOGGER = LoggerFactory.getLogger(CompanyService.class);
+  CompanyDAO companyDAO = CompanyDAO.INSTANCE;
+
 
   /**
    * find company by id.
@@ -21,7 +27,7 @@ public enum CompanyService {
    * @return Company
    */
   public Company findById(int id) {
-    return CompanyDAO.INSTANCE.findById(id).get();
+    return companyDAO.findById(id).get();
   }
 
   /**
@@ -30,7 +36,7 @@ public enum CompanyService {
    * @return List<Company>
    */
   public List<Company> findAll() {
-    return CompanyDAO.INSTANCE.findAll();
+    return companyDAO.findAll();
   }
 
   /**
@@ -41,7 +47,7 @@ public enum CompanyService {
    * @return List<Company>
    */
   public List<Company> findLimitNumberOfResult(int pageIndex, int numberOfResultByPage) {
-    return CompanyDAO.INSTANCE.findLimitNumberOfResult(pageIndex, numberOfResultByPage);
+    return companyDAO.findLimitNumberOfResult(pageIndex, numberOfResultByPage);
   }
 
   /**
@@ -51,7 +57,23 @@ public enum CompanyService {
    * @return Company
    */
   public List<Company> findbyName(String name) {
-    return CompanyDAO.INSTANCE.findByName(name);
+    return companyDAO.findByName(name);
+  }
+  
+  /**
+   * delete company.
+   *
+   * @param id
+   *          asName
+   * @return (0 or 1)
+   */
+  public int delete(int id) {
+    if (findById(id).getId() == 0) {
+      LOGGER.info("Company that you want to delete don't exist");
+      return 0;
+    } else {
+      return companyDAO.delete(id);
+    }
   }
 
 }

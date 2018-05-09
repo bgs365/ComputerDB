@@ -24,7 +24,8 @@ public class MainMenu {
       System.out.println("******************* 3 -- CREATE COMPUTER ");
       System.out.println("******************* 4 -- UPDATE COMPUTER ");
       System.out.println("******************* 5 -- DELETE COMPUTER ");
-      System.out.println("******************* 6 -- EXIT ");
+      System.out.println("******************* 6 -- DELETE COMPANY ");
+      System.out.println("******************* 7 -- EXIT ");
       sc = new Scanner(System.in);
       int choix = sc.nextInt();
       System.out.println(choix);
@@ -48,8 +49,12 @@ public class MainMenu {
       case 5:
         ComputerUI.deleteComputer();
         break;
-
+        
       case 6:
+        CompanyUI.deleteCompany();
+        break;
+
+      case 7:
         quitter = false;
         break;
       }

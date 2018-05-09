@@ -57,6 +57,24 @@ public class CompanyUI {
     } while (!quiter);
 
   }
+  
+  /**
+   * delete company.
+   */
+ public static void deleteCompany() {
+   Company company = new Company();
+   String choix = null;
+
+   System.out.println("******************* Entrez company id to delete it *******************");
+   company = SeizureVerification.saisirCompanyATrouver();
+   System.out.println("VAre you sure to delete this company ? --> " + company);
+   choix = SeizureVerification.choixBinaire();
+   if (choix.equals("1")) {
+     companyService.delete(company.getId());
+   } else {
+     System.out.println("OK");
+   }
+ }
 
   /**
    * take a group of company and rage them in a string.

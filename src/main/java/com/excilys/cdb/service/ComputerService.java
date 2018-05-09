@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.dao.ComputerDAO;
 import com.excilys.cdb.exceptions.CdbException;
-import com.excilys.cdb.main.Main;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.validator.ComputerValidator;
 
@@ -20,7 +19,7 @@ import com.excilys.cdb.validator.ComputerValidator;
 public enum ComputerService {
   INSTANCE;
 
-  static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+  static final Logger LOGGER = LoggerFactory.getLogger(ComputerService.class);
   ComputerValidator computerValidator = ComputerValidator.INSTANCE;
 
   /**

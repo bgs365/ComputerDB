@@ -26,7 +26,7 @@ import com.excilys.cdb.service.ComputerService;
 @WebServlet("/addComputer")
 public class AddComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private List<Company> companies = CompanyService.INSTANCE.findAll();
+	private List<Company> companies;
 
 	static final Logger LOGGER = LoggerFactory.getLogger(AddComputer.class);
 
@@ -65,6 +65,7 @@ public class AddComputer extends HttpServlet {
 	 *           a
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		companies = CompanyService.INSTANCE.findAll();
 		String name = null;
 		String receiveIntroduced = null;
 		String receiveDiscontinued = null;
