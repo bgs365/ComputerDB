@@ -118,6 +118,36 @@ public class ComputerDAOTest {
     computers = ComputerDAO.INSTANCE.findLimitNumberOfResult(1000, 10);
     assertEquals(0, computers.size());
   }
+  
+  /**
+   * Test find Limit Number Of Result by name.
+   */
+  @Test
+  public void findByComputerAndCompanyNameLimit() {
+    List<Computer> computers = ComputerDAO.INSTANCE.findByComputerAndCompanyNameLimit("Apple", 0, 10);
+    assertEquals(10, computers.size());
+    assertEquals("Apple I", computers.get(0).getName());
+    assertEquals("Apple Lisa", computers.get(9).getName());
+    computers = ComputerDAO.INSTANCE.findByComputerAndCompanyNameLimit("Apple",40, 10);
+    assertEquals(6, computers.size());
+    assertEquals("Macintosh SE", computers.get(0).getName());
+    assertEquals("Upcoming iPhone 5", computers.get(5).getName());
+    computers = ComputerDAO.INSTANCE.findByComputerAndCompanyNameLimit("Apple",1000, 10);
+    assertEquals(0, computers.size());
+  }
+  
+  /**
+   * Test find Limit Number Of Result by name.
+   */
+  @Test
+  public void findByComputerAndCompanyName() {
+    List<Computer> computers = ComputerDAO.INSTANCE.findByComputerAndCompanyName("Apple");
+    assertEquals(46, computers.size());
+    assertEquals("Apple I", computers.get(0).getName());
+    assertEquals("Upcoming iPhone 5", computers.get(45).getName());
+    computers = ComputerDAO.INSTANCE.findByComputerAndCompanyName("This name is not in database");
+    assertEquals(0, computers.size());
+  }
 
   /**
    * Test save computer.

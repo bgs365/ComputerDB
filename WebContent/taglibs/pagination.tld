@@ -31,5 +31,15 @@
       <rtexprvalue>true</rtexprvalue>
       <type>int</type>
     </attribute>
+    <attribute>
+      <name>searchName</name>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+    <attribute>
+      <name>nombreElementPerPage</name>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
   </tag>
 </taglib>

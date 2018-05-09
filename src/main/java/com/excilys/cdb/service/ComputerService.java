@@ -135,8 +135,28 @@ public enum ComputerService {
     }
 
   }
-
-	public List<Computer> FindByComputerAndCompanyName(String search) {
-		return ComputerDAO.INSTANCE.findByComputerAndCompanyName(search);
+  
+  /**
+   * 
+   * @param name
+   * @param pageIndex
+   * @param numberOfResultByPage
+   * @return
+   */
+	public List<Computer> findByComputerAndCompanyName(String name) {
+		return ComputerDAO.INSTANCE.findByComputerAndCompanyName(name);
 	}
+	
+	/**
+   * 
+   * @param name
+   * @param pageIndex
+   * @param numberOfResultByPage
+   * @return
+   */
+	public List<Computer> findByComputerAndCompanyNameLimit(String name,int pageIndex, int numberOfResultByPage) {
+		return ComputerDAO.INSTANCE.findByComputerAndCompanyNameLimit(name, pageIndex, numberOfResultByPage);
+	}
+	
+	
 }

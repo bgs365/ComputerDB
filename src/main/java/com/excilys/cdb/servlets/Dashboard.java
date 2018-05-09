@@ -1,8 +1,6 @@
 package com.excilys.cdb.servlets;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -14,10 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.page.Page;
-import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 
 /**
@@ -27,11 +23,11 @@ import com.excilys.cdb.service.ComputerService;
 public class Dashboard extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	int nombrElementParPage = 50;
+	private int nombrElementPerPage = 10;
 	private ComputerService computerService = ComputerService.INSTANCE;
-	private CompanyService companyService = CompanyService.INSTANCE;
-	private List<Computer> computers ;
-	private Page<Computer> computerPage ;
+	private List<Computer> computers;
+	private Page<Computer> computerPage;
+	private String search = "";
 
 	static final Logger LOGGER = LoggerFactory.getLogger(Dashboard.class);
 
@@ -54,17 +50,13 @@ public class Dashboard extends HttpServlet {
 	 *           a
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		computers = computerService.findLimitNumberOfResult(0, nombrElementParPage);
-		computerPage = new Page<Computer>(computers, nombrElementParPage,
-		    ComputerService.INSTANCE.findAll().size());
+
 		/*
 		 * Instantiation of parameters to send to jsp.
 		 */
-		int numberOfComputers = computerService.findAll().size();
+		int numberOfComputers = 0;
 		String pageNumber = "";
 		String button = "";
-		String search;
 
 		/*
 		 * Admission of parameters send by jsp.
@@ -75,17 +67,19 @@ public class Dashboard extends HttpServlet {
 		button = (request.getParameter("buttonSetNumberElementDisplayed") != null)
 		    ? request.getParameter("buttonSetNumberElementDisplayed")
 		    : "null";
-		    
-    search = (request.getParameter("search") != null) ? request.getParameter("search") : "null";
-    
-    if(!search.equals("null")) {
-    	computers = computerService.FindByComputerAndCompanyName(search);
-    	
-    	numberOfComputers = computers.size();
-    	computerPage.setCurentPage(1);
-    	computerPage = new Page<Computer>(computers, numberOfComputers,numberOfComputers);
-    	
-    }
+
+		search = (request.getParameter("search") != null) ? request.getParameter("search") : "";
+
+		if (!search.equals("")) {
+			numberOfComputers = computerService.findByComputerAndCompanyName(search).size();
+			computers = computerService.findByComputerAndCompanyNameLimit(search,0,nombrElementPerPage);
+
+		} else {
+			numberOfComputers = computerService.findAll().size();
+			computers = computerService.findLimitNumberOfResult(0, nombrElementPerPage);
+			
+		}
+		computerPage = new Page<Computer>(computers, nombrElementPerPage, numberOfComputers);
 
 		/*
 		 * Treatment of send parameters.
@@ -94,10 +88,16 @@ public class Dashboard extends HttpServlet {
 		/* Switch page by number */
 		if (!pageNumber.equals("null")) {
 			computerPage.setCurentPage(Integer.parseInt(pageNumber));
-			computers = computerService.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
-			    computerPage.getNombreElementParPage());
+			if (!search.equals("")) {
+				computers = computerService.findByComputerAndCompanyNameLimit(search,computerPage.getIndexFirstPageElement(),
+						 computerPage.getNombreElementParPage());
+			}else {
+				computers = computerService.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
+				    computerPage.getNombreElementParPage());
+			}
+		
 		}
-
+		
 		switchNumberOfElementsByPage(button);
 
 		int numberTotalOfPages = (int) Math
@@ -106,8 +106,9 @@ public class Dashboard extends HttpServlet {
 		/*
 		 * Send parameters.
 		 */
-		
+
 		request.setAttribute("search", search);
+		request.setAttribute("numberElementPerPage", nombrElementPerPage);
 		request.setAttribute("numberOfComputers", numberOfComputers);
 		request.setAttribute("computers", computers);
 		request.setAttribute("computerPage", computerPage);
@@ -135,15 +136,15 @@ public class Dashboard extends HttpServlet {
 		String selection = "";
 		selection = (request.getParameter("selection") != null) ? request.getParameter("selection") : "null";
 		int computerId = Integer.parseInt(selection);
-		LOGGER.info(selection+" "+computerId);
+		LOGGER.info(selection + " " + computerId);
 		if (computerService.delete(computerId) != 0) {
 			deleteState = "Delete success";
 			LOGGER.info(deleteState);
-		}else {
+		} else {
 			LOGGER.info(deleteState);
 		}
 		request.setAttribute("deleteState", deleteState);
-		doGet(request,response);
+		doGet(request, response);
 	}
 
 	/**
@@ -156,24 +157,32 @@ public class Dashboard extends HttpServlet {
 		switch (button) {
 			case "10":
 				computerPage.setNombreElementParPage(10);
-				computers = computerService.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
-				    computerPage.getNombreElementParPage());
+				nombrElementPerPage = 10;
+				if (!search.equals("")) {
+					computers = computerService.findByComputerAndCompanyNameLimit(search,computerPage.getIndexFirstPageElement(),
+					    computerPage.getNombreElementParPage());
+				}else {
+					computers = computerService.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
+					    computerPage.getNombreElementParPage());
+				}
+				
 			break;
 
 			case "50":
+				nombrElementPerPage = 50;
 				computerPage.setNombreElementParPage(50);
 				computers = computerService.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
 				    computerPage.getNombreElementParPage());
 			break;
 
 			case "100":
+				nombrElementPerPage = 100;
 				computerPage.setNombreElementParPage(100);
 				computers = computerService.findLimitNumberOfResult(computerPage.getIndexFirstPageElement(),
 				    computerPage.getNombreElementParPage());
 			break;
 		}
+		
 	}
-	
-	
 
 }

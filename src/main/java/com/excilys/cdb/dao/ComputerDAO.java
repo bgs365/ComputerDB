@@ -26,6 +26,7 @@ public enum ComputerDAO {
   String requeteFindById = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id WHERE computer.id = ?";
   String requeteFinfAll = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id ";
   String requeteFindByName = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id  WHERE computer.name LIKE ?  ";
+  String requeteFindByComputerAndCompanyNameLimit = " SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id  WHERE computer.name LIKE ? OR company.name LIKE ? ORDER BY computer.name LIMIT ?, ?";
   String requeteFindByComputerAndCompanyName = " SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id  WHERE computer.name LIKE ? OR company.name LIKE ? ORDER BY computer.name";
   String requeteFindLimitNumberOfResult = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id LIMIT ?, ?";
   String requeteFindByCompany = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id WHERE computer.company_id = ?";
@@ -248,6 +249,59 @@ public enum ComputerDAO {
     return computers;
   }
   
+  /**
+   * for page.
+   * @param name
+   * @param pageIndex
+   * @param numberOfResultByPage
+   * @return
+   */
+  public List<Computer> findByComputerAndCompanyNameLimit(String name,int pageIndex, int numberOfResultByPage){
+  	List<Computer> computers = new ArrayList<Computer>();
+  	
+  	 try (Connection conn = Connexion.INSTANCE.getConnexion();
+         PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByComputerAndCompanyNameLimit)) {
+
+       preparedStatement.setString(1, "%"+name+"%");
+       preparedStatement.setString(2, "%"+name+"%");
+       preparedStatement.setInt(3, pageIndex);
+       preparedStatement.setInt(4, numberOfResultByPage);
+       ResultSet result = preparedStatement.executeQuery();
+
+       while (result.next()) {
+
+         Computer computer = new Computer();
+         computer.setId(result.getInt("Id"));
+         computer.setName(result.getString("Name"));
+         Company company = new Company();
+         if (result.getDate("introduced") != null) {
+           computer.setIntroduced(result.getDate("introduced").toLocalDate());
+         }
+         if (result.getDate("discontinued") != null) {
+           computer.setDiscontinued(result.getDate("discontinued").toLocalDate());
+         }
+         if (result.getInt("company.Id") != 0) {
+           company.setId(result.getInt("company.Id"));
+           company.setName(result.getString("company.name"));
+         }
+         computer.setCompany(company);
+         computers.add(computer);
+       }
+
+     } catch (SQLException e) {
+       LOGGER.info("Erreur sur la requete find Computer by name : " + e.getMessage());
+     }
+  	
+  	return computers;
+  }
+  
+  /**
+   * use when page not need.
+   * @param name
+   * @param pageIndex
+   * @param numberOfResultByPage
+   * @return
+   */
   public List<Computer> findByComputerAndCompanyName(String name){
   	List<Computer> computers = new ArrayList<Computer>();
   	

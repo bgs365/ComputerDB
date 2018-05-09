@@ -16,8 +16,10 @@ public class Pagination extends SimpleTagSupport {
   private int currPage;
   private int totalPages;
   private int maxLinks = 10;
-
-  /**
+  private String searchName;
+  private String nombreElementPerPage;
+  
+	/**
    *
    * @return out asName
    */
@@ -95,7 +97,7 @@ public class Pagination extends SimpleTagSupport {
       link.append(className);
       link.append("\"");
     }
-    link.append(">").append("<a href=\"").append(uri.replace("##", String.valueOf(page))).append("\">").append(text)
+    link.append(">").append("<a href=\"").append(uri.replace("##", String.valueOf(page)+"&search="+searchName+"&nombreElementPerPage="+nombreElementPerPage)).append("\">").append(text)
         .append("</a></li>");
     return link.toString();
   }
@@ -115,4 +117,22 @@ public class Pagination extends SimpleTagSupport {
   public void setMaxLinks(int maxLinks) {
     this.maxLinks = maxLinks;
   }
+  
+  public String getSearchName() {
+		return searchName;
+	}
+
+	public void setSearchName(String search) {
+		this.searchName = search;
+	}
+	
+	public String getNombreElementPerPage() {
+		return nombreElementPerPage;
+	}
+
+	public void setNombreElementPerPage(String nombreElementPerPage) {
+		this.nombreElementPerPage = nombreElementPerPage;
+	}
+
+
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.cdb.dao.ComputerDAO;
 import com.excilys.cdb.exceptions.CdbException;
 import com.excilys.cdb.exceptions.ComputerServiceIllegalExpression;
 import com.excilys.cdb.exceptions.ComputerServiceNameTooShortException;
@@ -14,7 +15,6 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
-import com.excilys.cdb.ui.MainMenu;
 
 /**
  * Main class, which allow to verify class.
@@ -123,7 +123,7 @@ public class Main {
           + cpt.getDiscontinued() + " | " + cpt.getCompany().getName() + " -->");
     }*/
     
-    computers = computerService.FindByComputerAndCompanyName("Sun");
+    computers = computerService.findByComputerAndCompanyNameLimit("Apple",40,10);
     for (Computer cpt : computers) {
       System.out.println("<-- " + cpt.getName() + " --> introduced = " + cpt.getIntroduced() + " | discontinued = "
           + cpt.getDiscontinued() + " | " + cpt.getCompany().getName() + " -->");

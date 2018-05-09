@@ -94,7 +94,9 @@
 			<c:url var="searchUri" value="dashboard?pageNumber=##" />
 			<pagination:display maxLinks="10"
 				currPage="${computerPage.numerosPage}"
-				totalPages="${numberTotalOfPages}" uri="${searchUri}" />
+				totalPages="${numberTotalOfPages}" uri="${searchUri}" 
+				searchName="${search}" 
+				nombreElementPerPage="${nombrElementPerPage }"/>
 			<div class="btn-group btn-group-sm pull-right" role="group">
 
 				<form action="${pageContext.request.contextPath}/dashboard"
