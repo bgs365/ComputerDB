@@ -1,4 +1,4 @@
-package com.excilys.cdb;
+package com.excilys.cdb.testUnitaire;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

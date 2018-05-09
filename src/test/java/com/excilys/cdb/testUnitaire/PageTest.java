@@ -1,4 +1,4 @@
-package com.excilys.cdb;
+package com.excilys.cdb.testUnitaire;
 
 import org.junit.Test;
 import static org.mockito.Mockito.when;

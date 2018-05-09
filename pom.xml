@@ -24,6 +24,7 @@
 		<javax.servlet.jsp.version>2.3.1</javax.servlet.jsp.version>
 		<slf4j-jdk14.version>1.7.25</slf4j-jdk14.version>
 		<HikariCP.version>2.7.8</HikariCP.version>
+		<selenium-java.version>2.53.1</selenium-java.version>
 	</properties>
 
 	<dependencies>
@@ -84,12 +85,18 @@
 			<artifactId>slf4j-jdk14</artifactId>
 			<version>${slf4j-jdk14.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
 			<version>${HikariCP.version}</version>
 			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>${selenium-java.version}</version>
 		</dependency>
 
 	</dependencies>
