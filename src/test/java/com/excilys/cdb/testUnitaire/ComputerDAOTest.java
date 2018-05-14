@@ -24,7 +24,8 @@ import com.excilys.cdb.service.ComputerService;
  *
  */
 public class ComputerDAOTest {
-
+	
+	ComputerDAO computerDAO = ComputerDAO.INSTANCE;
   /**
    * init test data.
    */
@@ -46,7 +47,7 @@ public class ComputerDAOTest {
    */
   @Test
   public void testFindAll() {
-    List<Computer> computers = ComputerDAO.INSTANCE.findAll();
+    List<Computer> computers = computerDAO.findAll();
     assertEquals(574, computers.size());
     assertEquals("MacBook Pro 15.4 inch", computers.get(0).getName());
     assertEquals("iPhone 4S", computers.get(computers.size() - 1).getName());
@@ -57,12 +58,12 @@ public class ComputerDAOTest {
    */
   @Test
   public void testFindbyId() {
-    Computer computer = ComputerDAO.INSTANCE.findById(16).get();
+    Computer computer = computerDAO.findById(16).get();
     assertEquals("Apple II", computer.getName());
     assertEquals(LocalDate.parse("1977-04-01"), computer.getIntroduced());
     assertEquals(LocalDate.parse("1993-10-01"), computer.getDiscontinued());
     assertEquals(1, computer.getCompany().getId());
-    computer = ComputerDAO.INSTANCE.findById(1000).get();
+    computer = computerDAO.findById(1000).get();
     assertFalse(computer.getId() != 0);
   }
 
@@ -71,13 +72,13 @@ public class ComputerDAOTest {
    */
   @Test
   public void testFindbyName() {
-    List<Computer> computers = ComputerDAO.INSTANCE.findByName("Apple II");
+    List<Computer> computers = computerDAO.findByName("Apple II");
     assertEquals(8, computers.size());
     assertEquals(16, computers.get(6).getId());
     assertEquals(LocalDate.parse("1977-04-01"), computers.get(6).getIntroduced());
     assertEquals(LocalDate.parse("1993-10-01"), computers.get(6).getDiscontinued());
     assertEquals(1, computers.get(6).getCompany().getId());
-    computers = ComputerDAO.INSTANCE.findByName("ce nom n'est pas dans la bdd");
+    computers = computerDAO.findByName("ce nom n'est pas dans la bdd");
     assertEquals(0, computers.size());
   }
 
@@ -86,7 +87,7 @@ public class ComputerDAOTest {
    */
   @Test
   public void testFindbyCompany() {
-    List<Computer> computers = ComputerDAO.INSTANCE.findByCompany(1);
+    List<Computer> computers = computerDAO.findByCompany(1);
     /*
      * Le test est fait sur le 2e index de la requete suivante SELECT * FROM
      * computer LEFT JOIN company ON company.id = computer.company_id WHERE
@@ -98,7 +99,7 @@ public class ComputerDAOTest {
     assertEquals(null, computers.get(1).getDiscontinued());
     assertEquals("MacBook Pro", computers.get(1).getName());
 
-    computers = ComputerDAO.INSTANCE.findByCompany(1000);
+    computers = computerDAO.findByCompany(1000);
     assertEquals(0, computers.size());
   }
 
@@ -107,15 +108,15 @@ public class ComputerDAOTest {
    */
   @Test
   public void findLimitNumberOfResult() {
-    List<Computer> computers = ComputerDAO.INSTANCE.findLimitNumberOfResult(0, 10);
+    List<Computer> computers = computerDAO.findLimitNumberOfResult(0, 10);
     assertEquals(10, computers.size());
     assertEquals("MacBook Pro 15.4 inch", computers.get(0).getName());
     assertEquals("Apple IIc Plus", computers.get(9).getName());
-    computers = ComputerDAO.INSTANCE.findLimitNumberOfResult(569, 10);
+    computers = computerDAO.findLimitNumberOfResult(569, 10);
     assertEquals(5, computers.size());
     assertEquals("HP Veer", computers.get(0).getName());
     assertEquals("iPhone 4S", computers.get(4).getName());
-    computers = ComputerDAO.INSTANCE.findLimitNumberOfResult(1000, 10);
+    computers = computerDAO.findLimitNumberOfResult(1000, 10);
     assertEquals(0, computers.size());
   }
   
@@ -124,15 +125,15 @@ public class ComputerDAOTest {
    */
   @Test
   public void findByComputerAndCompanyNameLimit() {
-    List<Computer> computers = ComputerDAO.INSTANCE.findByComputerAndCompanyNameLimit("Apple", 0, 10);
+    List<Computer> computers = computerDAO.findByComputerAndCompanyNameLimit("Apple", 0, 10);
     assertEquals(10, computers.size());
     assertEquals("Apple I", computers.get(0).getName());
     assertEquals("Apple Lisa", computers.get(9).getName());
-    computers = ComputerDAO.INSTANCE.findByComputerAndCompanyNameLimit("Apple",40, 10);
+    computers = computerDAO.findByComputerAndCompanyNameLimit("Apple",40, 10);
     assertEquals(6, computers.size());
     assertEquals("Macintosh SE", computers.get(0).getName());
     assertEquals("Upcoming iPhone 5", computers.get(5).getName());
-    computers = ComputerDAO.INSTANCE.findByComputerAndCompanyNameLimit("Apple",1000, 10);
+    computers = computerDAO.findByComputerAndCompanyNameLimit("Apple",1000, 10);
     assertEquals(0, computers.size());
   }
   
@@ -141,11 +142,11 @@ public class ComputerDAOTest {
    */
   @Test
   public void findByComputerAndCompanyName() {
-    List<Computer> computers = ComputerDAO.INSTANCE.findByComputerAndCompanyName("Apple");
+    List<Computer> computers = computerDAO.findByComputerAndCompanyName("Apple");
     assertEquals(46, computers.size());
     assertEquals("Apple I", computers.get(0).getName());
     assertEquals("Upcoming iPhone 5", computers.get(45).getName());
-    computers = ComputerDAO.INSTANCE.findByComputerAndCompanyName("This name is not in database");
+    computers = computerDAO.findByComputerAndCompanyName("This name is not in database");
     assertEquals(0, computers.size());
   }
 
@@ -160,13 +161,13 @@ public class ComputerDAOTest {
     computer.setIntroduced(LocalDate.parse("2006-01-10"));
     computer.setDiscontinued(LocalDate.parse("2012-01-10"));
     computer.setCompany(CompanyService.INSTANCE.findById(1));
-    ComputerDAO.INSTANCE.save(computer);
-    assertNotNull(ComputerDAO.INSTANCE.findByCompany(575));
+    computerDAO.save(computer);
+    assertNotNull(computerDAO.findByCompany(575));
 
     computer.setId(576);
     computer.setCompany(CompanyService.INSTANCE.findById(50));
-    ComputerDAO.INSTANCE.save(computer);
-    assertNotNull(ComputerDAO.INSTANCE.findByCompany(576));
+    computerDAO.save(computer);
+    assertNotNull(computerDAO.findByCompany(576));
   }
 
   /**
@@ -179,7 +180,7 @@ public class ComputerDAOTest {
     computer.setIntroduced(LocalDate.parse("2007-02-11"));
     computer.setDiscontinued(LocalDate.parse("2013-02-11"));
     computer.setCompany(CompanyService.INSTANCE.findById(2));
-    ComputerDAO.INSTANCE.update(computer);
+    computerDAO.update(computer);
     assertEquals("Test update computer", computer.getName());
     assertEquals(LocalDate.parse("2007-02-11"), computer.getIntroduced());
     assertEquals(LocalDate.parse("2013-02-11"), computer.getDiscontinued());
@@ -203,9 +204,9 @@ public class ComputerDAOTest {
    */
   @Test
   public void testdelete() {
-    ComputerDAO.INSTANCE.delete(575);
-    assertEquals(0, ComputerDAO.INSTANCE.findById(575).get().getId());
-    assertEquals(null, ComputerDAO.INSTANCE.findById(575).get().getName());
+  	computerDAO.delete(575);
+    assertEquals(0, computerDAO.findById(575).get().getId());
+    assertEquals(null, computerDAO.findById(575).get().getName());
   }
 
 }

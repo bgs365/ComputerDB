@@ -19,9 +19,8 @@
 	<section id="main">
 		<div class="container">
 			<div class="container">
-			<form method="get" action="dashboard">
 				<a href="dashboard"> See computers </a>
-			</form>
+				<jsp:forward page="dashboard" />
 		</div>
 		</div>
 

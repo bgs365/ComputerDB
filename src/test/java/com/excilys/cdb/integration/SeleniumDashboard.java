@@ -21,8 +21,9 @@ public class SeleniumDashboard {
 
   @Test
   public void testPage() throws Exception {
-      // Connexion au site
       selenium.navigate().to(baseUrl+"dashboard");
+      selenium.navigate().to(baseUrl+"addComputer");
+      selenium.navigate().to(baseUrl+"editComputer");
   }
 
   @After
