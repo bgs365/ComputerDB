@@ -30,6 +30,7 @@ public enum CompanyDAO {
 	String requeteDeleteComputer = "DELETE FROM computer WHERE company_id = ?";
 	String requeteDeleteCompany = "DELETE FROM company WHERE id = ?";
 	static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
+	Connexion connexion = Connexion.INSTANCE;
 
 	/**
 	 * Find an company by id.
@@ -41,7 +42,7 @@ public enum CompanyDAO {
 	public Optional<Company> findById(int id) {
 		Company company = new Company();
 
-		try (Connection conn = Connexion.INSTANCE.getConnexion();
+		try (Connection conn = connexion.getConnexion();
 		    PreparedStatement preparedStatement = conn.prepareStatement(requeteFindById)) {
 
 			preparedStatement.setInt(1, id);
@@ -70,7 +71,7 @@ public enum CompanyDAO {
 	public List<Company> findAll() {
 		List<Company> companies = new ArrayList<Company>();
 
-		try (Connection conn = Connexion.INSTANCE.getConnexion();
+		try (Connection conn = connexion.getConnexion();
 		    PreparedStatement preparedStatement = conn.prepareStatement(requeteFinfAll)) {
 
 			ResultSet result = preparedStatement.executeQuery();
@@ -106,7 +107,7 @@ public enum CompanyDAO {
 
 		List<Company> companies = new ArrayList<Company>();
 
-		try (Connection conn = Connexion.INSTANCE.getConnexion();
+		try (Connection conn = connexion.getConnexion();
 		    PreparedStatement preparedStatement = conn.prepareStatement(requeteFindLimitNumberOfResult)) {
 			preparedStatement.setInt(1, pageIndex);
 			preparedStatement.setInt(2, numberOfResultByPage);
@@ -140,7 +141,7 @@ public enum CompanyDAO {
 
 		List<Company> companies = new ArrayList<Company>();
 
-		try (Connection conn = Connexion.INSTANCE.getConnexion();
+		try (Connection conn = connexion.getConnexion();
 		    PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByName)) {
 			preparedStatement.setString(1, "%" + name + "%");
 			ResultSet result = preparedStatement.executeQuery();
@@ -170,7 +171,7 @@ public enum CompanyDAO {
 	 */
 	public int delete(int id) {
 		int reussite = 0;
-		try (Connection conn = Connexion.INSTANCE.getConnexion();
+		try (Connection conn = connexion.getConnexion();
 		    PreparedStatement preparedStatementdeleteComputer = conn.prepareStatement(requeteDeleteComputer);
 		    PreparedStatement preparedStatementdeleteCompany = conn.prepareStatement(requeteDeleteCompany)) {
 			conn.setAutoCommit(false);

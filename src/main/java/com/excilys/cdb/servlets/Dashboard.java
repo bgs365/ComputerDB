@@ -75,12 +75,12 @@ public class Dashboard extends HttpServlet {
 
 		/* Switch page */
 		if (!pageNumber.equals("null")) {
-			computerPage.setCurentPage(Integer.parseInt(pageNumber));
-			setPageContent(search, computerPage.getIndexFirstPageElement(), computerPage.getNombreElementParPage());
+			computerPage.setCurrentPage(Integer.parseInt(pageNumber));
+			setPageContent(search, computerPage.getIndexFirstPageElement(), computerPage.getNombreElementPerPage());
 		}
 
 		int numberTotalOfPages = (int) Math
-		    .ceil(computerPage.getNombreElementTotal() / Double.valueOf(computerPage.getNombreElementParPage()));
+		    .ceil(computerPage.getNombreElementTotal() / Double.valueOf(computerPage.getNombreElementPerPage()));
 
 		/*
 		 * Send parameters.
@@ -145,7 +145,7 @@ public class Dashboard extends HttpServlet {
 				nombrElementPerPage = 100;
 			break;
 		}
-		computerPage.setNombreElementParPage(nombrElementPerPage);
+		computerPage.setNombreElementPerPage(nombrElementPerPage);
 
 	}
 

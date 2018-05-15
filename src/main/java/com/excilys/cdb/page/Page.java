@@ -16,7 +16,7 @@ public class Page<T> {
   private List<T> t;
   private int indexFirstPageElement;
   private int numerosPage;
-  private int nombreElementParPage;
+  private int nombreElementPerPage;
   private int nombreElementTotal;
 
   public int getNombreElementTotal() {
@@ -41,7 +41,7 @@ public class Page<T> {
    */
   public Page(List<T> t, int nombreElementParPage, int nombreElementTotal) {
     this.numerosPage = 1;
-    this.nombreElementParPage = nombreElementParPage;
+    this.nombreElementPerPage = nombreElementParPage;
     this.indexFirstPageElement = 0;
     this.nombreElementTotal = nombreElementTotal;
     this.setObjetT(t);
@@ -52,8 +52,8 @@ public class Page<T> {
    *
    * @return nombreElementParPage
    */
-  public int getNombreElementParPage() {
-    return nombreElementParPage;
+  public int getNombreElementPerPage() {
+    return nombreElementPerPage;
   }
 
   /**
@@ -62,9 +62,9 @@ public class Page<T> {
    * @param nombreElementParPage
    *          asName
    */
-  public void setNombreElementParPage(int nombreElementParPage) {
-    this.nombreElementParPage = nombreElementParPage;
-    numerosPage = (this.nombreElementParPage + indexFirstPageElement) / this.nombreElementParPage;
+  public void setNombreElementPerPage(int nombreElementParPage) {
+    this.nombreElementPerPage = nombreElementParPage;
+    numerosPage = (this.nombreElementPerPage + indexFirstPageElement) / this.nombreElementPerPage;
   }
 
   public int getIndexFirstPageElement() {
@@ -90,12 +90,12 @@ public class Page<T> {
    */
   public int nextPage() {
     int indexRetour = indexFirstPageElement;
-    if (indexRetour < (nombreElementTotal - nombreElementParPage)) {
+    if (indexRetour < (nombreElementTotal - nombreElementPerPage)) {
       numerosPage++;
-      indexRetour = indexFirstPageElement += nombreElementParPage;
+      indexRetour = indexFirstPageElement += nombreElementPerPage;
 
     } else {
-      LOGGER.info("Operation impossible, vous êtes à la dernière page");
+      LOGGER.warn("Operation impossible, vous êtes à la dernière page");
     }
     return indexRetour;
 
@@ -111,9 +111,9 @@ public class Page<T> {
     LOGGER.debug(" " + numerosPage);
     if (numerosPage > 1) {
       numerosPage--;
-      indexRetour = indexFirstPageElement -= nombreElementParPage;
+      indexRetour = indexFirstPageElement -= nombreElementPerPage;
     } else {
-      LOGGER.info("Operation impossible, vous êtes à la première page");
+      LOGGER.warn("Operation impossible, vous êtes à la première page");
     }
     return indexRetour;
   }
@@ -123,18 +123,23 @@ public class Page<T> {
    * @param pageToReach
    *          asName
    */
-  public void setCurentPage(int pageToReach) {
+  public void setCurrentPage(int pageToReach) {
     if (pageToReach > numerosPage) {
-      if ((indexFirstPageElement < (nombreElementTotal - nombreElementParPage))) {
+    	LOGGER.debug(nombreElementTotal+"");
+    	LOGGER.debug(nombreElementPerPage+"");
+    	LOGGER.debug((nombreElementTotal/nombreElementPerPage) +"");
+      if (pageToReach <= (nombreElementTotal/nombreElementPerPage)+1  ) {
         numerosPage = pageToReach;
-        indexFirstPageElement = (numerosPage - 1) * nombreElementParPage;
+        indexFirstPageElement = (numerosPage - 1) * nombreElementPerPage;
       } else {
-        LOGGER.info("Operation impossible, la page recherché n'est pas disponible");
+        LOGGER.warn("the page to reach is out of superior bound : "+pageToReach);
       }
     } else {
-      if (numerosPage > 0) {
+      if (pageToReach > 0) {
         numerosPage = pageToReach;
-        indexFirstPageElement = (numerosPage - 1) * nombreElementParPage;
+        indexFirstPageElement = (numerosPage - 1) * nombreElementPerPage;
+      }else {
+      	LOGGER.warn("the page to reach is out of inferior bound : "+pageToReach);
       }
     }
 

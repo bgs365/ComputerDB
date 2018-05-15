@@ -25,6 +25,7 @@
 		<slf4j-jdk14.version>1.7.25</slf4j-jdk14.version>
 		<HikariCP.version>2.7.8</HikariCP.version>
 		<selenium-java.version>2.53.1</selenium-java.version>
+		<spring-webmvc.version>5.0.6.RELEASE</spring-webmvc.version>
 	</properties>
 
 	<dependencies>
@@ -97,6 +98,12 @@
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
 			<version>${selenium-java.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring-webmvc.version}</version>
 		</dependency>
 
 	</dependencies>
