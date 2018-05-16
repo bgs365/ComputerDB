@@ -8,21 +8,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.service.ComputerService;
 
 /**
  * *Classe qui permet de mettre en place la persistance d'un Computer.
  *
  * @autor Beydi SANOGO
  */
+@Repository
+public class CompanyDAO {
 
-public enum CompanyDAO {
-	INSTANCE;
-
+  @Autowired
+  private ComputerService computerService;
+	
+  @Autowired
+  private DataSource dataSource;
+  
+	@Autowired
+	public CompanyDAO() {
+	}
+	
 	String requeteFindById = "SELECT id,name FROM company where id = ?";
 	String requeteFinfAll = "SELECT id,name FROM company";
 	String requeteFindLimitNumberOfResult = "SELECT id,name FROM company LIMIT ?, ?";
@@ -41,7 +55,7 @@ public enum CompanyDAO {
 	public Optional<Company> findById(int id) {
 		Company company = new Company();
 
-		try (Connection conn = Connexion.INSTANCE.getConnexion();
+		try (Connection conn = dataSource.getConnection();
 		    PreparedStatement preparedStatement = conn.prepareStatement(requeteFindById)) {
 
 			preparedStatement.setInt(1, id);
@@ -51,7 +65,7 @@ public enum CompanyDAO {
 			while (result.next()) {
 				company.setId(result.getInt("Id"));
 				company.setName(result.getString("Name"));
-				List<Computer> pComputers = ComputerDAO.INSTANCE.findByCompany(company.getId());
+				List<Computer> pComputers = computerService.findByCompany(company.getId());
 				company.setComputer(pComputers);
 			}
 
@@ -70,7 +84,7 @@ public enum CompanyDAO {
 	public List<Company> findAll() {
 		List<Company> companies = new ArrayList<Company>();
 
-		try (Connection conn = Connexion.INSTANCE.getConnexion();
+		try (Connection conn = dataSource.getConnection();
 		    PreparedStatement preparedStatement = conn.prepareStatement(requeteFinfAll)) {
 
 			ResultSet result = preparedStatement.executeQuery();
@@ -79,7 +93,7 @@ public enum CompanyDAO {
 				Company company = new Company();
 				company.setId(result.getInt("Id"));
 				company.setName(result.getString("Name"));
-				List<Computer> pComputers = ComputerDAO.INSTANCE.findByCompany(company.getId());
+				List<Computer> pComputers = computerService.findByCompany(company.getId());
 				company.setComputer(pComputers);
 				companies.add(company);
 
@@ -106,7 +120,7 @@ public enum CompanyDAO {
 
 		List<Company> companies = new ArrayList<Company>();
 
-		try (Connection conn = Connexion.INSTANCE.getConnexion();
+		try (Connection conn = dataSource.getConnection();
 		    PreparedStatement preparedStatement = conn.prepareStatement(requeteFindLimitNumberOfResult)) {
 			preparedStatement.setInt(1, pageIndex);
 			preparedStatement.setInt(2, numberOfResultByPage);
@@ -116,7 +130,7 @@ public enum CompanyDAO {
 				Company company = new Company();
 				company.setId(result.getInt("Id"));
 				company.setName(result.getString("Name"));
-				List<Computer> pComputers = ComputerDAO.INSTANCE.findByCompany(company.getId());
+				List<Computer> pComputers = computerService.findByCompany(company.getId());
 				company.setComputer(pComputers);
 				companies.add(company);
 
@@ -140,7 +154,7 @@ public enum CompanyDAO {
 
 		List<Company> companies = new ArrayList<Company>();
 
-		try (Connection conn = Connexion.INSTANCE.getConnexion();
+		try (Connection conn = dataSource.getConnection();
 		    PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByName)) {
 			preparedStatement.setString(1, "%" + name + "%");
 			ResultSet result = preparedStatement.executeQuery();
@@ -149,7 +163,7 @@ public enum CompanyDAO {
 				Company company = new Company();
 				company.setId(result.getInt("Id"));
 				company.setName(result.getString("Name"));
-				List<Computer> pComputers = ComputerDAO.INSTANCE.findByCompany(company.getId());
+				List<Computer> pComputers = computerService.findByCompany(company.getId());
 				company.setComputer(pComputers);
 				companies.add(company);
 			}
@@ -170,7 +184,7 @@ public enum CompanyDAO {
 	 */
 	public int delete(int id) {
 		int reussite = 0;
-		try (Connection conn = Connexion.INSTANCE.getConnexion();
+		try (Connection conn = dataSource.getConnection();
 		    PreparedStatement preparedStatementdeleteComputer = conn.prepareStatement(requeteDeleteComputer);
 		    PreparedStatement preparedStatementdeleteCompany = conn.prepareStatement(requeteDeleteCompany)) {
 			conn.setAutoCommit(false);

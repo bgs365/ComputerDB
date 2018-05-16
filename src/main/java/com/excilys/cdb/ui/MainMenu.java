@@ -2,6 +2,8 @@ package com.excilys.cdb.ui;
 
 import java.util.Scanner;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 /**
  * Menu class.
  *
@@ -9,15 +11,22 @@ import java.util.Scanner;
  *
  */
 public class MainMenu {
+	@Autowired
+	CompanyUI companyUI;
+	@Autowired
+	ComputerUI computerUI;
+	
   private static Scanner sc;
   enum MainMenuChoice{
   	LIST_COMPANY,DETAIL_OF_COMPUTER,CREATE_COMPUTER,UPDATE_COMPUTER,DELETE_COMPUTER,DELETE_COMPANY,EXIT
   }
+  
   /**
    * Display the principal menu.
    */
-  public static void display() {
+  public  void display() {
   	MainMenuChoice mainMenuChoice ;
+  	
     boolean quitter = true;
     while (quitter) {
       System.out.println("******************* BIENVENUE DANS LA COMPUTER DATA BASE *******************");
@@ -35,27 +44,27 @@ public class MainMenu {
       System.out.println(choix);
       switch (mainMenuChoice) {
       case LIST_COMPANY:
-        CompanyUI.listCompany();
+        companyUI.listCompany();
         break;
 
       case DETAIL_OF_COMPUTER:
-        ComputerUI.listComputer();
+      	computerUI.listComputer();
         break;
 
       case CREATE_COMPUTER:
-        ComputerUI.createComputer();
+        computerUI.createComputer();
         break;
 
       case UPDATE_COMPUTER:
-        ComputerUI.updateComputer();
+        computerUI.updateComputer();
         break;
 
       case DELETE_COMPUTER:
-        ComputerUI.deleteComputer();
+      	computerUI.deleteComputer();
         break;
         
       case DELETE_COMPANY:
-        CompanyUI.deleteCompany();
+        companyUI.deleteCompany();
         break;
 
       case EXIT:

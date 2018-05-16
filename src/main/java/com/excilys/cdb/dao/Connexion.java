@@ -28,9 +28,9 @@ public enum Connexion {
 		 
 		ResourceBundle input = ResourceBundle.getBundle("config");
 
-		baseDeDonnee = input.getString("database");
-		login = input.getString("dbuser");
-		password = input.getString("dbpassword");
+		baseDeDonnee = input.getString("jdbc.url");
+		login = input.getString("jdbc.username");
+		password = input.getString("jdbc.password");
 		
 		config.setJdbcUrl(baseDeDonnee);
     config.setUsername(login);

@@ -25,7 +25,9 @@ import com.excilys.cdb.service.ComputerService;
  */
 public class ComputerDAOTest {
 	
-	ComputerDAO computerDAO = ComputerDAO.INSTANCE;
+	ComputerDAO computerDAO;
+	ComputerService computerService;
+	CompanyService companyService;
   /**
    * init test data.
    */
@@ -160,12 +162,12 @@ public class ComputerDAOTest {
     computer.setName("Test save computer");
     computer.setIntroduced(LocalDate.parse("2006-01-10"));
     computer.setDiscontinued(LocalDate.parse("2012-01-10"));
-    computer.setCompany(CompanyService.INSTANCE.findById(1));
+    computer.setCompany(companyService.findById(1));
     computerDAO.save(computer);
     assertNotNull(computerDAO.findByCompany(575));
 
     computer.setId(576);
-    computer.setCompany(CompanyService.INSTANCE.findById(50));
+    computer.setCompany(companyService.findById(50));
     computerDAO.save(computer);
     assertNotNull(computerDAO.findByCompany(576));
   }
@@ -175,27 +177,27 @@ public class ComputerDAOTest {
    */
   @Test
   public void testUpdate() {
-    Computer computer = ComputerService.INSTANCE.findById(575);
+    Computer computer = computerService.findById(575);
     computer.setName("Test update computer");
     computer.setIntroduced(LocalDate.parse("2007-02-11"));
     computer.setDiscontinued(LocalDate.parse("2013-02-11"));
-    computer.setCompany(CompanyService.INSTANCE.findById(2));
+    computer.setCompany(companyService.findById(2));
     computerDAO.update(computer);
     assertEquals("Test update computer", computer.getName());
     assertEquals(LocalDate.parse("2007-02-11"), computer.getIntroduced());
     assertEquals(LocalDate.parse("2013-02-11"), computer.getDiscontinued());
     assertEquals(2, computer.getCompany().getId());
     
-    computer = ComputerService.INSTANCE.findById(1);
+    computer = computerService.findById(1);
     computer.setName("Test change macbook");
     computer.setCompany(null);
-    assertEquals(1,ComputerDAO.INSTANCE.update(computer));
+    assertEquals(1,computerDAO.update(computer));
     assertEquals("Test change macbook", computer.getName());
     
-    computer = ComputerService.INSTANCE.findById(2);
+    computer = computerService.findById(2);
     computer.setName("Test change 2");
     computer.setCompany(new Company(0,null));
-    assertEquals(1,ComputerDAO.INSTANCE.update(computer));
+    assertEquals(1,computerDAO.update(computer));
     assertEquals("Test change 2", computer.getName());
   }
 

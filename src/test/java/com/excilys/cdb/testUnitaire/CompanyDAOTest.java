@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.dao.ComputerDAO;
@@ -22,8 +23,10 @@ import com.excilys.cdb.model.Company;
 public class CompanyDAOTest {
 
   static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAOTest.class);
-  CompanyDAO companyDAO = CompanyDAO.INSTANCE;
-  ComputerDAO computerDAO = ComputerDAO.INSTANCE;
+  @Autowired
+  private CompanyDAO companyDAO;
+  @Autowired
+  private ComputerDAO computerDAO;
 
   /**
    * init test data.
@@ -47,7 +50,7 @@ public class CompanyDAOTest {
    */
   @Test
   public void testFindAll() {
-    List<Company> companies = CompanyDAO.INSTANCE.findAll();
+    List<Company> companies = companyDAO.findAll();
     assertEquals(42, companies.size());
     assertEquals("Apple Inc.", companies.get(0).getName());
     assertEquals("Samsung Electronics", companies.get(companies.size() - 1).getName());

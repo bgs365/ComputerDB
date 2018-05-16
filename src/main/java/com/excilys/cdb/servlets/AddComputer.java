@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.cdb.exceptions.CdbException;
 import com.excilys.cdb.model.Company;
@@ -26,16 +29,20 @@ import com.excilys.cdb.service.ComputerService;
 @WebServlet("/addComputer")
 public class AddComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	@Autowired
+	private CompanyService companyService;
+	@Autowired
+	private ComputerService computerService;
+	
 	private List<Company> companies;
 
 	static final Logger LOGGER = LoggerFactory.getLogger(AddComputer.class);
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public AddComputer() {
-		super();
-	}
+	@Override
+  public void init(ServletConfig config) throws ServletException {
+      super.init(config);
+      SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+  }
 
 	/**
 	 *
@@ -49,6 +56,7 @@ public class AddComputer extends HttpServlet {
 	 *           a
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		companies = companyService.findAll();
 		request.setAttribute("companies", companies);
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
 	}
@@ -65,7 +73,6 @@ public class AddComputer extends HttpServlet {
 	 *           a
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		companies = CompanyService.INSTANCE.findAll();
 		String name = null;
 		String receiveIntroduced = null;
 		String receiveDiscontinued = null;
@@ -96,7 +103,7 @@ public class AddComputer extends HttpServlet {
 		}
 
 		try {
-			receiveCompany = CompanyService.INSTANCE.findById(Integer.parseInt(companyId));
+			receiveCompany = companyService.findById(Integer.parseInt(companyId));
 		} catch (NumberFormatException e) {
 			LOGGER.info("you are creating a computer whitout company" + e);
 		}
@@ -105,7 +112,7 @@ public class AddComputer extends HttpServlet {
 		LOGGER.info(computer + " ");
 		try {
 			LOGGER.info(computer + "");
-			if (ComputerService.INSTANCE.save(computer) == 1) {
+			if (computerService.save(computer) == 1) {
 				success = true;
 				LOGGER.info(computer + "");
 			} else {

@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.excilys.cdb.exceptions.CdbException;
 import com.excilys.cdb.main.Main;
@@ -21,15 +22,18 @@ import com.excilys.cdb.service.ComputerService;
  *
  */
 public class ComputerUI {
-  private static ComputerService computerService = ComputerService.INSTANCE;
-  private static Scanner sc = new Scanner(System.in);
-  public static int nombrElementParPage = 50;
+	@Autowired
+	private SeizureVerification seizureVerification;
+	@Autowired
+  private ComputerService computerService;
+  private Scanner sc = new Scanner(System.in);
+  private int nombrElementParPage = 50;
   static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
   /**
    * display a page of computer, allow to navigate between pages of computers.
    */
-  public static void listComputer() {
+  public void listComputer() {
 
     List<Computer> computers = computerService.findLimitNumberOfResult(0, nombrElementParPage);
     Page<Computer> computerPage = new Page<Computer>(computers, nombrElementParPage, computerService.findAll().size());
@@ -101,7 +105,7 @@ public class ComputerUI {
   /**
    * reate computer menu.
    */
-  public static void createComputer() {
+  public void createComputer() {
 
     Computer computer = new Computer();
     String nom = null;
@@ -124,7 +128,7 @@ public class ComputerUI {
     System.out.println("--> Date de retrait = " + discontinuedDate);
 
     System.out.println("--> Entrez le nom de la company : ");
-    company = SeizureVerification.saisirCompany();
+    company = seizureVerification.saisirCompany();
     System.out.println("--> Company = " + company);
 
     computer.setName(nom);
@@ -143,7 +147,7 @@ public class ComputerUI {
   /**
    * update computer menu.
    */
-  public static void updateComputer() {
+  public void updateComputer() {
     Computer computer = new Computer();
     String nom = null;
     LocalDate introducedDate = null;
@@ -152,7 +156,7 @@ public class ComputerUI {
     String choix = null;
 
     System.out.println("******************* Entrez l'id du pc à Modifier *******************");
-    computer = SeizureVerification.saisirComputerATrouver();
+    computer = seizureVerification.saisirComputerATrouver();
     System.out.println("Le PC choisi est --> " + computer);
 
     if (computer != null) {
@@ -187,7 +191,7 @@ public class ComputerUI {
       choix = SeizureVerification.choixBinaire();
       if (choix.equals("1")) {
         System.out.println("--> Entrez le nom de la company : ");
-        company = SeizureVerification.saisirCompany();
+        company = seizureVerification.saisirCompany();
         System.out.println("--> Company = " + company);
 
         try {
@@ -205,12 +209,12 @@ public class ComputerUI {
   /**
    * delete computer menu.
    */
-  public static void deleteComputer() {
+  public void deleteComputer() {
     Computer computer = new Computer();
     String choix = null;
 
     System.out.println("******************* Entrez l'id du pc à Suprimer *******************");
-    computer = SeizureVerification.saisirComputerATrouver();
+    computer = seizureVerification.saisirComputerATrouver();
     System.out.println("Voulez vous vraiment effacer --> " + computer);
     choix = SeizureVerification.choixBinaire();
     if (choix.equals("1")) {

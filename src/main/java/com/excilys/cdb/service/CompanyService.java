@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.model.Company;
@@ -14,11 +16,16 @@ import com.excilys.cdb.model.Company;
  * @author sanogo
  *
  */
-public enum CompanyService {
-  INSTANCE;
+@Service
+public class CompanyService {
+  @Autowired
+  private CompanyDAO companyDAO;
+  
   static final Logger LOGGER = LoggerFactory.getLogger(CompanyService.class);
-  CompanyDAO companyDAO = CompanyDAO.INSTANCE;
-
+  
+  public CompanyService(CompanyDAO companyDAO) {
+  	this.companyDAO = companyDAO;
+  }
 
   /**
    * find company by id.
