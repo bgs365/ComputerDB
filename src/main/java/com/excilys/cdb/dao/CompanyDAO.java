@@ -17,7 +17,6 @@ import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.service.ComputerService;
 
 /**
  * *Classe qui permet de mettre en place la persistance d'un Computer.
@@ -26,9 +25,6 @@ import com.excilys.cdb.service.ComputerService;
  */
 @Repository
 public class CompanyDAO {
-
-  @Autowired
-  private ComputerService computerService;
 	
   @Autowired
   private DataSource dataSource;
@@ -43,6 +39,7 @@ public class CompanyDAO {
 	String requeteFindByName = "SELECT id,name FROM company WHERE name LIKE ? ";
 	String requeteDeleteComputer = "DELETE FROM computer WHERE company_id = ?";
 	String requeteDeleteCompany = "DELETE FROM company WHERE id = ?";
+	String requeteFindCompanyComputers = "SELECT  company.id,company.name,computer.id,computer.name,computer.introduced,computer.discontinued  FROM company LEFT OUTER JOIN computer ON computer.company_id=company.id WHERE company.id = ?";
 	static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
 
 	/**
@@ -65,7 +62,7 @@ public class CompanyDAO {
 			while (result.next()) {
 				company.setId(result.getInt("Id"));
 				company.setName(result.getString("Name"));
-				List<Computer> pComputers = computerService.findByCompany(company.getId());
+				List<Computer> pComputers = findCompanyComputers(company.getId());
 				company.setComputer(pComputers);
 			}
 
@@ -93,7 +90,7 @@ public class CompanyDAO {
 				Company company = new Company();
 				company.setId(result.getInt("Id"));
 				company.setName(result.getString("Name"));
-				List<Computer> pComputers = computerService.findByCompany(company.getId());
+				List<Computer> pComputers = findCompanyComputers(company.getId());
 				company.setComputer(pComputers);
 				companies.add(company);
 
@@ -130,7 +127,7 @@ public class CompanyDAO {
 				Company company = new Company();
 				company.setId(result.getInt("Id"));
 				company.setName(result.getString("Name"));
-				List<Computer> pComputers = computerService.findByCompany(company.getId());
+				List<Computer> pComputers = findCompanyComputers(company.getId());
 				company.setComputer(pComputers);
 				companies.add(company);
 
@@ -163,7 +160,7 @@ public class CompanyDAO {
 				Company company = new Company();
 				company.setId(result.getInt("Id"));
 				company.setName(result.getString("Name"));
-				List<Computer> pComputers = computerService.findByCompany(company.getId());
+				List<Computer> pComputers = findCompanyComputers(company.getId());
 				company.setComputer(pComputers);
 				companies.add(company);
 			}
@@ -174,6 +171,48 @@ public class CompanyDAO {
 
 		return companies;
 	}
+	
+	/**
+   * find Company Computers by company id.
+   *
+   * @param companyId
+   *          asName
+   * @return List<Computer>
+   */
+  public List<Computer> findCompanyComputers(int companyId) {
+    List<Computer> computers = new ArrayList<Computer>();
+
+    try (Connection conn = dataSource.getConnection();
+        PreparedStatement preparedStatement = conn.prepareStatement(requeteFindCompanyComputers)) {
+      preparedStatement.setInt(1, companyId);
+      ResultSet result = preparedStatement.executeQuery();
+
+      while (result.next()) {
+
+        Computer computer = new Computer();
+        computer.setId(result.getInt("computer.Id"));
+        computer.setName(result.getString("computer.Name"));
+        Company company = new Company();
+        if (result.getDate("computer.introduced") != null) {
+          computer.setIntroduced(result.getDate("computer.introduced").toLocalDate());
+        }
+        if (result.getDate("computer.discontinued") != null) {
+          computer.setDiscontinued(result.getDate("computer.discontinued").toLocalDate());
+        }
+        if (result.getInt("company.Id") != 0) {
+          company.setId(result.getInt("company.Id"));
+          company.setName(result.getString("company.name"));
+        }
+        computer.setCompany(company);
+        computers.add(computer);
+      }
+
+    } catch (SQLException e) {
+      LOGGER.info("Erreur sur la requete find Computer by Company id : " + e.getMessage());
+    }
+
+    return computers;
+  }
 
 	/**
 	 * Delete company from Db and return 1 in case of success and 0 if not.

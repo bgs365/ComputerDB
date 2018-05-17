@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.dao.ComputerDAO;
 import com.excilys.cdb.model.Company;
+import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.springConfig.ApplicationConfig;
 
 
@@ -93,6 +94,17 @@ public class CompanyDAOTest {
     assertFalse(companies.size() != 0);
     companies = companyDAO.findByName("Sun");
     assertEquals(2, companies.size());
+  }
+  
+  /**
+   * Test find company computers.
+   */
+  @Test
+  public void testFindCompanyComputers() {
+    List<Computer> computers = companyDAO.findCompanyComputers(1);
+    assertEquals(39, computers.size());
+    assertEquals(1, computers.get(0).getId());
+    assertEquals(574, computers.get(38).getId());
   }
 
   /**
