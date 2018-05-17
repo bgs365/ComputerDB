@@ -7,12 +7,17 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
-public class MainServer implements WebApplicationInitializer {
+/**
+ * Server configuration.
+ * @author sanogo
+ *
+ */
+public class ServerConfig implements WebApplicationInitializer {
 
   @Override
   public void onStartup(ServletContext servletContext) throws ServletException {
       AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-      context.register(AppConfig.class);
+      context.register(ApplicationConfig.class);
       ContextLoaderListener contextLoaderListener = new ContextLoaderListener(context);
       servletContext.addListener(contextLoaderListener);
   }

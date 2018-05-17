@@ -22,10 +22,7 @@ public class CompanyService {
   private CompanyDAO companyDAO;
   
   static final Logger LOGGER = LoggerFactory.getLogger(CompanyService.class);
-  
-  public CompanyService(CompanyDAO companyDAO) {
-  	this.companyDAO = companyDAO;
-  }
+ 
 
   /**
    * find company by id.

@@ -2,7 +2,9 @@ package com.excilys.cdb.testUnitaire;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+
 import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +24,7 @@ import com.excilys.cdb.model.Company;
  */
 public class CompanyDAOTest {
 
-  static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAOTest.class);
+  static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAOTest.class);
   @Autowired
   private CompanyDAO companyDAO;
   @Autowired

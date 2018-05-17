@@ -17,7 +17,7 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
-import com.excilys.cdb.springConfig.AppConfig;
+import com.excilys.cdb.springConfig.ApplicationConfig;
 
 /**
  * Main class, which allow to verify class.

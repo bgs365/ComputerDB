@@ -26,10 +26,6 @@ public class ComputerService {
 	@Autowired
 	private ComputerDAO computerDAO;
 
-	
-//	public ComputerService(ComputerDAO computerDAO) {
-//		this.computerDAO = computerDAO;
-//	}
 
 	/**
 	 * find computer by id.
