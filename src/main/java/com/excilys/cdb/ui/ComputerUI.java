@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -26,7 +25,7 @@ import com.excilys.cdb.springConfig.ApplicationConfig;
  *
  */
 public class ComputerUI {
-	private SeizureVerification seizureVerification;
+	private static SeizureVerification seizureVerification;
 	static ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 	static CompanyService companyService = (CompanyService) context.getBean(CompanyService.class);
 	static ComputerService computerService = (ComputerService) context.getBean(ComputerService.class);

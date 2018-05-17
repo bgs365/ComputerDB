@@ -6,10 +6,8 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.exceptions.CdbException;
 import com.excilys.cdb.exceptions.ComputerServiceIllegalExpression;
@@ -33,7 +31,6 @@ public class Main {
 	static ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 	static CompanyService companyService = (CompanyService) context.getBean(CompanyService.class);
 	static ComputerService computerService = (ComputerService) context.getBean(ComputerService.class);
-	static MainMenu mainMenu;
 
 	/**
 	 * Main method.
@@ -45,12 +42,12 @@ public class Main {
 
 		
 		  LOGGER.info("Ouverture du Menu");
-		  mainMenu.display();
+		  MainMenu.display();
 		  LOGGER.info("Fermeture du Menu");
 		 
 		// verifServiceComputer();
 		// verifServiceComputerSave();
-		verifServiceCompany();
+		// verifServiceCompany();
 		// verifServiceComputerUpdate();
 		// verifServiceComputerDelete();
 		// System.out.println(ComputerDAO.INSTANCE.findAll());

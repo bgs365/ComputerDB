@@ -40,12 +40,13 @@ public class ComputerDAOTest {
 	ComputerService computerService;
 	@Autowired
 	CompanyService companyService;
+	
   /**
    * init test data.
    */
   @Before
   public void init() {
-    TransactionsOnTestDatabase.INSTANCE.initData();
+  	TransactionsOnTestDatabase.initData();
   }
 
   /**
@@ -53,7 +54,7 @@ public class ComputerDAOTest {
    */
   @After
   public void destroy() {
-    TransactionsOnTestDatabase.INSTANCE.destroyDate();
+  	TransactionsOnTestDatabase.destroyDate();
   }
 
   /**

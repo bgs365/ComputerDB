@@ -23,6 +23,7 @@ import com.excilys.cdb.springConfig.ApplicationConfig;
 
 
 
+
 /**
  * Class test Company persistance.
  *
@@ -39,14 +40,14 @@ public class CompanyDAOTest {
   private CompanyDAO companyDAO;
   @Autowired
   private ComputerDAO computerDAO;
+  
 
   /**
    * init test data.
    */
   @Before
   public void init() {
-    // initialize database
-    TransactionsOnTestDatabase.INSTANCE.initData();
+  	TransactionsOnTestDatabase.initData();
   }
 
   /**
@@ -54,7 +55,7 @@ public class CompanyDAOTest {
    */
   @After
   public void destroy() {
-    TransactionsOnTestDatabase.INSTANCE.destroyDate();
+  	TransactionsOnTestDatabase.destroyDate();
   }
 
   /**

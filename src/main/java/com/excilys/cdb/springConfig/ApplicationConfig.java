@@ -23,17 +23,19 @@ import com.zaxxer.hikari.HikariDataSource;
 @EnableTransactionManagement
 public class ApplicationConfig {
 	static final Logger LOGGER = LoggerFactory.getLogger(ApplicationConfig.class);
-
+	
 	@Bean
 	public DataSource dataSource() {
 		HikariConfig config = new HikariConfig();
 
 		ResourceBundle input = ResourceBundle.getBundle("config");
+	
 		try {
 			Class.forName(input.getString("jdbc.driverClassName"));
 		} catch (ClassNotFoundException e) {
 			LOGGER.error(e.getMessage());
 		}
+		
 		config.setJdbcUrl(input.getString("jdbc.url"));
 		config.setUsername(input.getString("jdbc.username"));
 		config.setPassword(input.getString("jdbc.password"));

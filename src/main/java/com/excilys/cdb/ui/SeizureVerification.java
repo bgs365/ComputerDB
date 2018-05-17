@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -88,7 +87,7 @@ public class SeizureVerification {
 	 *
 	 * @return Company
 	 */
-	public static Company saisirCompany() {
+	public Company saisirCompany() {
 
 		Company company = null;
 		boolean companyValide = false;
@@ -120,7 +119,7 @@ public class SeizureVerification {
 	 *
 	 * @return Computer
 	 */
-	public static Computer saisirComputerATrouver() {
+	public Computer saisirComputerATrouver() {
 		Computer computer = new Computer();
 		boolean computerValide = false;
 		int idComputer = 0;
@@ -147,7 +146,7 @@ public class SeizureVerification {
 	 * 
 	 * @return Company valid company
 	 */
-	public static Company saisirCompanyATrouver() {
+	public Company saisirCompanyATrouver() {
 		Company company = new Company();
 		boolean companyValide = false;
 		int idCompany = 0;
