@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import com.excilys.cdb.dao.Connexion;
 import com.ibatis.common.jdbc.ScriptRunner;
 
-public enum TransactionsOnTestData {
+public enum TransactionsOnTestDatabase {
 
   INSTANCE;
 

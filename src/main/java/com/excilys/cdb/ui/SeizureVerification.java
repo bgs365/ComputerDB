@@ -7,11 +7,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.springConfig.ApplicationConfig;
 
 /**
  * Class which help and verify data enter by user.
@@ -20,10 +23,10 @@ import com.excilys.cdb.service.ComputerService;
  *
  */
 public class SeizureVerification {
-	@Autowired
-	private CompanyService companyService;
-	@Autowired
-	private ComputerService computerService;
+
+	static ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+	static CompanyService companyService = (CompanyService) context.getBean(CompanyService.class);
+	static ComputerService computerService = (ComputerService) context.getBean(ComputerService.class);
 	private static Scanner sc = new Scanner(System.in);
 
 	/**
@@ -85,7 +88,7 @@ public class SeizureVerification {
 	 *
 	 * @return Company
 	 */
-	public Company saisirCompany() {
+	public static Company saisirCompany() {
 
 		Company company = null;
 		boolean companyValide = false;
@@ -117,7 +120,7 @@ public class SeizureVerification {
 	 *
 	 * @return Computer
 	 */
-	public Computer saisirComputerATrouver() {
+	public static Computer saisirComputerATrouver() {
 		Computer computer = new Computer();
 		boolean computerValide = false;
 		int idComputer = 0;
@@ -144,7 +147,7 @@ public class SeizureVerification {
 	 * 
 	 * @return Company valid company
 	 */
-	public Company saisirCompanyATrouver() {
+	public static Company saisirCompanyATrouver() {
 		Company company = new Company();
 		boolean companyValide = false;
 		int idCompany = 0;

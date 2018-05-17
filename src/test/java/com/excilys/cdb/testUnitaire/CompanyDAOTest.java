@@ -8,13 +8,20 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.dao.ComputerDAO;
 import com.excilys.cdb.model.Company;
+import com.excilys.cdb.springConfig.ApplicationConfig;
+
+
 
 /**
  * Class test Company persistance.
@@ -22,6 +29,9 @@ import com.excilys.cdb.model.Company;
  * @author sanogo
  *
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = ApplicationConfig.class)
+@Configuration
 public class CompanyDAOTest {
 
   static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAOTest.class);
@@ -36,7 +46,7 @@ public class CompanyDAOTest {
   @Before
   public void init() {
     // initialize database
-    TransactionsOnTestData.INSTANCE.initData();
+    TransactionsOnTestDatabase.INSTANCE.initData();
   }
 
   /**
@@ -44,7 +54,7 @@ public class CompanyDAOTest {
    */
   @After
   public void destroy() {
-    TransactionsOnTestData.INSTANCE.destroyDate();
+    TransactionsOnTestDatabase.INSTANCE.destroyDate();
   }
 
   /**

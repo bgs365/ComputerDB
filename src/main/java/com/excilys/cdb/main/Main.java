@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.exceptions.CdbException;
 import com.excilys.cdb.exceptions.ComputerServiceIllegalExpression;
@@ -18,6 +19,7 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.springConfig.ApplicationConfig;
+import com.excilys.cdb.ui.MainMenu;
 
 /**
  * Main class, which allow to verify class.
@@ -26,11 +28,12 @@ import com.excilys.cdb.springConfig.ApplicationConfig;
  *
  */
 public class Main {
-	@Autowired
-	ComputerService computerService;
-	@Autowired
-	CompanyService companyService;
-	final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+	
+	static Logger LOGGER = LoggerFactory.getLogger(Main.class);
+	static ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+	static CompanyService companyService = (CompanyService) context.getBean(CompanyService.class);
+	static ComputerService computerService = (ComputerService) context.getBean(ComputerService.class);
+	static MainMenu mainMenu;
 
 	/**
 	 * Main method.
@@ -39,16 +42,15 @@ public class Main {
 	 *          asName
 	 */
 	public static void main(String[] args) {
-		/*
-		 * LOGGER.info("Ouverture du Menu"); mainMenu.display();
-		 * LOGGER.info("Fermeture du Menu");
-		 */
+
+		
+		  LOGGER.info("Ouverture du Menu");
+		  mainMenu.display();
+		  LOGGER.info("Fermeture du Menu");
+		 
 		// verifServiceComputer();
 		// verifServiceComputerSave();
-		/*ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
-
-		Main sc = (Main) ctx.getBean(Main.class);
-		sc.verifServiceCompany();*/
+		verifServiceCompany();
 		// verifServiceComputerUpdate();
 		// verifServiceComputerDelete();
 		// System.out.println(ComputerDAO.INSTANCE.findAll());
@@ -143,7 +145,7 @@ public class Main {
 	/**
 	 * test selects methods of company.
 	 */
-	public void verifServiceCompany() {
+	public static void verifServiceCompany() {
 		Company company = companyService.findById(500);
 		System.out.println(company);
 

@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import com.zaxxer.hikari.HikariConfig;
@@ -21,7 +20,6 @@ import com.zaxxer.hikari.HikariDataSource;
  */
 @Configuration
 @ComponentScan(basePackages = "com.excilys.cdb")
-@PropertySource(value = { "classpath:config.properties" })
 @EnableTransactionManagement
 public class ApplicationConfig {
 	static final Logger LOGGER = LoggerFactory.getLogger(ApplicationConfig.class);

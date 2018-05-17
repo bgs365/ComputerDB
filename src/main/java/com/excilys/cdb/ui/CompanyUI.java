@@ -4,17 +4,21 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.page.Page;
 import com.excilys.cdb.service.CompanyService;
+import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.springConfig.ApplicationConfig;
 
 public class CompanyUI {
-
-  @Autowired
-  private CompanyService companyService;
-  @Autowired
-  private SeizureVerification seizureVerification;
+	
+	static ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+	static CompanyService companyService = (CompanyService) context.getBean(CompanyService.class);
+	static ComputerService computerService = (ComputerService) context.getBean(ComputerService.class);
+  private static SeizureVerification seizureVerification;
   
   private static Scanner sc = new Scanner(System.in);
   private static int nombrElementParPage = 10;

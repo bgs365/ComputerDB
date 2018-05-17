@@ -7,13 +7,17 @@ import java.util.Scanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.excilys.cdb.exceptions.CdbException;
 import com.excilys.cdb.main.Main;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.page.Page;
+import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.springConfig.ApplicationConfig;
 
 /**
  * Computer User Interface class.
@@ -22,10 +26,10 @@ import com.excilys.cdb.service.ComputerService;
  *
  */
 public class ComputerUI {
-	@Autowired
 	private SeizureVerification seizureVerification;
-	@Autowired
-  private ComputerService computerService;
+	static ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+	static CompanyService companyService = (CompanyService) context.getBean(CompanyService.class);
+	static ComputerService computerService = (ComputerService) context.getBean(ComputerService.class);
   private Scanner sc = new Scanner(System.in);
   private int nombrElementParPage = 50;
   static final Logger LOGGER = LoggerFactory.getLogger(Main.class);

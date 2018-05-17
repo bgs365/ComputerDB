@@ -10,12 +10,18 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.cdb.dao.ComputerDAO;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.springConfig.ApplicationConfig;
 
 /**
  * Test computer persistance.
@@ -23,17 +29,23 @@ import com.excilys.cdb.service.ComputerService;
  * @author sanogo
  *
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = ApplicationConfig.class)
+@Configuration
 public class ComputerDAOTest {
 	
+	@Autowired
 	ComputerDAO computerDAO;
+	@Autowired
 	ComputerService computerService;
+	@Autowired
 	CompanyService companyService;
   /**
    * init test data.
    */
   @Before
   public void init() {
-    TransactionsOnTestData.INSTANCE.initData();
+    TransactionsOnTestDatabase.INSTANCE.initData();
   }
 
   /**
@@ -41,7 +53,7 @@ public class ComputerDAOTest {
    */
   @After
   public void destroy() {
-    TransactionsOnTestData.INSTANCE.destroyDate();
+    TransactionsOnTestDatabase.INSTANCE.destroyDate();
   }
 
   /**

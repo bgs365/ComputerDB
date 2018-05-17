@@ -3,6 +3,7 @@ package com.excilys.cdb.ui;
 import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Menu class.
@@ -11,10 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  */
 public class MainMenu {
-	@Autowired
-	CompanyUI companyUI;
-	@Autowired
-	ComputerUI computerUI;
+	static CompanyUI companyUI = new CompanyUI();
+	static ComputerUI computerUI = new ComputerUI();
 	
   private static Scanner sc;
   enum MainMenuChoice{
@@ -24,7 +23,7 @@ public class MainMenu {
   /**
    * Display the principal menu.
    */
-  public  void display() {
+  public static void display() {
   	MainMenuChoice mainMenuChoice ;
   	
     boolean quitter = true;
