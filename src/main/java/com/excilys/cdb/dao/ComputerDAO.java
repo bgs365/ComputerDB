@@ -43,7 +43,6 @@ public class ComputerDAO {
   @Autowired
   private DataSource dataSource;
 
-  
   /**
    * allow access to an computer with is id.
    *

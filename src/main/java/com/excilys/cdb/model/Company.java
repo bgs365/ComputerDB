@@ -13,7 +13,6 @@ public class Company {
 
   private int id;
   private String name;
-  private List<Computer> computers = new ArrayList<Computer>();
 
   /**
    * Default Constructor.
@@ -21,18 +20,6 @@ public class Company {
   public Company() {
   }
 
-  /**
-   * Constructor which can take his list of computers.
-   *
-   * @param id Company id
-   * @param name Company name
-   * @param computer Company List<Computers>
-   */
-  public Company(int id, String name, List<Computer> computer) {
-    this.id = id;
-    this.name = name;
-    this.computers = computer;
-  }
 
   /**
    * Constructor which can take a list of computer.
@@ -62,22 +49,6 @@ public class Company {
     this.name = name;
   }
 
-  public List<Computer> getComputer() {
-    return computers;
-  }
-
-  public void setComputer(List<Computer> pComputers) {
-    this.computers = pComputers;
-  }
-
-  /**
-   * add an computer to company.
-   *
-   * @param computer Computer
-   */
-  public void addComputer(Computer computer) {
-    computers.add(computer);
-  }
 
   @Override
   public String toString() {
