@@ -2,9 +2,7 @@ package com.excilys.cdb.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,10 +11,12 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
+import com.excilys.mapper.ComputerMapper;
 
 /**
  * *Classe qui permet de mettre en place la persistance d'une Company.
@@ -26,439 +26,195 @@ import com.excilys.cdb.model.Computer;
 @Repository
 public class ComputerDAO {
 
-  String requeteFindById = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id WHERE computer.id = ?";
-  String requeteFinfAll = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id ";
-  String requeteFindByName = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id  WHERE computer.name LIKE ?  ";
-  String requeteFindByComputerAndCompanyNameLimit = " SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id  WHERE computer.name LIKE ? OR company.name LIKE ? ORDER BY computer.name LIMIT ?, ?";
-  String requeteFindByComputerAndCompanyName = " SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id  WHERE computer.name LIKE ? OR company.name LIKE ? ORDER BY computer.name";
-  String requeteFindLimitNumberOfResult = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id LIMIT ?, ?";
-  String requeteFindByCompany = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id WHERE computer.company_id = ?";
-  String requeteInsert = "INSERT INTO computer (NAME, INTRODUCED, DISCONTINUED, COMPANY_ID) VALUES (?,?,?,?)";
-  String requeteInsertSansCompany = "INSERT INTO computer (NAME, INTRODUCED, DISCONTINUED) VALUES (?,?,?)";
-  String requetedelete = "DELETE FROM computer WHERE id = ?";
-  String requeteUpdate = "UPDATE computer SET NAME = ? ,INTRODUCED = ? ,DISCONTINUED = ? ,COMPANY_ID = ? WHERE Id = ?";
-  String requeteUpdateChangerCompany = "UPDATE computer SET COMPANY_ID = ?  WHERE Id = ?";
-  static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
-  
-  @Autowired
-  private DataSource dataSource;
+	private DataSource dataSource;
+	private JdbcTemplate jdbcTemplate;
 
-  /**
-   * allow access to an computer with is id.
-   *
-   * @param id
-   *          asName
-   * @return Computer
-   */
-  public Optional<Computer> findById(int id) {
-    Computer computer = new Computer();
+	@Autowired
+	public ComputerDAO(JdbcTemplate jdbcTemplate, DataSource dataSource) {
+		this.jdbcTemplate = jdbcTemplate;
+		this.dataSource = dataSource;
+	}
 
-    try (Connection conn = dataSource.getConnection();
-        PreparedStatement preparedStatement = conn.prepareStatement(requeteFindById)) {
+	String requeteFindById = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id WHERE computer.id = ?";
+	String requeteFinfAll = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id ";
+	String requeteFindByName = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id  WHERE computer.name LIKE ?  ";
+	String requeteFindByComputerAndCompanyNameLimit = " SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id  WHERE computer.name LIKE ? OR company.name LIKE ? ORDER BY computer.name LIMIT ?, ?";
+	String requeteFindByComputerAndCompanyName = " SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id  WHERE computer.name LIKE ? OR company.name LIKE ? ORDER BY computer.name";
+	String requeteFindLimitNumberOfResult = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id LIMIT ?, ?";
+	String requeteFindByCompany = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id WHERE computer.company_id = ?";
+	String requeteInsert = "INSERT INTO computer (NAME, INTRODUCED, DISCONTINUED, COMPANY_ID) VALUES (?,?,?,?)";
+	String requeteInsertSansCompany = "INSERT INTO computer (NAME, INTRODUCED, DISCONTINUED) VALUES (?,?,?)";
+	String requetedelete = "DELETE FROM computer WHERE id = ?";
+	String requeteUpdate = "UPDATE computer SET NAME = ? ,INTRODUCED = ? ,DISCONTINUED = ? ,COMPANY_ID = ? WHERE Id = ?";
+	String requeteUpdateChangerCompany = "UPDATE computer SET COMPANY_ID = ?  WHERE Id = ?";
+	static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
 
-      preparedStatement.setInt(1, id);
-      ResultSet result = preparedStatement.executeQuery();
+	/**
+	 * allow access to an computer with is id.
+	 *
+	 * @param id
+	 *          asName
+	 * @return Computer
+	 */
+	public Optional<Computer> findById(int id) {
+		Computer computer = (Computer) jdbcTemplate.queryForObject(requeteFindById, new ComputerMapper(), id);
+		return Optional.ofNullable(computer);
 
-      while (result.next()) {
-        Company company = new Company();
-        computer.setId(result.getInt("computer.Id"));
-        computer.setName(result.getString("computer.Name"));
-        if (result.getDate("computer.introduced") != null) {
-          computer.setIntroduced(result.getDate("computer.introduced").toLocalDate());
-        }
-        if (result.getDate("computer.discontinued") != null) {
-          computer.setDiscontinued(result.getDate("computer.discontinued").toLocalDate());
-        }
-        if (result.getInt("company.Id") != 0) {
-          company.setId(result.getInt("company.Id"));
-          company.setName(result.getString("company.name"));
-        }
-        computer.setCompany(company);
-      }
+	}
 
-    } catch (SQLException | NullPointerException e) {
-      LOGGER.info("Erreur sur la requete find Computer by id : " + e.getMessage());
-    }
+	/**
+	 * Allow access to all computers of database.
+	 *
+	 * @return List<Computer>
+	 */
+	public List<Computer> findAll() {
+		List<Computer> computers = jdbcTemplate.query(requeteFinfAll, new ComputerMapper());
+		return computers;
+	}
 
-    return Optional.ofNullable(computer);
+	/**
+	 * Use to generate pages.
+	 *
+	 * @param pageIndex
+	 *          asName
+	 * @param numberOfResultByPage
+	 *          asName
+	 * @return List<Computer>
+	 */
+	public List<Computer> findLimitNumberOfResult(int pageIndex, int numberOfResultByPage) {
+		List<Computer> computers = jdbcTemplate.query(requeteFindLimitNumberOfResult, new ComputerMapper(), pageIndex,
+		    numberOfResultByPage);
+		return computers;
+	}
 
-  }
+	/**
+	 * Return all computer with name past as parameter.
+	 *
+	 * @param name
+	 *          asName
+	 * @return List<Computer>
+	 */
+	public List<Computer> findByName(String name) {
+		List<Computer> computers = jdbcTemplate.query(requeteFindByName, new ComputerMapper(), "%" + name + "%");
+		return computers;
+	}
 
-  /**
-   * Allow access to all computers of database.
-   *
-   * @return List<Computer>
-   */
-  public List<Computer> findAll() {
-    List<Computer> computers = new ArrayList<Computer>();
+	/**
+	 * find company by id.
+	 *
+	 * @param companyId
+	 *          asName
+	 * @return List<Computer>
+	 */
+	public List<Computer> findByCompany(int companyId) {
+		List<Computer> computers = jdbcTemplate.query(requeteFindByCompany, new ComputerMapper(), companyId);
 
-    try (Connection conn = dataSource.getConnection();
-        PreparedStatement preparedStatement = conn.prepareStatement(requeteFinfAll)) {
+		return computers;
+	}
 
-      ResultSet result = preparedStatement.executeQuery();
+	/**
+	 * for page.
+	 * 
+	 * @param name
+	 * @param pageIndex
+	 * @param numberOfResultByPage
+	 * @return
+	 */
+	public List<Computer> findByComputerAndCompanyNameLimit(String name, int pageIndex, int numberOfResultByPage) {
+		List<Computer> computers = jdbcTemplate.query(requeteFindByComputerAndCompanyNameLimit, new ComputerMapper(),
+		    "%" + name + "%", "%" + name + "%", pageIndex, numberOfResultByPage);
+		return computers;
+	}
 
-      while (result.next()) {
+	/**
+	 * use when page not need.
+	 * 
+	 * @param name
+	 * @param pageIndex
+	 * @param numberOfResultByPage
+	 * @return
+	 */
+	public List<Computer> findByComputerAndCompanyName(String name) {
+		List<Computer> computers = jdbcTemplate.query(requeteFindByComputerAndCompanyName, new ComputerMapper(),
+		    "%" + name + "%", "%" + name + "%");
+		return computers;
+	}
 
-        Computer computer = new Computer();
-        computer.setId(result.getInt("Id"));
-        computer.setName(result.getString("Name"));
-        Company company = new Company();
-        if (result.getDate("introduced") != null) {
-          computer.setIntroduced(result.getDate("introduced").toLocalDate());
-        }
-        if (result.getDate("discontinued") != null) {
-          computer.setDiscontinued(result.getDate("discontinued").toLocalDate());
-        }
-        if (result.getInt("company.Id") != 0) {
-          company.setId(result.getInt("company.Id"));
-          company.setName(result.getString("company.name"));
-        }
-        computer.setCompany(company);
-        computers.add(computer);
-      }
-    } catch (SQLException e) {
-      LOGGER.info("Erreur sur la requete findAll Computer  : " + e.getMessage());
-    }
+	/**
+	 * Save computer in Db and return 1 in case of success and 0 if not.
+	 *
+	 * @param computer
+	 *          asName
+	 * @return (0 or 1)
+	 */
+	public int save(Computer computer) {
+		java.sql.Date introduced = (computer.getIntroduced() != null) ? java.sql.Date.valueOf(computer.getIntroduced())
+		    : null;
+		java.sql.Date discontinued = (computer.getDiscontinued() != null)
+		    ? java.sql.Date.valueOf(computer.getDiscontinued())
+		    : null;
+		Company company = (computer.getCompany() != null) ? computer.getCompany() : null;
+		if (findByCompany(computer.getCompany().getId()).isEmpty()) {
+			return jdbcTemplate.update(requeteInsert, computer.getName(), introduced, discontinued, null);
+		} else {
+			return jdbcTemplate.update(requeteInsert, computer.getName(), introduced, discontinued,
+			    computer.getCompany().getId());
+		}
 
-    return computers;
+	}
 
-  }
+	/**
+	 * Delete computer from Db and return 1 in case of success and 0 if not.
+	 *
+	 * @param id
+	 *          asName
+	 * @return (0 or 1)
+	 */
+	public int delete(int id) {
+		return jdbcTemplate.update(requetedelete, id);
+	}
 
-  /**
-   * Use to generate pages.
-   *
-   * @param pageIndex
-   *          asName
-   * @param numberOfResultByPage
-   *          asName
-   * @return List<Computer>
-   */
-  public List<Computer> findLimitNumberOfResult(int pageIndex, int numberOfResultByPage) {
-    List<Computer> computers = new ArrayList<Computer>();
+	/**
+	 * Update computer in Db and return 1 in case of success and 0 if not.
+	 *
+	 * @param computer
+	 *          asName
+	 * @return (0 or 1)
+	 */
+	public int update(Computer computer) {
+		int reussite = 0;
+		try (Connection conn = dataSource.getConnection();
+		    PreparedStatement preparedStatement = conn.prepareStatement(requeteUpdate)) {
 
-    try (Connection conn = dataSource.getConnection();
-        PreparedStatement preparedStatement = conn.prepareStatement(requeteFindLimitNumberOfResult)) {
+			preparedStatement.setString(1, computer.getName());
+			if (computer.getIntroduced() != null) {
+				preparedStatement.setDate(2, java.sql.Date.valueOf(computer.getIntroduced()));
+			} else {
+				preparedStatement.setDate(2, null);
+			}
 
-      preparedStatement.setInt(1, pageIndex);
-      preparedStatement.setInt(2, numberOfResultByPage);
-      ResultSet result = preparedStatement.executeQuery();
+			if (computer.getDiscontinued() != null) {
+				preparedStatement.setDate(3, java.sql.Date.valueOf(computer.getDiscontinued()));
+			} else {
+				preparedStatement.setDate(3, null);
+			}
 
-      while (result.next()) {
+			if (computer.getCompany() == null) {
+				preparedStatement.setString(4, null);
+			} else if (findByCompany(computer.getCompany().getId()).isEmpty()) {
+				preparedStatement.setString(4, null);
+			} else {
+				preparedStatement.setInt(4, computer.getCompany().getId());
+			}
 
-        Computer computer = new Computer();
-        computer.setId(result.getInt("Id"));
-        computer.setName(result.getString("Name"));
-        Company company = new Company();
-        if (result.getDate("introduced") != null) {
-          computer.setIntroduced(result.getDate("introduced").toLocalDate());
-        }
-        if (result.getDate("discontinued") != null) {
-          computer.setDiscontinued(result.getDate("discontinued").toLocalDate());
-        }
-        if (result.getInt("company.Id") != 0) {
-          company.setId(result.getInt("company.Id"));
-          company.setName(result.getString("company.name"));
-        }
-        computer.setCompany(company);
-        computers.add(computer);
-      }
+			preparedStatement.setInt(5, computer.getId());
+			reussite = preparedStatement.executeUpdate();
+			LOGGER.info(computer.getName() + " a été bien modifié!");
 
-    } catch (SQLException e) {
-
-      LOGGER.info("Erreur sur la requete find limit NUmber of computer  : " + e.getMessage());
-    }
-    return computers;
-  }
-
-  /**
-   * Return all computer with name past as parameter.
-   *
-   * @param name
-   *          asName
-   * @return List<Computer>
-   */
-  public List<Computer> findByName(String name) {
-    List<Computer> computers = new ArrayList<Computer>();
-
-    try (Connection conn = dataSource.getConnection();
-        PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByName)) {
-
-      preparedStatement.setString(1, "%"+name+"%");
-      ResultSet result = preparedStatement.executeQuery();
-
-      while (result.next()) {
-
-        Computer computer = new Computer();
-        computer.setId(result.getInt("Id"));
-        computer.setName(result.getString("Name"));
-        Company company = new Company();
-        if (result.getDate("introduced") != null) {
-          computer.setIntroduced(result.getDate("introduced").toLocalDate());
-        }
-        if (result.getDate("discontinued") != null) {
-          computer.setDiscontinued(result.getDate("discontinued").toLocalDate());
-        }
-        if (result.getInt("company.Id") != 0) {
-          company.setId(result.getInt("company.Id"));
-          company.setName(result.getString("company.name"));
-        }
-        computer.setCompany(company);
-        computers.add(computer);
-      }
-
-    } catch (SQLException e) {
-      LOGGER.info("Erreur sur la requete find Computer by name : " + e.getMessage());
-    }
-
-    return computers;
-  }
-
-  /**
-   * find company by id.
-   *
-   * @param companyId
-   *          asName
-   * @return List<Computer>
-   */
-  public List<Computer> findByCompany(int companyId) {
-    List<Computer> computers = new ArrayList<Computer>();
-
-    try (Connection conn = dataSource.getConnection();
-        PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByCompany)) {
-      preparedStatement.setInt(1, companyId);
-      ResultSet result = preparedStatement.executeQuery();
-
-      while (result.next()) {
-
-        Computer computer = new Computer();
-        computer.setId(result.getInt("Id"));
-        computer.setName(result.getString("Name"));
-        Company company = new Company();
-        if (result.getDate("introduced") != null) {
-          computer.setIntroduced(result.getDate("introduced").toLocalDate());
-        }
-        if (result.getDate("discontinued") != null) {
-          computer.setDiscontinued(result.getDate("discontinued").toLocalDate());
-        }
-        if (result.getInt("company.Id") != 0) {
-          company.setId(result.getInt("company.Id"));
-          company.setName(result.getString("company.name"));
-        }
-        computer.setCompany(company);
-        computers.add(computer);
-      }
-
-    } catch (SQLException e) {
-      LOGGER.info("Erreur sur la requete find Computer by Company id : " + e.getMessage());
-    }
-
-    return computers;
-  }
-  
-  /**
-   * for page.
-   * @param name
-   * @param pageIndex
-   * @param numberOfResultByPage
-   * @return
-   */
-  public List<Computer> findByComputerAndCompanyNameLimit(String name,int pageIndex, int numberOfResultByPage){
-  	List<Computer> computers = new ArrayList<Computer>();
-  	
-  	 try (Connection conn = dataSource.getConnection();
-         PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByComputerAndCompanyNameLimit)) {
-
-       preparedStatement.setString(1, "%"+name+"%");
-       preparedStatement.setString(2, "%"+name+"%");
-       preparedStatement.setInt(3, pageIndex);
-       preparedStatement.setInt(4, numberOfResultByPage);
-       ResultSet result = preparedStatement.executeQuery();
-
-       while (result.next()) {
-
-         Computer computer = new Computer();
-         computer.setId(result.getInt("Id"));
-         computer.setName(result.getString("Name"));
-         Company company = new Company();
-         if (result.getDate("introduced") != null) {
-           computer.setIntroduced(result.getDate("introduced").toLocalDate());
-         }
-         if (result.getDate("discontinued") != null) {
-           computer.setDiscontinued(result.getDate("discontinued").toLocalDate());
-         }
-         if (result.getInt("company.Id") != 0) {
-           company.setId(result.getInt("company.Id"));
-           company.setName(result.getString("company.name"));
-         }
-         computer.setCompany(company);
-         computers.add(computer);
-       }
-
-     } catch (SQLException e) {
-       LOGGER.info("Erreur sur la requete find Computer by name : " + e.getMessage());
-     }
-  	
-  	return computers;
-  }
-  
-  /**
-   * use when page not need.
-   * @param name
-   * @param pageIndex
-   * @param numberOfResultByPage
-   * @return
-   */
-  public List<Computer> findByComputerAndCompanyName(String name){
-  	List<Computer> computers = new ArrayList<Computer>();
-  	
-  	 try (Connection conn = dataSource.getConnection();
-         PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByComputerAndCompanyName)) {
-
-       preparedStatement.setString(1, "%"+name+"%");
-       preparedStatement.setString(2, "%"+name+"%");
-       ResultSet result = preparedStatement.executeQuery();
-
-       while (result.next()) {
-
-         Computer computer = new Computer();
-         computer.setId(result.getInt("Id"));
-         computer.setName(result.getString("Name"));
-         Company company = new Company();
-         if (result.getDate("introduced") != null) {
-           computer.setIntroduced(result.getDate("introduced").toLocalDate());
-         }
-         if (result.getDate("discontinued") != null) {
-           computer.setDiscontinued(result.getDate("discontinued").toLocalDate());
-         }
-         if (result.getInt("company.Id") != 0) {
-           company.setId(result.getInt("company.Id"));
-           company.setName(result.getString("company.name"));
-         }
-         computer.setCompany(company);
-         computers.add(computer);
-       }
-
-     } catch (SQLException e) {
-       LOGGER.info("Erreur sur la requete find Computer by name : " + e.getMessage());
-     }
-  	
-  	return computers;
-  }
-  
-
-  /**
-   * Save computer in Db and return 1 in case of success and 0 if not.
-   *
-   * @param computer
-   *          asName
-   * @return (0 or 1)
-   */
-  public int save(Computer computer) {
-   
-    int reussite = 0;
-    PreparedStatement preparedStatement = null;
-    try( Connection conn = dataSource.getConnection()) {
-
-      if (computer.getCompany() != null) {
-        preparedStatement = conn.prepareStatement(requeteInsert);
-        preparedStatement.setInt(4, computer.getCompany().getId());
-
-      } else {
-        preparedStatement = conn.prepareStatement(requeteInsertSansCompany);
-      }
-
-      preparedStatement.setString(1, computer.getName());
-
-      if (computer.getIntroduced() == null) {
-        preparedStatement.setDate(2, null);
-      } else {
-        preparedStatement.setDate(2, java.sql.Date.valueOf(computer.getIntroduced()));
-      }
-
-      if (computer.getDiscontinued() == null) {
-        preparedStatement.setDate(3, null);
-      } else {
-        preparedStatement.setDate(3, java.sql.Date.valueOf(computer.getDiscontinued()));
-      }
-
-      // execute insert SQL stetement
-      reussite = preparedStatement.executeUpdate();
-
-      System.out.println(computer.getName() + " bien créee");
-
-    } catch (SQLException e) {
-			e.printStackTrace();
-		} 
-    return reussite;
-  }
-
-  /**
-   * Delete computer from Db and return 1 in case of success and 0 if not.
-   *
-   * @param id
-   *          asName
-   * @return (0 or 1)
-   */
-  public int delete(int id) {
-    int reussite = 0;
-    try (Connection conn =  dataSource.getConnection();
-        PreparedStatement preparedStatement = conn.prepareStatement(requetedelete)) {
-      preparedStatement.setInt(1, id);
-
-      // execute delete SQL stetement
-      reussite = preparedStatement.executeUpdate();
-
-      LOGGER.info(" le pc qui a pour id : " + id + " a été bien supprimé!");
-
-    } catch (SQLException e) {
-
-      LOGGER.info(e.getMessage());
-
-    }
-    return reussite;
-  }
-
-  /**
-   * Update computer in Db and return 1 in case of success and 0 if not.
-   *
-   * @param computer
-   *          asName
-   * @return (0 or 1)
-   */
-  public int update(Computer computer) {
-    int reussite = 0;
-    try (Connection conn = dataSource.getConnection();
-        PreparedStatement preparedStatement = conn.prepareStatement(requeteUpdate)) {
-
-      preparedStatement.setString(1, computer.getName());
-      if (computer.getIntroduced() != null) {
-        preparedStatement.setDate(2, java.sql.Date.valueOf(computer.getIntroduced()));
-      } else {
-        preparedStatement.setDate(2, null);
-      }
-
-      if (computer.getDiscontinued() != null) {
-        preparedStatement.setDate(3, java.sql.Date.valueOf(computer.getDiscontinued()));
-      } else {
-        preparedStatement.setDate(3, null);
-      }
-
-      if (computer.getCompany() == null) {
-        preparedStatement.setString(4, null);
-      }else if(findByCompany(computer.getCompany().getId()).isEmpty()) {
-      	 preparedStatement.setString(4, null);
-      } else {
-        preparedStatement.setInt(4, computer.getCompany().getId());
-      }
-
-      preparedStatement.setInt(5, computer.getId());
-      reussite = preparedStatement.executeUpdate();
-      LOGGER.info(computer.getName() + " a été bien modifié!");
-
-    } catch (SQLException e) {
-      LOGGER.info(e.getMessage());
-    }
-    return reussite;
-  }
+		} catch (SQLException e) {
+			LOGGER.info(e.getMessage());
+		}
+		return reussite;
+	}
 
 }
