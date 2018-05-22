@@ -39,9 +39,13 @@ public class ComputerDAO {
   String requeteUpdate = "UPDATE computer SET NAME = ? ,INTRODUCED = ? ,DISCONTINUED = ? ,COMPANY_ID = ? WHERE Id = ?";
   String requeteUpdateChangerCompany = "UPDATE computer SET COMPANY_ID = ?  WHERE Id = ?";
   static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
+<<<<<<< HEAD
+  Connexion connexion = Connexion.INSTANCE;
+=======
   
   @Autowired
   private DataSource dataSource;
+>>>>>>> develop
 
   
   /**
@@ -54,7 +58,11 @@ public class ComputerDAO {
   public Optional<Computer> findById(int id) {
     Computer computer = new Computer();
 
+<<<<<<< HEAD
+    try (Connection conn = connexion.getConnexion();
+=======
     try (Connection conn = dataSource.getConnection();
+>>>>>>> develop
         PreparedStatement preparedStatement = conn.prepareStatement(requeteFindById)) {
 
       preparedStatement.setInt(1, id);
@@ -93,7 +101,11 @@ public class ComputerDAO {
   public List<Computer> findAll() {
     List<Computer> computers = new ArrayList<Computer>();
 
+<<<<<<< HEAD
+    try (Connection conn = connexion.getConnexion();
+=======
     try (Connection conn = dataSource.getConnection();
+>>>>>>> develop
         PreparedStatement preparedStatement = conn.prepareStatement(requeteFinfAll)) {
 
       ResultSet result = preparedStatement.executeQuery();
@@ -137,7 +149,11 @@ public class ComputerDAO {
   public List<Computer> findLimitNumberOfResult(int pageIndex, int numberOfResultByPage) {
     List<Computer> computers = new ArrayList<Computer>();
 
+<<<<<<< HEAD
+    try (Connection conn = connexion.getConnexion();
+=======
     try (Connection conn = dataSource.getConnection();
+>>>>>>> develop
         PreparedStatement preparedStatement = conn.prepareStatement(requeteFindLimitNumberOfResult)) {
 
       preparedStatement.setInt(1, pageIndex);
@@ -181,7 +197,11 @@ public class ComputerDAO {
   public List<Computer> findByName(String name) {
     List<Computer> computers = new ArrayList<Computer>();
 
+<<<<<<< HEAD
+    try (Connection conn = connexion.getConnexion();
+=======
     try (Connection conn = dataSource.getConnection();
+>>>>>>> develop
         PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByName)) {
 
       preparedStatement.setString(1, "%"+name+"%");
@@ -224,7 +244,11 @@ public class ComputerDAO {
   public List<Computer> findByCompany(int companyId) {
     List<Computer> computers = new ArrayList<Computer>();
 
+<<<<<<< HEAD
+    try (Connection conn = connexion.getConnexion();
+=======
     try (Connection conn = dataSource.getConnection();
+>>>>>>> develop
         PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByCompany)) {
       preparedStatement.setInt(1, companyId);
       ResultSet result = preparedStatement.executeQuery();
@@ -266,7 +290,11 @@ public class ComputerDAO {
   public List<Computer> findByComputerAndCompanyNameLimit(String name,int pageIndex, int numberOfResultByPage){
   	List<Computer> computers = new ArrayList<Computer>();
   	
+<<<<<<< HEAD
+  	 try (Connection conn = connexion.getConnexion();
+=======
   	 try (Connection conn = dataSource.getConnection();
+>>>>>>> develop
          PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByComputerAndCompanyNameLimit)) {
 
        preparedStatement.setString(1, "%"+name+"%");
@@ -312,7 +340,11 @@ public class ComputerDAO {
   public List<Computer> findByComputerAndCompanyName(String name){
   	List<Computer> computers = new ArrayList<Computer>();
   	
+<<<<<<< HEAD
+  	 try (Connection conn = connexion.getConnexion();
+=======
   	 try (Connection conn = dataSource.getConnection();
+>>>>>>> develop
          PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByComputerAndCompanyName)) {
 
        preparedStatement.setString(1, "%"+name+"%");
@@ -355,7 +387,11 @@ public class ComputerDAO {
    * @return (0 or 1)
    */
   public int save(Computer computer) {
+<<<<<<< HEAD
+    Connection conn = connexion.getConnexion();
+=======
    
+>>>>>>> develop
     int reussite = 0;
     PreparedStatement preparedStatement = null;
     try( Connection conn = dataSource.getConnection()) {
@@ -402,7 +438,11 @@ public class ComputerDAO {
    */
   public int delete(int id) {
     int reussite = 0;
+<<<<<<< HEAD
+    try (Connection conn = connexion.getConnexion();
+=======
     try (Connection conn =  dataSource.getConnection();
+>>>>>>> develop
         PreparedStatement preparedStatement = conn.prepareStatement(requetedelete)) {
       preparedStatement.setInt(1, id);
 
@@ -428,7 +468,11 @@ public class ComputerDAO {
    */
   public int update(Computer computer) {
     int reussite = 0;
+<<<<<<< HEAD
+    try (Connection conn = connexion.getConnexion();
+=======
     try (Connection conn = dataSource.getConnection();
+>>>>>>> develop
         PreparedStatement preparedStatement = conn.prepareStatement(requeteUpdate)) {
 
       preparedStatement.setString(1, computer.getName());

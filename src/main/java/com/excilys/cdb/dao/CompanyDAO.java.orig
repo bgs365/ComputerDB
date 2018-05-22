@@ -41,6 +41,7 @@ public class CompanyDAO {
 	String requeteDeleteCompany = "DELETE FROM company WHERE id = ?";
 	String requeteFindCompanyComputers = "SELECT  company.id,company.name,computer.id,computer.name,computer.introduced,computer.discontinued  FROM company LEFT OUTER JOIN computer ON computer.company_id=company.id WHERE company.id = ?";
 	static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
+	Connexion connexion = Connexion.INSTANCE;
 
 	/**
 	 * Find an company by id.
@@ -52,7 +53,11 @@ public class CompanyDAO {
 	public Optional<Company> findById(int id) {
 		Company company = new Company();
 
+<<<<<<< HEAD
+		try (Connection conn = connexion.getConnexion();
+=======
 		try (Connection conn = dataSource.getConnection();
+>>>>>>> develop
 		    PreparedStatement preparedStatement = conn.prepareStatement(requeteFindById)) {
 
 			preparedStatement.setInt(1, id);
@@ -81,7 +86,11 @@ public class CompanyDAO {
 	public List<Company> findAll() {
 		List<Company> companies = new ArrayList<Company>();
 
+<<<<<<< HEAD
+		try (Connection conn = connexion.getConnexion();
+=======
 		try (Connection conn = dataSource.getConnection();
+>>>>>>> develop
 		    PreparedStatement preparedStatement = conn.prepareStatement(requeteFinfAll)) {
 
 			ResultSet result = preparedStatement.executeQuery();
@@ -117,7 +126,11 @@ public class CompanyDAO {
 
 		List<Company> companies = new ArrayList<Company>();
 
+<<<<<<< HEAD
+		try (Connection conn = connexion.getConnexion();
+=======
 		try (Connection conn = dataSource.getConnection();
+>>>>>>> develop
 		    PreparedStatement preparedStatement = conn.prepareStatement(requeteFindLimitNumberOfResult)) {
 			preparedStatement.setInt(1, pageIndex);
 			preparedStatement.setInt(2, numberOfResultByPage);
@@ -151,7 +164,11 @@ public class CompanyDAO {
 
 		List<Company> companies = new ArrayList<Company>();
 
+<<<<<<< HEAD
+		try (Connection conn = connexion.getConnexion();
+=======
 		try (Connection conn = dataSource.getConnection();
+>>>>>>> develop
 		    PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByName)) {
 			preparedStatement.setString(1, "%" + name + "%");
 			ResultSet result = preparedStatement.executeQuery();
@@ -223,7 +240,11 @@ public class CompanyDAO {
 	 */
 	public int delete(int id) {
 		int reussite = 0;
+<<<<<<< HEAD
+		try (Connection conn = connexion.getConnexion();
+=======
 		try (Connection conn = dataSource.getConnection();
+>>>>>>> develop
 		    PreparedStatement preparedStatementdeleteComputer = conn.prepareStatement(requeteDeleteComputer);
 		    PreparedStatement preparedStatementdeleteCompany = conn.prepareStatement(requeteDeleteCompany)) {
 			conn.setAutoCommit(false);
