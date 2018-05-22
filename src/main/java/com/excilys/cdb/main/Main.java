@@ -50,7 +50,6 @@ public class Main {
 		// verifServiceCompany();
 		// verifServiceComputerUpdate();
 		// verifServiceComputerDelete();
-		// System.out.println(ComputerDAO.INSTANCE.findAll());
 		// verifDAODeleteCompany();
 
 	}
