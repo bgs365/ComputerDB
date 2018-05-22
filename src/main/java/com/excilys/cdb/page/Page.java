@@ -125,7 +125,7 @@ public class Page<T> {
    */
   public void setCurrentPage(int pageToReach) {
     if (pageToReach > numerosPage) {
-    	LOGGER.debug(nombreElementTotal+"");
+      if (pageToReach <= (nombreElementTotal/nombreElementPerPage)+1  ) {
     	LOGGER.debug(nombreElementPerPage+"");
     	LOGGER.debug((nombreElementTotal/nombreElementPerPage) +"");
       if (pageToReach <= (nombreElementTotal/nombreElementPerPage)+1  ) {

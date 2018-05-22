@@ -3,6 +3,7 @@ package com.excilys.cdb.servlets;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.page.Page;
@@ -21,24 +24,27 @@ import com.excilys.cdb.service.ComputerService;
  */
 @WebServlet("/dashboard")
 public class Dashboard extends HttpServlet {
+	
+
+	@Autowired
+	private ComputerService computerService;
 	private static final long serialVersionUID = 1L;
 
 	private int nombrElementPerPage = 10;
 	private int numberOfComputers = 0;
-	private ComputerService computerService = ComputerService.INSTANCE;
 	private List<Computer> computers;
 	private Page<Computer> computerPage;
 	private String search = "";
 
 	static final Logger LOGGER = LoggerFactory.getLogger(Dashboard.class);
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public Dashboard() {
-		super();
-	}
 
+	@Override
+  public void init(ServletConfig config) throws ServletException {
+      super.init(config);
+      SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+  }
+	
 	/**
 	 *
 	 * @param request

@@ -6,8 +6,9 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.exceptions.CdbException;
 import com.excilys.cdb.exceptions.ComputerServiceIllegalExpression;
 import com.excilys.cdb.exceptions.ComputerServiceNameTooShortException;
@@ -15,6 +16,7 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.springConfig.ApplicationConfig;
 import com.excilys.cdb.ui.MainMenu;
 
 /**
@@ -24,9 +26,11 @@ import com.excilys.cdb.ui.MainMenu;
  *
  */
 public class Main {
-	static ComputerService computerService = ComputerService.INSTANCE;
-	static CompanyService companyService = CompanyService.INSTANCE;
-	static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+	
+	static Logger LOGGER = LoggerFactory.getLogger(Main.class);
+	static ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+	static CompanyService companyService = (CompanyService) context.getBean(CompanyService.class);
+	static ComputerService computerService = (ComputerService) context.getBean(ComputerService.class);
 
 	/**
 	 * Main method.
@@ -36,25 +40,18 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 
-		LOGGER.info("Ouverture du Menu");
-		MainMenu.display();
-		LOGGER.info("Fermeture du Menu");
-
+		
+		  LOGGER.info("Ouverture du Menu");
+		  MainMenu.display();
+		  LOGGER.info("Fermeture du Menu");
+		 
 		// verifServiceComputer();
 		// verifServiceComputerSave();
 		// verifServiceCompany();
 		// verifServiceComputerUpdate();
 		// verifServiceComputerDelete();
-		// System.out.println(ComputerDAO.INSTANCE.findAll());
 		// verifDAODeleteCompany();
-	}
-	
-	/**
-	 * test delete Company.
-	 */
-	@SuppressWarnings("unused")
-	private static void verifDAODeleteCompany() {
-		CompanyDAO.INSTANCE.delete(60);
+
 	}
 
 	/**
@@ -63,7 +60,7 @@ public class Main {
 	 * @throws ComputerServiceIllegalExpression
 	 * @throws ComputerServiceNameTooShortException
 	 */
-	public static void verifServiceComputerUpdate() {
+	public void verifServiceComputerUpdate() {
 		Computer computer = computerService.findById(614);
 		computer.setName("Test update sans company");
 		// Company company = companyService.findById(17);
@@ -81,7 +78,7 @@ public class Main {
 	/**
 	 * test delete method of Computer Service.
 	 */
-	public static void verifServiceComputerDelete() {
+	public void verifServiceComputerDelete() {
 		Computer computer = computerService.findById(583);
 		System.out.println(computerService.delete(computer.getId()));
 	}
@@ -89,7 +86,7 @@ public class Main {
 	/**
 	 * test save method of Computer service.
 	 */
-	public static void verifServiceComputerSave() {
+	public void verifServiceComputerSave() {
 		Company company = companyService.findById(5);
 		Computer computer1 = new Computer(0, "dell 1004 verif 3 service avec company sans dateDisc.. ", null, null);
 		computer1.setCompany(company);
@@ -103,7 +100,7 @@ public class Main {
 	/**
 	 * test select methods of Computer service.
 	 */
-	public static void verifServiceComputer() {
+	public void verifServiceComputer() {
 		List<Computer> computers = new ArrayList<Computer>();
 		Computer computer = computerService.findById(1000);
 		System.out.println(computer);

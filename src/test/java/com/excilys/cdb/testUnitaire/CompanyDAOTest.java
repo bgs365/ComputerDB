@@ -2,16 +2,28 @@ package com.excilys.cdb.testUnitaire;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+
 import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.dao.ComputerDAO;
 import com.excilys.cdb.model.Company;
+import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.springConfig.ApplicationConfig;
+
+
+
 
 /**
  * Class test Company persistance.
@@ -19,19 +31,24 @@ import com.excilys.cdb.model.Company;
  * @author sanogo
  *
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = ApplicationConfig.class)
+@Configuration
 public class CompanyDAOTest {
 
-  static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAOTest.class);
-  CompanyDAO companyDAO = CompanyDAO.INSTANCE;
-  ComputerDAO computerDAO = ComputerDAO.INSTANCE;
+  static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAOTest.class);
+  @Autowired
+  private CompanyDAO companyDAO;
+  @Autowired
+  private ComputerDAO computerDAO;
+  
 
   /**
    * init test data.
    */
   @Before
   public void init() {
-    // initialize database
-    TransactionsOnTestData.INSTANCE.initData();
+  	TransactionsOnTestDatabase.initData();
   }
 
   /**
@@ -39,7 +56,7 @@ public class CompanyDAOTest {
    */
   @After
   public void destroy() {
-    TransactionsOnTestData.INSTANCE.destroyDate();
+  	TransactionsOnTestDatabase.destroyDate();
   }
 
   /**
@@ -47,7 +64,7 @@ public class CompanyDAOTest {
    */
   @Test
   public void testFindAll() {
-    List<Company> companies = CompanyDAO.INSTANCE.findAll();
+    List<Company> companies = companyDAO.findAll();
     assertEquals(42, companies.size());
     assertEquals("Apple Inc.", companies.get(0).getName());
     assertEquals("Samsung Electronics", companies.get(companies.size() - 1).getName());
@@ -77,6 +94,17 @@ public class CompanyDAOTest {
     assertFalse(companies.size() != 0);
     companies = companyDAO.findByName("Sun");
     assertEquals(2, companies.size());
+  }
+  
+  /**
+   * Test find company computers.
+   */
+  @Test
+  public void testFindCompanyComputers() {
+    List<Computer> computers = companyDAO.findCompanyComputers(1);
+    assertEquals(39, computers.size());
+    assertEquals(1, computers.get(0).getId());
+    assertEquals(574, computers.get(38).getId());
   }
 
   /**

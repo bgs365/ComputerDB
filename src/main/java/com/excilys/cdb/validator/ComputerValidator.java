@@ -10,8 +10,8 @@ import com.excilys.cdb.exceptions.ComputerServiceIllegalExpression;
 import com.excilys.cdb.exceptions.ComputerServiceNameTooShortException;
 import com.excilys.cdb.main.Main;
 
-public enum ComputerValidator {
-  INSTANCE;
+public class ComputerValidator {
+	
   static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
   /**
@@ -77,24 +77,6 @@ public enum ComputerValidator {
     	throw new ComputerServiceDateException();
     }
     return validDate;
-  }
-
-  /**
-   * @param args
-   *          asName @throws
-   */
-  public static void main(String[] args) {
-
-    try {
-      System.out.println(ComputerValidator.INSTANCE.verifComputerNameBeforeSave("argfg"));
-      System.out.println(ComputerValidator.INSTANCE.verifPresenceOfIllegalExpressionBeforeSave("argfg"));
-      System.out.println(ComputerValidator.INSTANCE.verifPresenceOfIllegalExpressionBeforeSave("hu/***/"));
-    } catch (ComputerServiceIllegalExpression e) {
-      LOGGER.info(e.getMessage());
-    } catch (ComputerServiceNameTooShortException e) {
-      LOGGER.info(e.getMessage());
-    }
-
   }
 
 }

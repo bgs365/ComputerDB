@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.cdb.exceptions.CdbException;
 import com.excilys.cdb.model.Company;
@@ -27,16 +30,17 @@ import com.excilys.cdb.service.ComputerService;
 public class EditComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static final Logger LOGGER = LoggerFactory.getLogger(EditComputer.class);
-	private ComputerService computerService = ComputerService.INSTANCE;
-	private CompanyService companyService = CompanyService.INSTANCE;
+	@Autowired
+	private ComputerService computerService;
+	@Autowired
+	private CompanyService companyService;
 	private List<Company> companies;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public EditComputer() {
-		super();
-	}
+	@Override
+  public void init(ServletConfig config) throws ServletException {
+      super.init(config);
+      SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+  }
 
 	/**
 	 *
@@ -120,7 +124,7 @@ public class EditComputer extends HttpServlet {
 		computer.setDiscontinued(discontinued);
 
 		try {
-			receiveCompany = CompanyService.INSTANCE.findById(Integer.parseInt(companyId));
+			receiveCompany = companyService.findById(Integer.parseInt(companyId));
 			LOGGER.info(receiveCompany + "");
 			computer.setCompany(receiveCompany);
 		} catch (NumberFormatException e) {
@@ -130,7 +134,7 @@ public class EditComputer extends HttpServlet {
 		LOGGER.debug(computer + "");
 		try {
 			LOGGER.info(computer + "");
-			if (ComputerService.INSTANCE.update(computer) != 0) {
+			if (computerService.update(computer) != 0) {
 				success = true;
 			} else {
 				success = false;
