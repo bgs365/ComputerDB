@@ -201,7 +201,6 @@ public class ComputerDAOTest {
 
 		computer = computerService.findById(1);
 		computer.setName("Test change macbook");
-		computer.setCompany(null);
 		assertEquals(1, computerDAO.update(computer));
 		assertEquals("Test change macbook", computer.getName());
 

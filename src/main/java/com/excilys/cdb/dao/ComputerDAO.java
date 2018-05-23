@@ -1,12 +1,7 @@
 package com.excilys.cdb.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
-
-import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.mapper.ComputerMapper;
 
@@ -26,13 +20,11 @@ import com.excilys.mapper.ComputerMapper;
 @Repository
 public class ComputerDAO {
 
-	private DataSource dataSource;
 	private JdbcTemplate jdbcTemplate;
 
 	@Autowired
-	public ComputerDAO(JdbcTemplate jdbcTemplate, DataSource dataSource) {
+	public ComputerDAO(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
-		this.dataSource = dataSource;
 	}
 
 	String requeteFindById = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,company.id,company.name FROM computer LEFT JOIN company ON company.id = computer.company_id WHERE computer.id = ?";
@@ -153,7 +145,6 @@ public class ComputerDAO {
 		java.sql.Date discontinued = (computer.getDiscontinued() != null)
 		    ? java.sql.Date.valueOf(computer.getDiscontinued())
 		    : null;
-		Company company = (computer.getCompany() != null) ? computer.getCompany() : null;
 		if (findByCompany(computer.getCompany().getId()).isEmpty()) {
 			return jdbcTemplate.update(requeteInsert, computer.getName(), introduced, discontinued, null);
 		} else {
@@ -182,39 +173,17 @@ public class ComputerDAO {
 	 * @return (0 or 1)
 	 */
 	public int update(Computer computer) {
-		int reussite = 0;
-		try (Connection conn = dataSource.getConnection();
-		    PreparedStatement preparedStatement = conn.prepareStatement(requeteUpdate)) {
-
-			preparedStatement.setString(1, computer.getName());
-			if (computer.getIntroduced() != null) {
-				preparedStatement.setDate(2, java.sql.Date.valueOf(computer.getIntroduced()));
-			} else {
-				preparedStatement.setDate(2, null);
-			}
-
-			if (computer.getDiscontinued() != null) {
-				preparedStatement.setDate(3, java.sql.Date.valueOf(computer.getDiscontinued()));
-			} else {
-				preparedStatement.setDate(3, null);
-			}
-
-			if (computer.getCompany() == null) {
-				preparedStatement.setString(4, null);
-			} else if (findByCompany(computer.getCompany().getId()).isEmpty()) {
-				preparedStatement.setString(4, null);
-			} else {
-				preparedStatement.setInt(4, computer.getCompany().getId());
-			}
-
-			preparedStatement.setInt(5, computer.getId());
-			reussite = preparedStatement.executeUpdate();
-			LOGGER.info(computer.getName() + " a été bien modifié!");
-
-		} catch (SQLException e) {
-			LOGGER.info(e.getMessage());
+		java.sql.Date introduced = (computer.getIntroduced() != null) ? java.sql.Date.valueOf(computer.getIntroduced())
+		    : null;
+		java.sql.Date discontinued = (computer.getDiscontinued() != null)
+		    ? java.sql.Date.valueOf(computer.getDiscontinued())
+		    : null;
+		if (findByCompany(computer.getCompany().getId()).isEmpty()) {
+			return jdbcTemplate.update(requeteUpdate, computer.getName(), introduced, discontinued, null,computer.getId());
+		} else {
+			return jdbcTemplate.update(requeteUpdate, computer.getName(), introduced, discontinued,
+			    computer.getCompany().getId(),computer.getId());
 		}
-		return reussite;
 	}
 
 }
