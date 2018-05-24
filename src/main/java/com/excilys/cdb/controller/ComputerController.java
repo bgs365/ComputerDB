@@ -16,27 +16,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.excilys.cdb.dto.CompanyDTO;
+import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.exceptions.CdbException;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.page.Page;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
+import com.excilys.mapper.CompanyMapper;
 
 @Controller
 @RequestMapping("/computer")
 public class ComputerController {
 
 	private int nombrElementPerPage = 10;
+	private String search = "";
 	private int numberOfComputers = 0;
 	private List<Computer> computers;
-	private List<Company> companies;
+	private List<CompanyDTO> companies;
 	private Page<Computer> computerPage;
 	@Autowired
 	private ComputerService computerService;
 	@Autowired
 	private CompanyService companyService;
-	private String search = "";
+	CompanyMapper companyMapper = new CompanyMapper();
+	
 	static final Logger LOGGER = LoggerFactory.getLogger(ComputerController.class);
 
 	/**
@@ -50,13 +55,7 @@ public class ComputerController {
 		LOGGER.debug(" default page");
 		computerPage = new Page<Computer>(computers, nombrElementPerPage, numberOfComputers);
 
-		model.addAttribute("numberElementPerPage", nombrElementPerPage);
-		model.addAttribute("numberOfComputers", numberOfComputers);
-		model.addAttribute("computers", computers);
-		model.addAttribute("computerPage", computerPage);
-		model.addAttribute("numberTotalOfPages", totalNumberOfPages());
-		model.addAttribute("computers", computers);
-		model.addAttribute("numberOfComputers", numberOfComputers);
+		defaultElementToSendToDashboard(model);
 		return "dashboard";
 	}
 
@@ -74,14 +73,7 @@ public class ComputerController {
 		computerPage.setCurrentPage(pageNumber);
 		setPageContent(search, computerPage.getIndexFirstPageElement(), computerPage.getNombreElementPerPage());
 
-		model.addAttribute("search", search);
-		model.addAttribute("numberElementPerPage", nombrElementPerPage);
-		model.addAttribute("numberOfComputers", numberOfComputers);
-		model.addAttribute("computers", computers);
-		model.addAttribute("computerPage", computerPage);
-		model.addAttribute("numberTotalOfPages", totalNumberOfPages());
-		model.addAttribute("computers", computers);
-		model.addAttribute("numberOfComputers", numberOfComputers);
+		defaultElementToSendToDashboard(model);
 		return "dashboard";
 	}
 
@@ -99,14 +91,7 @@ public class ComputerController {
 
 		setPageContent(search, 1, computerPage.getNombreElementPerPage());
 
-		model.addAttribute("search", search);
-		model.addAttribute("numberElementPerPage", nombrElementPerPage);
-		model.addAttribute("numberOfComputers", numberOfComputers);
-		model.addAttribute("computers", computers);
-		model.addAttribute("computerPage", computerPage);
-		model.addAttribute("numberTotalOfPages", totalNumberOfPages());
-		model.addAttribute("computers", computers);
-		model.addAttribute("numberOfComputers", numberOfComputers);
+		defaultElementToSendToDashboard(model);
 		return "dashboard";
 	}
 
@@ -126,14 +111,7 @@ public class ComputerController {
 
 		setPageContent(search, computerPage.getIndexFirstPageElement(), computerPage.getNombreElementPerPage());
 
-		model.addAttribute("search", search);
-		model.addAttribute("numberElementPerPage", nombrElementPerPage);
-		model.addAttribute("numberOfComputers", numberOfComputers);
-		model.addAttribute("computers", computers);
-		model.addAttribute("computerPage", computerPage);
-		model.addAttribute("numberTotalOfPages", totalNumberOfPages());
-		model.addAttribute("computers", computers);
-		model.addAttribute("numberOfComputers", numberOfComputers);
+		defaultElementToSendToDashboard(model);
 		return "dashboard";
 	}
 
@@ -148,7 +126,8 @@ public class ComputerController {
 	public String editComputerGetPage(@RequestParam(value = "ComputerToModifie") int idComputerToModifie,
 	    ModelMap model) {
 
-		companies = companyService.findAll();
+		companies = companyMapper.mapCompanyToCompanyDTO(companyService.findAll());
+		
 		if (idComputerToModifie != 0) {
 			int computerId = idComputerToModifie;
 			Computer computer = computerService.findById(computerId);
@@ -178,7 +157,7 @@ public class ComputerController {
 
 		String errors = null;
 		boolean success = false;
-		companies = companyService.findAll();
+		companies = companyMapper.mapCompanyToCompanyDTO(companyService.findAll());
 		Computer computer = computerService.findById(computerId);
 		computer.setName(name);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -208,9 +187,10 @@ public class ComputerController {
 		} catch (CdbException e) {
 			errors += e.getMessage();
 		}
+		ComputerDTO computerDTO = new ComputerDTO(computer);
 		model.addAttribute("errors", errors);
 		model.addAttribute("success", success);
-		model.addAttribute("computer", computer);
+		model.addAttribute("computer", computerDTO);
 		model.addAttribute("companies", companies);
 
 		return "editComputer";
@@ -224,7 +204,7 @@ public class ComputerController {
 	 */
 	@RequestMapping(value = "/addComputer", method = RequestMethod.GET)
 	public String addComputerGetPage(ModelMap model) {
-		companies = companyService.findAll();
+		companies = companyMapper.mapCompanyToCompanyDTO(companyService.findAll());
 		model.addAttribute("companies", companies);
 		return "addComputer";
 	}
@@ -245,7 +225,7 @@ public class ComputerController {
 
 		String errors = null;
 		boolean success = false;
-		companies = companyService.findAll();
+		companies = companyMapper.mapCompanyToCompanyDTO(companyService.findAll());
 		Computer computer = new Computer();
 		computer.setName(name);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -275,10 +255,10 @@ public class ComputerController {
 		} catch (CdbException e) {
 			errors += e.getMessage();
 		}
-
+		ComputerDTO computerDTO = new ComputerDTO(computer);
 		model.addAttribute("errors", errors);
 		model.addAttribute("success", success);
-		model.addAttribute("computer", computer);
+		model.addAttribute("computer", computerDTO);
 		model.addAttribute("companies", companies);
 		return "addComputer";
 	}
@@ -312,6 +292,15 @@ public class ComputerController {
 
 		model.addAttribute("computerDeleteSuccess", computerDeleteSuccess);
 		model.addAttribute("deleteState", deleteState);
+		defaultElementToSendToDashboard(model);
+		return "dashboard";
+	}
+	
+	/**
+	 * Send default parameters to dashboard jsp.
+	 * @param model
+	 */
+	private void defaultElementToSendToDashboard(ModelMap model) {
 		model.addAttribute("search", search);
 		model.addAttribute("numberElementPerPage", nombrElementPerPage);
 		model.addAttribute("numberOfComputers", numberOfComputers);
@@ -320,7 +309,6 @@ public class ComputerController {
 		model.addAttribute("numberTotalOfPages", totalNumberOfPages());
 		model.addAttribute("computers", computers);
 		model.addAttribute("numberOfComputers", numberOfComputers);
-		return "dashboard";
 	}
 
 	/**
@@ -331,6 +319,7 @@ public class ComputerController {
 		return (int) Math
 		    .ceil(computerPage.getNombreElementTotal() / Double.valueOf(computerPage.getNombreElementPerPage()));
 	}
+	
 
 	/**
 	 * 

@@ -8,7 +8,7 @@
 	<section id="main">
 		<div>
 			<c:choose>
-				<c:when test="${successC=='true'}">
+				<c:when test="${success=='true'}">
 					<div class="alert alert-success">
 						<strong>Computer saved!</strong>
 					</div>
