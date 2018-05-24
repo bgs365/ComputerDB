@@ -1,27 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
-<head>
-<title>Computer Database</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="css/main.css" rel="stylesheet" media="screen">
-<script
-	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 
-<script type='text/javascript'
-	src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js'></script>
-<script src="js/updateComputerValidator.js"></script>
-</head>
+<%@ include file="header.jsp" %> 
+
 <body>
-	<header class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<a class="navbar-brand" href="dashboard"> Application - Computer
-				Database </a>
-		</div>
-	</header>
+	<%@ include file="navbar.jsp" %> 
 	<section id="main">
 		<div>
 			<c:choose>
@@ -49,7 +33,7 @@
 						${computer.id}</div>
 					<h1>Edit Computer</h1>
 
-					<form action="editComputer" method="POST">
+					<form action="${pageContext.request.contextPath}/computer/editComputer" method="POST">
 						<input type="hidden" value="${computer.id}" id="id"
 							name="computerId" />
 						<fieldset>
@@ -84,7 +68,7 @@
 						</fieldset>
 						<div class="actions pull-right">
 							<input type="submit" value="Edit" class="btn btn-primary"
-								id="update"> or <a href="dashboard"
+								id="update"> or <a href="${pageContext.request.contextPath}/computer/"
 								class="btn btn-default">Cancel</a>
 						</div>
 					</form>
@@ -94,4 +78,10 @@
 		</div>
 	</section>
 </body>
+<script
+	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+
+<script type='text/javascript'
+	src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js'></script>
+<script src="../js/updateComputerValidator.js"></script>
 </html>
