@@ -2,21 +2,9 @@
 <%@ taglib prefix="pagination" uri="/WEB-INF/taglibs/pagination.tld"%>
 <!DOCTYPE html>
 <html>
-<head>
-<title>Computer Database</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta charset="utf-8">
-<!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="css/main.css" rel="stylesheet" media="screen">
-</head>
+<%@ include file="header.jsp" %> 
 <body>
-	<header class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<a href="dashboard?action=doGet">Application - Computer Database</a>
-		</div>
-	</header>
+	<%@ include file="navbar.jsp" %> 
 
 	<section id="main">
 		<div class="container">
@@ -39,7 +27,7 @@
 			</div>
 		</div>
 
-		<form id="deleteForm" action="dashboard" method="POST">
+		<form id="deleteForm" action="computer" method="POST">
 			<input type="hidden" name="selection" value="">
 		</form>
 
@@ -91,15 +79,16 @@
 	<footer class="navbar-fixed-bottom">
 
 		<div class="container text-center">
-			<c:url var="searchUri" value="dashboard?pageNumber=##" />
+			<c:url var="searchUri" value="/computer/searchPage?pageNumber=##" />
 			<pagination:display maxLinks="10"
 				currPage="${computerPage.numerosPage}"
 				totalPages="${numberTotalOfPages}" uri="${searchUri}" 
 				searchName="${search}" 
 				nombreElementPerPage="${nombrElementPerPage }"/>
+				
 			<div class="btn-group btn-group-sm pull-right" role="group">
 
-				<form action="${pageContext.request.contextPath}/dashboard"
+				<form action="${pageContext.request.contextPath}/computer/nombreElementPerPage"
 					method="get">
 					<button type="submit" name="buttonSetNumberElementDisplayed"
 						value="10" class="btn btn-default">10</button>
@@ -115,9 +104,7 @@
 
 	</footer>
 
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/dashboard.js"></script>
+	
 
 </body>
 </html>
