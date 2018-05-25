@@ -26,6 +26,7 @@
 		<HikariCP.version>2.7.8</HikariCP.version>
 		<selenium-java.version>2.53.1</selenium-java.version>
 		<spring.version>5.0.3.RELEASE</spring.version>
+		<validation-api.version>1.1.0.Final</validation-api.version>
 	</properties>
 
 	<dependencies>
@@ -135,11 +136,17 @@
 			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
 			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>${validation-api.version}</version>
 		</dependency>
 
 	</dependencies>

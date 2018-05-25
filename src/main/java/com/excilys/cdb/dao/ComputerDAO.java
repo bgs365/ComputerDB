@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.model.Computer;
-import com.excilys.mapper.ComputerMapper;
+import com.excilys.com.mapper.ComputerMapper;
 
 /**
  * *Classe qui permet de mettre en place la persistance d'une Company.

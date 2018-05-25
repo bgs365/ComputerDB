@@ -1,26 +1,33 @@
 package com.excilys.cdb.dto;
 
-import java.time.LocalDate;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.excilys.cdb.model.Computer;
 
 public class ComputerDTO {
 	private int id;
+	@NotNull
+  @Size(min=5, max=15) 
 	private String name;
-  private LocalDate introduced;
-  private LocalDate discontinued;
-  private CompanyDTO company;
+  private String introduced;
+  private String discontinued;
+  private int companyId;
   
   public ComputerDTO(Computer computer) {
   	this.id = computer.getId();
   	this.name = computer.getName();
-  	this.introduced = computer.getIntroduced();
-  	this.discontinued = computer.getDiscontinued();
-  	this.company = new CompanyDTO(computer.getCompany());
+  	this.introduced = computer.getIntroduced().toString();
+  	this.discontinued = computer.getDiscontinued().toString();
+  	this.companyId = computer.getCompany().getId();
   }
   
 
-  public int getId() {
+  public ComputerDTO() {
+	}
+
+
+	public int getId() {
 		return id;
 	}
 
@@ -36,27 +43,34 @@ public class ComputerDTO {
 		this.name = name;
 	}
 
-	public LocalDate getIntroduced() {
+	public String getIntroduced() {
 		return introduced;
 	}
 
-	public void setIntroduced(LocalDate introduced) {
+
+	public void setIntroduced(String introduced) {
 		this.introduced = introduced;
 	}
 
-	public LocalDate getDiscontinued() {
+
+	public String getDiscontinued() {
 		return discontinued;
 	}
 
-	public void setDiscontinued(LocalDate discontinued) {
+
+	public void setDiscontinued(String discontinued) {
 		this.discontinued = discontinued;
 	}
 
-	public CompanyDTO getCompany() {
-		return company;
+
+	public int getCompanyId() {
+		return companyId;
 	}
 
-	public void setCompany(CompanyDTO company) {
-		this.company = company;
+
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
 	}
+
+	
 }

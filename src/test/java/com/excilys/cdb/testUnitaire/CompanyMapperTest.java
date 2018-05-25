@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.excilys.cdb.dto.CompanyDTO;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.springConfig.ApplicationConfig;
-import com.excilys.mapper.CompanyMapper;
+import com.excilys.com.mapper.CompanyMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class)

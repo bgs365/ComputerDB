@@ -6,12 +6,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +28,7 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.page.Page;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
-import com.excilys.mapper.CompanyMapper;
+import com.excilys.com.mapper.CompanyMapper;
 
 @Controller
 @RequestMapping("/computer")
@@ -40,8 +44,9 @@ public class ComputerController {
 	private ComputerService computerService;
 	@Autowired
 	private CompanyService companyService;
-	CompanyMapper companyMapper = new CompanyMapper();
-	
+	private CompanyMapper companyMapper = new CompanyMapper();
+	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
 	static final Logger LOGGER = LoggerFactory.getLogger(ComputerController.class);
 
 	/**
@@ -52,7 +57,6 @@ public class ComputerController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String IndexComputer(ModelMap model) {
 		setPageContent(search, 0, nombrElementPerPage);
-		LOGGER.debug(" default page");
 		computerPage = new Page<Computer>(computers, nombrElementPerPage, numberOfComputers);
 
 		defaultElementToSendToDashboard(model);
@@ -89,7 +93,7 @@ public class ComputerController {
 		search = pSearch;
 		computerPage = new Page<Computer>(computers, nombrElementPerPage, numberOfComputers);
 
-		setPageContent(search, 1, computerPage.getNombreElementPerPage());
+		setPageContent(search, 0, computerPage.getNombreElementPerPage());
 
 		defaultElementToSendToDashboard(model);
 		return "dashboard";
@@ -127,9 +131,10 @@ public class ComputerController {
 	    ModelMap model) {
 
 		companies = companyMapper.mapCompanyToCompanyDTO(companyService.findAll());
-		
+
 		if (idComputerToModifie != 0) {
 			int computerId = idComputerToModifie;
+			model.addAttribute("ComputerDTO", new ComputerDTO());
 			Computer computer = computerService.findById(computerId);
 			model.addAttribute("computer", computer);
 		}
@@ -150,47 +155,47 @@ public class ComputerController {
 	 * @return editComputer page
 	 */
 	@RequestMapping(value = "/editComputer", method = RequestMethod.POST)
-	public String editComputer(@RequestParam(value = "computerId") int computerId,
-	    @RequestParam(value = "computerName") String name, @RequestParam(value = "introduced") String introduced,
-	    @RequestParam(value = "discontinued") String discontinued, @RequestParam(value = "companyId") int companyId,
+	public String editComputer(@Valid @ModelAttribute("ComputerDTO") ComputerDTO computerDTO, BindingResult result,
 	    ModelMap model) {
 
 		String errors = null;
 		boolean success = false;
 		companies = companyMapper.mapCompanyToCompanyDTO(companyService.findAll());
-		Computer computer = computerService.findById(computerId);
-		computer.setName(name);
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-		if (!StringUtils.isBlank(introduced)) {
-			computer.setIntroduced(LocalDate.parse(introduced, formatter));
+		Computer computer = computerService.findById(computerDTO.getId());
+
+		computer.setName(computerDTO.getName());
+		if (!StringUtils.isBlank(computerDTO.getIntroduced())) {
+			computer.setIntroduced(LocalDate.parse(computerDTO.getIntroduced(), formatter));
 		}
-
-		if (!StringUtils.isBlank(discontinued)) {
-			computer.setDiscontinued(LocalDate.parse(discontinued, formatter));
+		if (!StringUtils.isBlank(computerDTO.getDiscontinued())) {
+			computer.setDiscontinued(LocalDate.parse(computerDTO.getDiscontinued(), formatter));
 		}
-
-		if (companyId != 0) {
-			computer.setCompany(companyService.findById(companyId));
+		if (computerDTO.getCompanyId() != 0) {
+			computer.setCompany(companyService.findById(computerDTO.getCompanyId()));
 		} else {
 			computer.setCompany(new Company());
 		}
 
-		try {
-			LOGGER.info(computer + "");
+		if (!result.hasErrors()) {
 
-			if (computerService.update(computer) != 0) {
-				success = true;
-			} else {
-				success = false;
+			try {
+
+				if (computerService.update(computer) != 0) {
+					success = true;
+				} else {
+					success = false;
+				}
+			} catch (CdbException e) {
+				errors += e.getMessage();
 			}
-		} catch (CdbException e) {
-			errors += e.getMessage();
+		} else {
+			errors += " the name dont respect the computer name convention";
 		}
-		ComputerDTO computerDTO = new ComputerDTO(computer);
+
 		model.addAttribute("errors", errors);
 		model.addAttribute("success", success);
-		model.addAttribute("computer", computerDTO);
+		model.addAttribute("computer", computer);
 		model.addAttribute("companies", companies);
 
 		return "editComputer";
@@ -205,6 +210,7 @@ public class ComputerController {
 	@RequestMapping(value = "/addComputer", method = RequestMethod.GET)
 	public String addComputerGetPage(ModelMap model) {
 		companies = companyMapper.mapCompanyToCompanyDTO(companyService.findAll());
+		model.addAttribute("ComputerDTO", new ComputerDTO());
 		model.addAttribute("companies", companies);
 		return "addComputer";
 	}
@@ -219,46 +225,47 @@ public class ComputerController {
 	 * @return dashboard page
 	 */
 	@RequestMapping(value = "/addComputer", method = RequestMethod.POST)
-	public String addComputer(@RequestParam(value = "computerName") String name,
-	    @RequestParam(value = "introduced") String introduced, @RequestParam(value = "discontinued") String discontinued,
-	    @RequestParam(value = "companyId") int companyId, ModelMap model) {
+	public String addComputer(@Valid @ModelAttribute("ComputerDTO") ComputerDTO computerDTO, BindingResult result,
+	    ModelMap model) {
 
 		String errors = null;
 		boolean success = false;
 		companies = companyMapper.mapCompanyToCompanyDTO(companyService.findAll());
 		Computer computer = new Computer();
-		computer.setName(name);
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-		if (!StringUtils.isBlank(introduced)) {
-			computer.setIntroduced(LocalDate.parse(introduced, formatter));
+		computer.setName(computerDTO.getName());
+		if (!StringUtils.isBlank(computerDTO.getIntroduced())) {
+			computer.setIntroduced(LocalDate.parse(computerDTO.getIntroduced(), formatter));
+		}
+		if (!StringUtils.isBlank(computerDTO.getDiscontinued())) {
+			computer.setDiscontinued(LocalDate.parse(computerDTO.getDiscontinued(), formatter));
 		}
 
-		if (!StringUtils.isBlank(discontinued)) {
-			computer.setDiscontinued(LocalDate.parse(discontinued, formatter));
-		}
-
-		if (companyId != 0) {
-			computer.setCompany(companyService.findById(companyId));
+		if (computerDTO.getCompanyId() != 0) {
+			computer.setCompany(companyService.findById(computerDTO.getCompanyId()));
 		} else {
 			computer.setCompany(new Company());
 		}
 
-		try {
-			LOGGER.info(computer + "");
+		if (!result.hasErrors()) {
+			try {
+				LOGGER.info(computer + "");
 
-			if (computerService.save(computer) != 0) {
-				success = true;
-			} else {
-				success = false;
+				if (computerService.save(computer) != 0) {
+					success = true;
+				} else {
+					success = false;
+				}
+			} catch (CdbException e) {
+				errors += e.getMessage();
 			}
-		} catch (CdbException e) {
-			errors += e.getMessage();
+		} else {
+			errors += " the name dont respect the computer name convention";
 		}
-		ComputerDTO computerDTO = new ComputerDTO(computer);
+
 		model.addAttribute("errors", errors);
 		model.addAttribute("success", success);
-		model.addAttribute("computer", computerDTO);
+		model.addAttribute("computer", computer);
 		model.addAttribute("companies", companies);
 		return "addComputer";
 	}
@@ -284,7 +291,7 @@ public class ComputerController {
 			if (computerService.delete(Integer.parseInt(listIdComputer.get(i))) != 0) {
 				deleteState += listIdComputer.get(i) + " , ";
 			} else {
-				deleteState += "error, cannot Supress "+listIdComputer.get(i)+" ";
+				deleteState += "error, cannot delete " + listIdComputer.get(i) + " ";
 			}
 		}
 
@@ -295,7 +302,7 @@ public class ComputerController {
 		defaultElementToSendToDashboard(model);
 		return "dashboard";
 	}
-	
+
 	/**
 	 * Send default parameters to dashboard jsp.
 	 * @param model
@@ -319,14 +326,11 @@ public class ComputerController {
 		return (int) Math
 		    .ceil(computerPage.getNombreElementTotal() / Double.valueOf(computerPage.getNombreElementPerPage()));
 	}
-	
 
 	/**
 	 * 
-	 * @param pSearch
-	 *          name of computer or company
-	 * @param pIndexFirstPageElement
-	 *          asName
+	 * @param pSearch name of computer or company
+	 * @param pIndexFirstPageElement asName
 	 * @param pNombrElementPerPageasName
 	 */
 	private void setPageContent(String pSearch, int pIndexFirstPageElement, int pNombrElementPerPage) {
