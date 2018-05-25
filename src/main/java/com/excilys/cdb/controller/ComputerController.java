@@ -48,6 +48,9 @@ public class ComputerController {
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	static final Logger LOGGER = LoggerFactory.getLogger(ComputerController.class);
+	final private String DASHBOARD = "dashboard";
+	final private String ADD_COMPUTER = "addComputer";
+	final private String EDIT_COMPUTER = "editComputer";
 
 	/**
 	 * 
@@ -60,7 +63,7 @@ public class ComputerController {
 		computerPage = new Page<Computer>(computers, nombrElementPerPage, numberOfComputers);
 
 		defaultElementToSendToDashboard(model);
-		return "dashboard";
+		return DASHBOARD;
 	}
 
 	/**
@@ -78,7 +81,7 @@ public class ComputerController {
 		setPageContent(search, computerPage.getIndexFirstPageElement(), computerPage.getNombreElementPerPage());
 
 		defaultElementToSendToDashboard(model);
-		return "dashboard";
+		return DASHBOARD;
 	}
 
 	/**
@@ -96,7 +99,7 @@ public class ComputerController {
 		setPageContent(search, 0, computerPage.getNombreElementPerPage());
 
 		defaultElementToSendToDashboard(model);
-		return "dashboard";
+		return DASHBOARD;
 	}
 
 	/**
@@ -116,7 +119,7 @@ public class ComputerController {
 		setPageContent(search, computerPage.getIndexFirstPageElement(), computerPage.getNombreElementPerPage());
 
 		defaultElementToSendToDashboard(model);
-		return "dashboard";
+		return DASHBOARD;
 	}
 
 	/**
@@ -140,7 +143,7 @@ public class ComputerController {
 		}
 
 		model.addAttribute("companies", companies);
-		return "editComputer";
+		return EDIT_COMPUTER;
 	}
 
 	/**
@@ -198,7 +201,7 @@ public class ComputerController {
 		model.addAttribute("computer", computer);
 		model.addAttribute("companies", companies);
 
-		return "editComputer";
+		return EDIT_COMPUTER;
 	}
 
 	/**
@@ -212,7 +215,7 @@ public class ComputerController {
 		companies = companyMapper.mapCompanyToCompanyDTO(companyService.findAll());
 		model.addAttribute("ComputerDTO", new ComputerDTO());
 		model.addAttribute("companies", companies);
-		return "addComputer";
+		return ADD_COMPUTER;
 	}
 
 	/**
@@ -267,7 +270,7 @@ public class ComputerController {
 		model.addAttribute("success", success);
 		model.addAttribute("computer", computer);
 		model.addAttribute("companies", companies);
-		return "addComputer";
+		return ADD_COMPUTER;
 	}
 
 	/**
@@ -300,7 +303,7 @@ public class ComputerController {
 		model.addAttribute("computerDeleteSuccess", computerDeleteSuccess);
 		model.addAttribute("deleteState", deleteState);
 		defaultElementToSendToDashboard(model);
-		return "dashboard";
+		return DASHBOARD;
 	}
 
 	/**
@@ -317,6 +320,7 @@ public class ComputerController {
 		model.addAttribute("computers", computers);
 		model.addAttribute("numberOfComputers", numberOfComputers);
 	}
+	
 
 	/**
 	 * 
