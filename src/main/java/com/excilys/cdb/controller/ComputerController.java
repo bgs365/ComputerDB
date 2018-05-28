@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import javax.validation.Valid;
 
@@ -58,7 +59,7 @@ public class ComputerController {
 	 * @return dashboard page
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String IndexComputer(ModelMap model) {
+	public String IndexComputer(Locale locale,ModelMap model) {
 		setPageContent(search, 0, nombrElementPerPage);
 		computerPage = new Page<Computer>(computers, nombrElementPerPage, numberOfComputers);
 
@@ -252,9 +253,7 @@ public class ComputerController {
 
 		if (!result.hasErrors()) {
 			try {
-				LOGGER.info(computer + "");
-
-				if (computerService.save(computer) != 0) {
+				if (computerService.save(computer) == 1) {
 					success = true;
 				} else {
 					success = false;
@@ -263,7 +262,7 @@ public class ComputerController {
 				errors += e.getMessage();
 			}
 		} else {
-			errors += " the name dont respect the computer name convention";
+			errors += " the name dont respect the computer naming convention";
 		}
 
 		model.addAttribute("errors", errors);
@@ -320,7 +319,7 @@ public class ComputerController {
 		model.addAttribute("computers", computers);
 		model.addAttribute("numberOfComputers", numberOfComputers);
 	}
-	
+		
 
 	/**
 	 * 

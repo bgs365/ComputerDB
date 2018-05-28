@@ -8,7 +8,7 @@ import com.excilys.cdb.model.Computer;
 public class ComputerDTO {
 	private int id;
 	@NotNull
-  @Size(min=5, max=15) 
+  @Size(min=5, max=30) 
 	private String name;
   private String introduced;
   private String discontinued;

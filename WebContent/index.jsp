@@ -4,13 +4,16 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 			<h1 id="homeTitle">Welcome to computer database Application</h1>
+			 
 	</header>
 
 	<section id="main">
 		<div class="container">
 			<div class="container">
 				<a href="dashboard"> See computers </a>
-				<jsp:forward page="/computer/" />
+				<p>${message}</p>
+				<!--<jsp:forward page="/computer/" />-->
+				
 		</div>
 		</div>
 
@@ -18,9 +21,9 @@
 	</section>
 
 	<footer class="navbar-fixed-bottom"> </footer>
-	<script src="/js/jquery.min.js"></script>
-	<script src="/js/bootstrap.min.js"></script>
-	<script src="/js/dashboard.js"></script>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/dashboard.js"></script>
 
 </body>
 </html>

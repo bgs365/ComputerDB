@@ -8,11 +8,14 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${numberOfComputers}Computers found</h1>
+			<h1 id="homeTitle">${numberOfComputers}
+				<spring:message code="dashboard.numberOfComputers" />
+			</h1>
 			<c:choose>
 				<c:when test="${computerDeleteSuccess=='true'}">
 					<div class="alert alert-success">
-						<strong>${deleteState} haven been suppressed</strong>
+						<strong>${deleteState} <spring:message
+								code="dashboard.deleteMessage" /></strong>
 					</div>
 					<br />
 				</c:when>
@@ -25,18 +28,23 @@
 					<form id="searchForm"
 						action="${pageContext.request.contextPath}/computer/search"
 						method="GET" class="form-inline">
-
-						<input type="search" id="searchbox" name="search"
-							class="form-control" placeholder="Search name" value="${search}" />
-						<input type="submit" id="searchsubmit" value="Filter by name"
+						
+						<spring:message code="dashboard.searchPlaceholder" var="searchPlaceholder"></spring:message>
+						 <input
+							type="search" id="searchbox" name="search" class="form-control"
+							placeholder="${searchPlaceholder}" value="${search}" />
+							
+						<spring:message code="dashboard.searchsubmit" var="submitSearch"></spring:message>
+						 <input
+							type="submit" id="searchsubmit" value="${submitSearch}"
 							class="btn btn-primary" />
 					</form>
 				</div>
 				<div class="pull-right">
 					<a class="btn btn-success" id="addComputer"
-						href="${pageContext.request.contextPath}/computer/addComputer">Add
-						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
-						onclick="$.fn.toggleEditMode();">Edit</a>
+						href="${pageContext.request.contextPath}/computer/addComputer"><spring:message code="dashboard.addComputer" /></a> 
+						<a class="btn btn-default" id="editComputer" href="#"
+						onclick="$.fn.toggleEditMode();"><spring:message code="dashboard.editComputer" /></a>
 				</div>
 			</div>
 		</div>
@@ -61,12 +69,15 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name</th>
-						<th>Introduced date</th>
+						<th><spring:message code="dashboard.tableHeaderComputerName" /></th>
+						<th><spring:message
+								code="dashboard.tableHeaderComputerIntroducedDate" /></th>
 						<!-- Table header for Discontinued Date -->
-						<th>Discontinued date</th>
+						<th><spring:message
+								code="dashboard.tableHeaderComputerDiscontinuedDate" /></th>
 						<!-- Table header for Company -->
-						<th>Company</th>
+						<th><spring:message
+								code="dashboard.tableHeaderComputerCompany" /></th>
 
 					</tr>
 				</thead>
