@@ -59,7 +59,7 @@ public class ComputerController {
 	 * @return dashboard page
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String IndexComputer(Locale locale,ModelMap model) {
+	public String IndexComputer(Locale locale, ModelMap model) {
 		setPageContent(search, 0, nombrElementPerPage);
 		computerPage = new Page<Computer>(computers, nombrElementPerPage, numberOfComputers);
 
@@ -162,7 +162,7 @@ public class ComputerController {
 	public String editComputer(@Valid @ModelAttribute("ComputerDTO") ComputerDTO computerDTO, BindingResult result,
 	    ModelMap model) {
 
-		String errors = null;
+		String errors = "";
 		boolean success = false;
 		companies = companyMapper.mapCompanyToCompanyDTO(companyService.findAll());
 
@@ -194,7 +194,7 @@ public class ComputerController {
 				errors += e.getMessage();
 			}
 		} else {
-			errors += " the name dont respect the computer name convention";
+			errors += " the name dont respect the computer naming convention";
 		}
 
 		model.addAttribute("errors", errors);
@@ -230,9 +230,9 @@ public class ComputerController {
 	 */
 	@RequestMapping(value = "/addComputer", method = RequestMethod.POST)
 	public String addComputer(@Valid @ModelAttribute("ComputerDTO") ComputerDTO computerDTO, BindingResult result,
-	    ModelMap model) {
+	    Locale locale, ModelMap model) {
 
-		String errors = null;
+		String errors = "";
 		boolean success = false;
 		companies = companyMapper.mapCompanyToCompanyDTO(companyService.findAll());
 		Computer computer = new Computer();
@@ -251,18 +251,14 @@ public class ComputerController {
 			computer.setCompany(new Company());
 		}
 
-		if (!result.hasErrors()) {
-			try {
-				if (computerService.save(computer) == 1) {
-					success = true;
-				} else {
-					success = false;
-				}
-			} catch (CdbException e) {
-				errors += e.getMessage();
+		try {
+			if (computerService.save(computer) == 1) {
+				success = true;
+			} else {
+				success = false;
 			}
-		} else {
-			errors += " the name dont respect the computer naming convention";
+		} catch (CdbException e) {
+			errors += e.getMessage();
 		}
 
 		model.addAttribute("errors", errors);
@@ -319,7 +315,6 @@ public class ComputerController {
 		model.addAttribute("computers", computers);
 		model.addAttribute("numberOfComputers", numberOfComputers);
 	}
-		
 
 	/**
 	 * 

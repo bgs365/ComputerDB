@@ -2,6 +2,7 @@ package com.excilys.cdb.validator;
 
 import java.time.LocalDate;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +25,7 @@ public class ComputerValidator {
    */
   public boolean verifComputerNameBeforeSave(String name) throws ComputerServiceNameTooShortException {
     boolean validComputer = false;
-    if ((name.length() < 5)) {
+    if ((name.length() < 5 || StringUtils.isBlank(name))) {
       throw new ComputerServiceNameTooShortException(name);
     } else {
       validComputer = true;
