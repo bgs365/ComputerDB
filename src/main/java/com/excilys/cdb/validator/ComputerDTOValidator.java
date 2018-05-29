@@ -11,7 +11,9 @@ import com.excilys.cdb.dto.ComputerDTO;
 
 public class ComputerDTOValidator implements Validator {
 
-	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	private String dateFromat = "yyyy-MM-dd";
+	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFromat);
+
 	@Override
 	public boolean supports(Class<?> clazz) {
 		return ComputerDTO.class.equals(clazz);
@@ -31,19 +33,20 @@ public class ComputerDTOValidator implements Validator {
 		    || computerDTO.getName().contains("/*") || computerDTO.getName().contains("*/")) {
 			errors.rejectValue("name", "addComputervalidatorMessage.illecgalcarracters");
 		}
-
-		if (computerDTO.getIntroduced()==null && computerDTO.getIntroduced()==null) {
+		
+		if (computerDTO.getIntroduced().equals(null) && !computerDTO.getIntroduced().equals(null)) {
 			errors.rejectValue("introduced", "addComputervalidatorMessage.discountedDateWithoutIntroduced");
 		}
-		
-		if (StringUtils.isNoneBlank(computerDTO.getIntroduced()) && StringUtils.isNoneBlank(computerDTO.getIntroduced())) {
+	
+		if (computerDTO.getIntroduced().length() > 8 && computerDTO.getDiscontinued().length() > 8) {
 			LocalDate introduced = LocalDate.parse(computerDTO.getIntroduced(), formatter);
 			LocalDate discontinued = LocalDate.parse(computerDTO.getDiscontinued(), formatter);
-			if(introduced.isAfter(discontinued)) {
+			if (introduced.isAfter(discontinued)) {
 				errors.rejectValue("introduced", "addComputervalidatorMessage.wrongOrderOfDate");
 			}
 		}
-		
+
 	}
+
 
 }

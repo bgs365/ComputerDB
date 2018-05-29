@@ -48,7 +48,6 @@
 									class="form-control" id="computerName" name="computerName"
 									placeholder="${ComputerNamePlaceholder}"
 									value="${computer.name}" path="name" />
-									<form:errors path="name" class="error" ></form:errors>
 							</div>
 							<div class="form-group">
 								<form:label for="introduced" path="introduced">
@@ -98,19 +97,18 @@
 
 		</div>
 	</section>
-	<script>
-		var namehaveWrongSize = "<spring:message code='addComputervalidatorMessage.length' />";
-		var nameconteinIllegalcarracters= "<spring:message code='addComputervalidatorMessage.illecgalcarracters' />"; 
-		var discountedDateWithoutIntroduced = "<spring:message code='addComputervalidatorMessage.discountedDateWithoutIntroduced' />";
-		var wrongOrderOfDate = "<spring:message code='addComputervalidatorMessage.wrongOrderOfDate' />";
-	</script>
-
-	<script
-		src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-
-	<script type='text/javascript'
-		src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js'></script>
-	<!--  <script src="../js/addComputerValidator.js"></script> -->
-
 </body>
+<script>
+	var namehaveWrongSize = "<spring:message code='addComputervalidatorMessage.length' />";
+	var nameconteinIllegalcarracters = "<spring:message code='addComputervalidatorMessage.illecgalcarracters' />";
+	var discountedDateWithoutIntroduced = "<spring:message code='addComputervalidatorMessage.discountedDateWithoutIntroduced' />";
+	var wrongOrderOfDate = "<spring:message code='addComputervalidatorMessage.wrongOrderOfDate' />";
+</script>
+
+<script
+	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+
+<script type='text/javascript'
+	src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js'></script>
+<script src="../js/addComputerValidator.js"></script>
 </html>

@@ -8,7 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -21,6 +23,7 @@ import com.zaxxer.hikari.HikariDataSource;
  *
  */
 @Configuration
+//@ComponentScan(basePackages = "com.excilys.cdb",excludeFilters = { @Filter(type = FilterType.ANNOTATION, value = Configuration.class) })
 @ComponentScan(basePackages = "com.excilys.cdb")
 @EnableTransactionManagement
 public class ApplicationConfig {

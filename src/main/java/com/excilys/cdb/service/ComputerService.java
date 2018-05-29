@@ -92,9 +92,7 @@ public class ComputerService {
 	 *           asName
 	 */
 	public int save(Computer computer) throws CdbException {
-		if (computerValidator.verifComputerNameBeforeSave(computer.getName())
-		    && computerValidator.verifDate(computer.getIntroduced(), computer.getDiscontinued())
-		    && computerValidator.verifPresenceOfIllegalExpressionBeforeSave(computer.getName())) {
+		if (computerValidator.verifComputer(computer)) {
 			return computerDAO.save(computer);
 		} else {
 			LOGGER.info("Name could not be saved");
@@ -129,9 +127,7 @@ public class ComputerService {
 	 */
 	public int update(Computer computer) throws CdbException {
 
-		if (findById(computer.getId()).getId() != 0 & computerValidator.verifComputerNameBeforeSave(computer.getName())
-		    & computerValidator.verifDate(computer.getIntroduced(), computer.getDiscontinued())
-		    & computerValidator.verifPresenceOfIllegalExpressionBeforeSave(computer.getName())) {
+		if (findById(computer.getId()).getId() != 0 & computerValidator.verifComputer(computer)) {
 			return computerDAO.update(computer);
 		} else {
 			LOGGER.info("Le computer que vous voulez modifier n'esxiste pas");

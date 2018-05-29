@@ -169,6 +169,7 @@ public class ComputerController {
 	public String editComputer(@ModelAttribute("ComputerDTO") @Validated(ComputerDTO.class) ComputerDTO computerDTO, BindingResult result,
 	    ModelMap model) {
 		
+		companies = companyMapper.mapCompanyToCompanyDTO(companyService.findAll());
 		model.addAttribute("companies", companies);
 		if(result.hasErrors()) {
 			return EDIT_COMPUTER;
@@ -176,10 +177,8 @@ public class ComputerController {
 		
 		String errors = "";
 		boolean success = false;
-		
 
 		Computer computer = computerService.findById(computerDTO.getId());
-
 		computer.setName(computerDTO.getName());
 		if (!StringUtils.isBlank(computerDTO.getIntroduced())) {
 			computer.setIntroduced(LocalDate.parse(computerDTO.getIntroduced(), formatter));
@@ -237,14 +236,15 @@ public class ComputerController {
 	public String addComputer( @ModelAttribute("ComputerDTO") @Validated(ComputerDTO.class) ComputerDTO computerDTO, BindingResult result,
 	    Locale locale, ModelMap model) {
 		
+
+		companies = companyMapper.mapCompanyToCompanyDTO(companyService.findAll());
 		model.addAttribute("companies", companies);
 		if(result.hasErrors()) {
-			return EDIT_COMPUTER;
+			return ADD_COMPUTER;
 		}
 		
 		String errors = "";
 		boolean success = false;
-		companies = companyMapper.mapCompanyToCompanyDTO(companyService.findAll());
 		Computer computer = new Computer();
 
 		computer.setName(computerDTO.getName());
