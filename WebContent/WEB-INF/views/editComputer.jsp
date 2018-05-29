@@ -52,7 +52,7 @@
 								<form:input type="text" class="form-control" id="computerName"
 									name="computerName" placeholder="${ComputerNamePlaceholder}"
 									value="${computer.name}" path="name" />
-									<form:errors path="name"></form:errors>
+									<form:errors path="name" class="error"></form:errors>
 							</div>
 							<div class="form-group">
 								<form:label for="introduced" path="introduced">
@@ -62,6 +62,7 @@
 								<form:input type="date" class="form-control" id="introduced"
 									name="introduced" placeholder="Introduced date"
 									value="${computer.introduced}" path="introduced" />
+									<form:errors path="introduced"></form:errors>
 							</div>
 							<div class="form-group">
 								<form:label for="discontinued" path="discontinued">
@@ -71,6 +72,7 @@
 								<form:input type="date" class="form-control" id="discontinued"
 									name="discontinued" placeholder="Discontinued date"
 									value="${computer.discontinued}" path="discontinued" />
+									<form:errors path="discontinued"></form:errors>
 							</div>
 							<div class="form-group">
 								<form:label for="companyId" path="companyId">

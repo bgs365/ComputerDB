@@ -48,6 +48,7 @@
 									class="form-control" id="computerName" name="computerName"
 									placeholder="${ComputerNamePlaceholder}"
 									value="${computer.name}" path="name" />
+									<form:errors path="name" class="error" ></form:errors>
 							</div>
 							<div class="form-group">
 								<form:label for="introduced" path="introduced">

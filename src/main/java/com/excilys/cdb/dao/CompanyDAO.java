@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.model.Company;
-import com.excilys.com.mapper.CompanyMapper;
 
 /**
  * *Classe qui permet de mettre en place la persistance d'un Computer.

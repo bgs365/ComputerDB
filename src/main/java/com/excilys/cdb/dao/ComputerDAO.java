@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Computer;
-import com.excilys.com.mapper.ComputerMapper;
 
 /**
  * *Classe qui permet de mettre en place la persistance d'une Company.

@@ -1,4 +1,4 @@
-package com.excilys.com.mapper;
+package com.excilys.cdb.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

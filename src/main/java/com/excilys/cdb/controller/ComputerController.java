@@ -25,13 +25,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.excilys.cdb.dto.CompanyDTO;
 import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.exceptions.CdbException;
+import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.page.Page;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.validator.ComputerDTOValidator;
-import com.excilys.com.mapper.CompanyMapper;
 
 @Controller
 @RequestMapping("/computer")
