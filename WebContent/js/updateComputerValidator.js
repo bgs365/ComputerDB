@@ -16,10 +16,10 @@ $(document)
 
 										$(".error").remove();
 
-										if (computerName.length < 5) {
+										if (computerName.length < 5 || computerName.length > 30) {
 											$('#computerName')
 													.after(
-															'<span  class="error" style="color:blue;font-weight:bold"> This field must contain must than 5 carraters </span>');
+															'<span  class="error" style="color:blue;font-weight:bold"> '+namehaveWrongSize+' </span>');
 
 											e.preventDefault();
 										}
@@ -27,7 +27,7 @@ $(document)
 										if(computerName.search("<") >= 0  || computerName.search("/") >= 0 || computerName.search(">") >= 0 || computerName.search("*") >= 0 ){
 											$('#computerName')
 											.after(
-													'<span  class="error" style="color:blue;font-weight:bold"> Illegal carracter detected </span>');
+													'<span  class="error" style="color:blue;font-weight:bold"> '+nameconteinIllegalcarracters+' </span>');
 
 												e.preventDefault();
 										}
@@ -36,7 +36,7 @@ $(document)
 												&& discontinued != '') {
 											$('#introduced')
 													.after(
-															'<span class="error" style="color:blue;font-weight:bold">You must enter and introduced date</span>');
+															'<span class="error" style="color:blue;font-weight:bold">'+discountedDateWithoutIntroduced+'</span>');
 
 											e.preventDefault();
 										}
@@ -46,10 +46,10 @@ $(document)
 											if (discontinued < introduced) {
 												$('#introduced')
 														.after(
-																'<span class="error" style="color:blue;font-weight:bold">Dicounted date must be after introduced date</span>');
+																'<span class="error" style="color:blue;font-weight:bold">'+wrongOrderOfDate+'</span>');
 												$('#discontinued')
 														.after(
-																'<span class="error" style="color:blue;font-weight:bold">Dicounted date must be after introduced date</span>');
+																'<span class="error" style="color:blue;font-weight:bold">'+wrongOrderOfDate+'</span>');
 
 												e.preventDefault();
 											}

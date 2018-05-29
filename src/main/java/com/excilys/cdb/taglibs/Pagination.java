@@ -47,7 +47,7 @@ public class Pagination extends SimpleTagSupport {
       out.write("<ul class=\"pagination\">");
 
       if (currPage > 1) {
-        out.write(constructLink(currPage - 1, "Previous", "paginatorPrev"));
+        out.write(constructLink(currPage - 1, "<<", "paginatorPrev"));
       }
 
       for (int i = pgStart; i < pgEnd; i++) {
@@ -60,7 +60,7 @@ public class Pagination extends SimpleTagSupport {
       }
 
       if (!lastPage) {
-        out.write(constructLink(currPage + 1, "Next", "paginatorNext paginatorLast"));
+        out.write(constructLink(currPage + 1, ">>", "paginatorNext paginatorLast"));
       }
 
       out.write("</ul>");

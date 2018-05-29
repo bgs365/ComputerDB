@@ -21,6 +21,7 @@
                 Error 404: Page not found. Too bad bitch!
                 <br/>
                 <!-- stacktrace -->
+                <h1>${errorMsg}</h1>
             </div>
         </div>
     </section>

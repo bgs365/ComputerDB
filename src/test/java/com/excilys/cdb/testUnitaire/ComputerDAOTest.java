@@ -1,8 +1,6 @@
 package com.excilys.cdb.testUnitaire;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -78,8 +77,15 @@ public class ComputerDAOTest {
 		assertEquals(LocalDate.parse("1977-04-01"), computer.getIntroduced());
 		assertEquals(LocalDate.parse("1993-10-01"), computer.getDiscontinued());
 		assertEquals(1, computer.getCompany().getId());
-		computer = computerDAO.findById(1000).get();
-		assertFalse(computer.getId() != 0);
+	}
+	
+	/**
+	 * test find by id with exception.
+	 * @throws EmptyResultDataAccessException
+	 */
+	@Test(expected = EmptyResultDataAccessException.class)
+	public void testFindByIdExceptionCase() throws EmptyResultDataAccessException {
+		computerDAO.findById(1000).get();
 	}
 
 	/**
@@ -171,13 +177,10 @@ public class ComputerDAOTest {
 		computer.setIntroduced(LocalDate.parse("2006-01-10"));
 		computer.setDiscontinued(LocalDate.parse("2012-01-10"));
 		computer.setCompany(companyService.findById(1));
-		computerDAO.save(computer);
-		assertNotNull(computerDAO.findByCompany(575));
-
+		assertEquals(1,computerDAO.save(computer));
 		computer.setId(576);
-		computer.setCompany(companyService.findById(50));
-		computerDAO.save(computer);
-		assertNotNull(computerDAO.findByCompany(576));
+		computer.setCompany(new Company(50,"Don't Exist"));
+		assertEquals(1,computerDAO.save(computer));
 	}
 
 	/**
@@ -185,7 +188,7 @@ public class ComputerDAOTest {
 	 */
 	@Test
 	public void testUpdate() {
-		Computer computer = computerService.findById(575);
+		Computer computer = computerService.findById(574);
 		computer.setName("Test update computer");
 		computer.setIntroduced(LocalDate.parse("2007-02-11"));
 		computer.setDiscontinued(LocalDate.parse("2013-02-11"));
@@ -198,7 +201,6 @@ public class ComputerDAOTest {
 
 		computer = computerService.findById(1);
 		computer.setName("Test change macbook");
-		computer.setCompany(null);
 		assertEquals(1, computerDAO.update(computer));
 		assertEquals("Test change macbook", computer.getName());
 
@@ -214,9 +216,8 @@ public class ComputerDAOTest {
 	 */
 	@Test
 	public void testdelete() {
-		computerDAO.delete(575);
-		assertEquals(0, computerDAO.findById(575).get().getId());
-		assertEquals(null, computerDAO.findById(575).get().getName());
+		assertEquals(1,computerDAO.delete(574));
+		assertEquals(0,computerDAO.delete(575));
 	}
 
 }

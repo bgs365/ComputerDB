@@ -1,22 +1,15 @@
 package com.excilys.cdb.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.model.Company;
-import com.excilys.cdb.model.Computer;
+import com.excilys.com.mapper.CompanyMapper;
 
 /**
  * *Classe qui permet de mettre en place la persistance d'un Computer.
@@ -25,14 +18,13 @@ import com.excilys.cdb.model.Computer;
  */
 @Repository
 public class CompanyDAO {
-	
-  @Autowired
-  private DataSource dataSource;
-  
-	@Autowired
-	public CompanyDAO() {
+
+	private JdbcTemplate jdbcTemplate;
+
+	public CompanyDAO(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
 	}
-	
+
 	String requeteFindById = "SELECT id,name FROM company where id = ?";
 	String requeteFinfAll = "SELECT id,name FROM company";
 	String requeteFindLimitNumberOfResult = "SELECT id,name FROM company LIMIT ?, ?";
@@ -50,26 +42,7 @@ public class CompanyDAO {
 	 * @return Company
 	 */
 	public Optional<Company> findById(int id) {
-		Company company = new Company();
-
-		try (Connection conn = dataSource.getConnection();
-		    PreparedStatement preparedStatement = conn.prepareStatement(requeteFindById)) {
-
-			preparedStatement.setInt(1, id);
-
-			ResultSet result = preparedStatement.executeQuery();
-
-			while (result.next()) {
-				company.setId(result.getInt("Id"));
-				company.setName(result.getString("Name"));
-				List<Computer> pComputers = findCompanyComputers(company.getId());
-				company.setComputer(pComputers);
-			}
-
-		} catch (SQLException e) {
-			LOGGER.info("Erreur sur la requete find Company by id : " + e.getMessage());
-		}
-
+		Company company = (Company) jdbcTemplate.queryForObject(requeteFindById, new CompanyMapper(), id);
 		return Optional.ofNullable(company);
 	}
 
@@ -79,27 +52,7 @@ public class CompanyDAO {
 	 * @return List<Company>
 	 */
 	public List<Company> findAll() {
-		List<Company> companies = new ArrayList<Company>();
-
-		try (Connection conn = dataSource.getConnection();
-		    PreparedStatement preparedStatement = conn.prepareStatement(requeteFinfAll)) {
-
-			ResultSet result = preparedStatement.executeQuery();
-
-			while (result.next()) {
-				Company company = new Company();
-				company.setId(result.getInt("Id"));
-				company.setName(result.getString("Name"));
-				List<Computer> pComputers = findCompanyComputers(company.getId());
-				company.setComputer(pComputers);
-				companies.add(company);
-
-			}
-
-		} catch (SQLException e) {
-			LOGGER.info("Erreur sur la requete find all Company : " + e.getMessage());
-		}
-
+		List<Company> companies = jdbcTemplate.query(requeteFinfAll, new CompanyMapper());
 		return companies;
 	}
 
@@ -114,29 +67,7 @@ public class CompanyDAO {
 	 * @return List<Company>
 	 */
 	public List<Company> findLimitNumberOfResult(int pageIndex, int numberOfResultByPage) {
-
-		List<Company> companies = new ArrayList<Company>();
-
-		try (Connection conn = dataSource.getConnection();
-		    PreparedStatement preparedStatement = conn.prepareStatement(requeteFindLimitNumberOfResult)) {
-			preparedStatement.setInt(1, pageIndex);
-			preparedStatement.setInt(2, numberOfResultByPage);
-			ResultSet result = preparedStatement.executeQuery();
-
-			while (result.next()) {
-				Company company = new Company();
-				company.setId(result.getInt("Id"));
-				company.setName(result.getString("Name"));
-				List<Computer> pComputers = findCompanyComputers(company.getId());
-				company.setComputer(pComputers);
-				companies.add(company);
-
-			}
-
-		} catch (SQLException e) {
-			LOGGER.info("Erreur sur la requete find company by name : " + e.getMessage());
-		}
-
+		List<Company> companies = jdbcTemplate.query(requeteFindLimitNumberOfResult, new CompanyMapper(), pageIndex, numberOfResultByPage);
 		return companies;
 	}
 
@@ -148,71 +79,9 @@ public class CompanyDAO {
 	 * @return Company
 	 */
 	public List<Company> findByName(String name) {
-
-		List<Company> companies = new ArrayList<Company>();
-
-		try (Connection conn = dataSource.getConnection();
-		    PreparedStatement preparedStatement = conn.prepareStatement(requeteFindByName)) {
-			preparedStatement.setString(1, "%" + name + "%");
-			ResultSet result = preparedStatement.executeQuery();
-
-			while (result.next()) {
-				Company company = new Company();
-				company.setId(result.getInt("Id"));
-				company.setName(result.getString("Name"));
-				List<Computer> pComputers = findCompanyComputers(company.getId());
-				company.setComputer(pComputers);
-				companies.add(company);
-			}
-
-		} catch (SQLException e) {
-			LOGGER.info("Erreur sur la requete find company by name : " + e.getMessage());
-		}
-
+		List<Company> companies = jdbcTemplate.query(requeteFindByName, new CompanyMapper(), "%" + name + "%");
 		return companies;
 	}
-	
-	/**
-   * find Company Computers by company id.
-   *
-   * @param companyId
-   *          asName
-   * @return List<Computer>
-   */
-  public List<Computer> findCompanyComputers(int companyId) {
-    List<Computer> computers = new ArrayList<Computer>();
-
-    try (Connection conn = dataSource.getConnection();
-        PreparedStatement preparedStatement = conn.prepareStatement(requeteFindCompanyComputers)) {
-      preparedStatement.setInt(1, companyId);
-      ResultSet result = preparedStatement.executeQuery();
-
-      while (result.next()) {
-
-        Computer computer = new Computer();
-        computer.setId(result.getInt("computer.Id"));
-        computer.setName(result.getString("computer.Name"));
-        Company company = new Company();
-        if (result.getDate("computer.introduced") != null) {
-          computer.setIntroduced(result.getDate("computer.introduced").toLocalDate());
-        }
-        if (result.getDate("computer.discontinued") != null) {
-          computer.setDiscontinued(result.getDate("computer.discontinued").toLocalDate());
-        }
-        if (result.getInt("company.Id") != 0) {
-          company.setId(result.getInt("company.Id"));
-          company.setName(result.getString("company.name"));
-        }
-        computer.setCompany(company);
-        computers.add(computer);
-      }
-
-    } catch (SQLException e) {
-      LOGGER.info("Erreur sur la requete find Computer by Company id : " + e.getMessage());
-    }
-
-    return computers;
-  }
 
 	/**
 	 * Delete company from Db and return 1 in case of success and 0 if not.
@@ -222,26 +91,8 @@ public class CompanyDAO {
 	 * @return (0 or 1)
 	 */
 	public int delete(int id) {
-		int reussite = 0;
-		try (Connection conn = dataSource.getConnection();
-		    PreparedStatement preparedStatementdeleteComputer = conn.prepareStatement(requeteDeleteComputer);
-		    PreparedStatement preparedStatementdeleteCompany = conn.prepareStatement(requeteDeleteCompany)) {
-			conn.setAutoCommit(false);
-			preparedStatementdeleteComputer.setInt(1, id);
-			preparedStatementdeleteCompany.setInt(1, id);
-
-			preparedStatementdeleteComputer.executeUpdate();
-			reussite = preparedStatementdeleteCompany.executeUpdate();
-			conn.commit();
-
-			LOGGER.info(" the company whom id is : " + id + " have been deleted!");
-
-		} catch (SQLException e) {
-
-			LOGGER.info(e.getMessage());
-
-		}
-		return reussite;
+		jdbcTemplate.update(requeteDeleteComputer,id);
+		return  jdbcTemplate.update(requeteDeleteCompany, id);
 	}
 
 }
