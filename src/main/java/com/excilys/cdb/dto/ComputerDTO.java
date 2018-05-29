@@ -1,9 +1,5 @@
 package com.excilys.cdb.dto;
 
-import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.NotBlank;
-
 import com.excilys.cdb.model.Computer;
 
 public class ComputerDTO {
@@ -11,8 +7,6 @@ public class ComputerDTO {
 	private String introduced;
 	private String discontinued;
 	private int companyId;
-	@NotBlank
-  @Size(min=5, max=30) 
 	private String name;
 
 	public ComputerDTO(Computer computer) {

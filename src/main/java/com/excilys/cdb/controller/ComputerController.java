@@ -7,8 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import javax.validation.Valid;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,6 +30,7 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.page.Page;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.validator.ComputerDTOValidator;
 import com.excilys.com.mapper.CompanyMapper;
 
 @Controller
@@ -52,6 +54,11 @@ public class ComputerController {
 	final private String DASHBOARD = "dashboard";
 	final private String ADD_COMPUTER = "addComputer";
 	final private String EDIT_COMPUTER = "editComputer";
+	
+	@InitBinder("ComputerDTO")
+	protected void initBinder(WebDataBinder binder) {
+	    binder.setValidator(new ComputerDTOValidator());
+	}
 
 	/**
 	 * 
@@ -159,12 +166,17 @@ public class ComputerController {
 	 * @return editComputer page
 	 */
 	@RequestMapping(value = "/editComputer", method = RequestMethod.POST)
-	public String editComputer(@Valid @ModelAttribute("ComputerDTO") ComputerDTO computerDTO, BindingResult result,
+	public String editComputer(@ModelAttribute("ComputerDTO") @Validated(ComputerDTO.class) ComputerDTO computerDTO, BindingResult result,
 	    ModelMap model) {
-
+		
+		model.addAttribute("companies", companies);
+		if(result.hasErrors()) {
+			return EDIT_COMPUTER;
+		}
+		
 		String errors = "";
 		boolean success = false;
-		companies = companyMapper.mapCompanyToCompanyDTO(companyService.findAll());
+		
 
 		Computer computer = computerService.findById(computerDTO.getId());
 
@@ -181,27 +193,20 @@ public class ComputerController {
 			computer.setCompany(new Company());
 		}
 
-		if (!result.hasErrors()) {
+		try {
 
-			try {
-
-				if (computerService.update(computer) != 0) {
-					success = true;
-				} else {
-					success = false;
-				}
-			} catch (CdbException e) {
-				errors += e.getMessage();
+			if (computerService.update(computer) != 0) {
+				success = true;
+			} else {
+				success = false;
 			}
-		} else {
-			errors += " the name dont respect the computer naming convention";
+		} catch (CdbException e) {
+			errors += e.getMessage();
 		}
 
 		model.addAttribute("errors", errors);
 		model.addAttribute("success", success);
 		model.addAttribute("computer", computer);
-		model.addAttribute("companies", companies);
-
 		return EDIT_COMPUTER;
 	}
 
@@ -229,9 +234,14 @@ public class ComputerController {
 	 * @return dashboard page
 	 */
 	@RequestMapping(value = "/addComputer", method = RequestMethod.POST)
-	public String addComputer(@Valid @ModelAttribute("ComputerDTO") ComputerDTO computerDTO, BindingResult result,
+	public String addComputer( @ModelAttribute("ComputerDTO") @Validated(ComputerDTO.class) ComputerDTO computerDTO, BindingResult result,
 	    Locale locale, ModelMap model) {
-
+		
+		model.addAttribute("companies", companies);
+		if(result.hasErrors()) {
+			return EDIT_COMPUTER;
+		}
+		
 		String errors = "";
 		boolean success = false;
 		companies = companyMapper.mapCompanyToCompanyDTO(companyService.findAll());
@@ -264,7 +274,6 @@ public class ComputerController {
 		model.addAttribute("errors", errors);
 		model.addAttribute("success", success);
 		model.addAttribute("computer", computer);
-		model.addAttribute("companies", companies);
 		return ADD_COMPUTER;
 	}
 
