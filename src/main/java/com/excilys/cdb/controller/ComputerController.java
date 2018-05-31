@@ -27,7 +27,6 @@ import com.excilys.cdb.dto.CompanyDTO;
 import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.exceptions.CdbException;
 import com.excilys.cdb.mapper.CompanyMapper;
-import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
@@ -39,7 +38,6 @@ public class ComputerController {
 
 	private int nombrElementPerPage = 10;
 	private String search = "";
-	private int numberOfComputers = 0;
 	private int pageIndex = 0;
 	private List<Computer> computers;
 	private List<CompanyDTO> companies;
@@ -135,13 +133,13 @@ public class ComputerController {
 	 * @return editComputer page
 	 */
 	@RequestMapping(value = "/editComputer", method = RequestMethod.GET)
-	public String editComputerGetPage(@RequestParam(value = "ComputerToModifie") int idComputerToModifie,
+	public String editComputerGetPage(@RequestParam(value = "ComputerToModifie") long idComputerToModifie,
 	    ModelMap model) {
 
 		companies = companyMapper.mapCompanyToCompanyDTO(companyService.findAll());
 
-		if (idComputerToModifie != 0) {
-			int computerId = idComputerToModifie;
+		if (idComputerToModifie != 0l) {
+			long computerId = idComputerToModifie;
 			model.addAttribute("ComputerDTO", new ComputerDTO());
 			Computer computer = computerService.findById(computerId);
 			model.addAttribute("computer", computer);
@@ -183,15 +181,13 @@ public class ComputerController {
 		if (!StringUtils.isBlank(computerDTO.getDiscontinued())) {
 			computer.setDiscontinued(LocalDate.parse(computerDTO.getDiscontinued(), formatter));
 		}
-		if (computerDTO.getCompanyId() != 0) {
-			computer.setCompany(companyService.findById((long) computerDTO.getCompanyId()));
-		} else {
-			computer.setCompany(new Company());
+		if (computerDTO.getCompanyId() > 0) {
+			computer.setCompany(companyService.findById( computerDTO.getCompanyId()));
 		}
 
 		try {
 
-			if (computerService.update(computer) != 0) {
+			if (computerService.update(computer).equals(computer)) {
 				success = true;
 			} else {
 				success = false;
@@ -251,10 +247,8 @@ public class ComputerController {
 			computer.setDiscontinued(LocalDate.parse(computerDTO.getDiscontinued(), formatter));
 		}
 
-		if (computerDTO.getCompanyId() != 0) {
+		if (computerDTO.getCompanyId() > 0) {
 			computer.setCompany(companyService.findById(computerDTO.getCompanyId()));
-		} else {
-			computer.setCompany(new Company());
 		}
 
 		try {
@@ -281,9 +275,6 @@ public class ComputerController {
 	 */
 	@RequestMapping(value = "/deleteComputer", method = RequestMethod.POST)
 	public String deleteComputer(@RequestParam(value = "selection") String idComputerSend, ModelMap model) {
-
-		//computerPage = computerService.findByComputerAndCompanyNameLimit(search, pageIndex, nombrElementPerPage);
-
 		String deleteState = "";
 		boolean computerDeleteSuccess = false;
 		List<String> listIdComputer = new ArrayList<String>(Arrays.asList(idComputerSend.split(",")));
@@ -314,19 +305,10 @@ public class ComputerController {
 	private void defaultElementToSendToDashboard(ModelMap model) {
 		model.addAttribute("search", search);
 		model.addAttribute("numberElementPerPage", nombrElementPerPage);
-		model.addAttribute("numberOfComputers", computerPage.getSize());
+		model.addAttribute("numberOfComputers", computerPage.getTotalElements());
 		model.addAttribute("computers", computers);
 		model.addAttribute("computerPage", computerPage.getNumber());
-		model.addAttribute("numberTotalOfPages", computerPage.getTotalPages());
-		model.addAttribute("computers", computers);
-		model.addAttribute("numberOfComputers", numberOfComputers);
+		model.addAttribute("numberTotalOfPages", computerPage.getTotalPages()-1);
 	}
 
-
-	/**
-	 * 
-	 * @param pSearch name of computer or company
-	 * @param pIndexFirstPageElement asName
-	 * @param pNombrElementPerPageasName
-	 */
 }

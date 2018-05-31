@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.excilys.cdb.dao.CompanyDao;
+import com.excilys.cdb.dao.ComputerDao;
 import com.excilys.cdb.model.Company;
 
 /**
@@ -21,11 +22,13 @@ import com.excilys.cdb.model.Company;
 @Service
 public class CompanyService {
   private CompanyDao companyDao;
+  private ComputerDao computerDao;
   
   static final Logger LOGGER = LoggerFactory.getLogger(CompanyService.class);
  
-  private CompanyService(CompanyDao companyDAO) {
+  private CompanyService(CompanyDao companyDAO,ComputerDao computerDao) {
   	this.companyDao = companyDAO;
+  	this.computerDao = computerDao;
   }
 
   /**
@@ -81,7 +84,8 @@ public class CompanyService {
       LOGGER.info("Company that you want to delete don't exist");
       return 0;
     } else {
-      companyDao.delete(id);
+    	computerDao.deleteAllByCompanyIdIn(1l);
+  		companyDao.delete(companyDao.findById(1l).get());
       return 1;
     }
   }

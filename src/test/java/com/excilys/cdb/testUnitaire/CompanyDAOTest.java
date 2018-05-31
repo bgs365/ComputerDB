@@ -6,6 +6,8 @@ import static org.junit.Assert.assertFalse;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import javax.transaction.Transactional;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.excilys.cdb.dao.CompanyDao;
 import com.excilys.cdb.dao.ComputerDao;
@@ -122,13 +125,5 @@ public class CompanyDAOTest {
 		assertEquals("Samsung Electronics", companies.get(1).getName());
 	}
 
-	/**
-	 * Test delete company.
-	 */
-	@Test
-	public void testdelete() {
-		computerDao.deleteAllByCompanyIdIn(1l);
-		companyDao.delete(companyDao.findById(1l).get());
-	}
 
 }

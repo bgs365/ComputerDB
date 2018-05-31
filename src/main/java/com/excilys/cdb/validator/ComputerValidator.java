@@ -17,6 +17,12 @@ public class ComputerValidator {
 
 	static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
+	/**
+	 * 
+	 * @param computer
+	 * @return true or false.
+	 * @throws CdbException
+	 */
 	public boolean verifComputer(Computer computer) throws CdbException {
 		boolean validComputer = false;
 		if (verifComputerNameBeforeSave(computer.getName()) && verifPresenceOfIllegalExpressionBeforeSave(computer.getName()) 

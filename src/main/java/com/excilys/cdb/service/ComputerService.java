@@ -85,14 +85,14 @@ public class ComputerService {
 	 * @throws CdbException
 	 *           asName
 	 */
-	public int update(Computer computer) throws CdbException {
+	public Computer update(Computer computer) throws CdbException {
 
 		if (findById(computer.getId()).getId() != 0 & computerValidator.verifComputer(computer)) {
 			 computerDao.save(computer);
-			 return 1;
+			 return  computerDao.save(computer);
 		} else {
 			LOGGER.info("Le computer que vous voulez modifier n'esxiste pas");
-			return 0;
+			return new Computer();
 		}
 
 	}
