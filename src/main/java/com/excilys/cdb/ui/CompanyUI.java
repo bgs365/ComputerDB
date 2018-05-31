@@ -26,7 +26,7 @@ public class CompanyUI {
    * display a page of company, and allow to navigate between them.
    */
   public  void listCompany() {
-    List<Company> companies = companyService.findLimitNumberOfResult(0, nombrElementParPage);
+    List<Company> companies = companyService.findLimitNumberOfResult(0, nombrElementParPage).getContent();
     Page<Company> companyPage = new Page<Company>(companies, nombrElementParPage, companyService.findAll().size());
     String choix = null;
 
@@ -41,14 +41,14 @@ public class CompanyUI {
         if (choix.equals("1") | choix.equals("2")) {
           switch (choix) {
           case "1":
-            companies = companyService.findLimitNumberOfResult(companyPage.previousPage(), nombrElementParPage);
+            companies = companyService.findLimitNumberOfResult(companyPage.previousPage(), nombrElementParPage).getContent();
             System.out.println("Page n° " + companyPage.getNumerosPage());
             System.out.println(display(companies));
             System.out.println(" << Page precedente 1 ** 0  Quitter ** 2 Page suivante >> ");
             break;
 
           case "2":
-            companies = companyService.findLimitNumberOfResult(companyPage.nextPage(), nombrElementParPage);
+            companies = companyService.findLimitNumberOfResult(companyPage.nextPage(), nombrElementParPage).getContent();
             System.out.println("Page n° " + companyPage.getNumerosPage());
             System.out.println(display(companies));
             System.out.println(" << Page precedente 1 ** 0  Quitter ** 2 Page suivante >> ");

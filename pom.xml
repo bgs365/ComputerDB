@@ -27,7 +27,9 @@
 		<selenium-java.version>2.53.1</selenium-java.version>
 		<spring.version>5.0.3.RELEASE</spring.version>
 		<validation-api.version>1.1.0.Final</validation-api.version>
+		<hibernate-entitymanager.version>4.3.8.Final</hibernate-entitymanager.version>
 		<hibernate-validator.version>5.0.1.Final</hibernate-validator.version>
+		<hibernate-java8.version>5.1.0.Final</hibernate-java8.version>
 	</properties>
 
 	<dependencies>
@@ -127,21 +129,33 @@
 			<scope>test</scope>
 		</dependency>
 
-<!-- 		<dependency> -->
-<!-- 			<groupId>javax.validation</groupId> -->
-<!-- 			<artifactId>validation-api</artifactId> -->
-<!-- 			<version>${validation-api.version}</version> -->
-<!-- 		</dependency> -->
-
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>${hibernate-validator.version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.hibernate.validator</groupId>
-		    <artifactId>hibernate-validator-annotation-processor</artifactId>
-		    <version>6.0.2.Final</version>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator-annotation-processor</artifactId>
+			<version>6.0.2.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate-entitymanager.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-java8</artifactId>
+			<version>${hibernate-java8.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>1.7.2.RELEASE</version>
 		</dependency>
 
 	</dependencies>

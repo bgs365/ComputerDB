@@ -149,7 +149,7 @@ public class SeizureVerification {
 	public Company saisirCompanyATrouver() {
 		Company company = new Company();
 		boolean companyValide = false;
-		int idCompany = 0;
+		long idCompany = 0;
 		do {
 			System.out.println("Entrez une computer existante ou *0* pour sortir");
 			idCompany = sc.nextInt();

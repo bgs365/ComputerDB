@@ -3,10 +3,10 @@ package com.excilys.cdb.dto;
 import com.excilys.cdb.model.Computer;
 
 public class ComputerDTO {
-	private int id;
+	private long id;
 	private String introduced;
 	private String discontinued;
-	private int companyId;
+	private long companyId;
 	private String name;
 
 	public ComputerDTO(Computer computer) {
@@ -20,11 +20,11 @@ public class ComputerDTO {
 	public ComputerDTO() {
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -52,7 +52,7 @@ public class ComputerDTO {
 		this.discontinued = discontinued;
 	}
 
-	public int getCompanyId() {
+	public long getCompanyId() {
 		return companyId;
 	}
 

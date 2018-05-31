@@ -1,13 +1,13 @@
 package com.excilys.cdb.service;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.excilys.cdb.dao.ComputerDAO;
+import com.excilys.cdb.dao.ComputerDao;
 import com.excilys.cdb.exceptions.CdbException;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.validator.ComputerValidator;
@@ -23,63 +23,22 @@ public class ComputerService {
 
 	static final Logger LOGGER = LoggerFactory.getLogger(ComputerService.class);
 	private ComputerValidator computerValidator = new ComputerValidator();
-	@Autowired
-	private ComputerDAO computerDAO;
+	private ComputerDao computerDao;
+	
+	private ComputerService(ComputerDao computerDao) {
+		this.computerDao = computerDao;
+	}
 
 
 	/**
 	 * find computer by id.
 	 *
-	 * @param id
+	 * @param l
 	 *          asName
 	 * @return Computer
 	 */
-	public Computer findById(int id) {
-		return computerDAO.findById(id).get();
-	}
-
-	/**
-	 * find all computers.
-	 *
-	 * @return List<Computer>
-	 */
-	public List<Computer> findAll() {
-		return computerDAO.findAll();
-	}
-
-	/**
-	 * find a list of computers by theirs names.
-	 *
-	 * @param name
-	 *          asName
-	 * @return List<Computer>
-	 */
-	public List<Computer> findByName(String name) {
-		return computerDAO.findByName(name);
-	}
-
-	/**
-	 * find a list of computer by their company id.
-	 *
-	 * @param id
-	 *          asName
-	 * @return List<Computer>
-	 */
-	public List<Computer> findByCompany(int id) {
-		return computerDAO.findByCompany(id);
-	}
-
-	/**
-	 * find a list a computer to generate pages.
-	 *
-	 * @param pageIndex
-	 *          asName
-	 * @param numberOfResultByPage
-	 *          asName
-	 * @return List<Computer>
-	 */
-	public List<Computer> findLimitNumberOfResult(int pageIndex, int numberOfResultByPage) {
-		return computerDAO.findLimitNumberOfResult(pageIndex, numberOfResultByPage);
+	public Computer findById(long id) {
+		return computerDao.findById(id).get();
 	}
 
 	/**
@@ -91,13 +50,13 @@ public class ComputerService {
 	 * @throws CdbException
 	 *           asName
 	 */
-	public int save(Computer computer) throws CdbException {
+	public Computer save(Computer computer) throws CdbException {
 		if (computerValidator.verifComputer(computer)) {
-			return computerDAO.save(computer);
-		} else {
-			LOGGER.info("Name could not be saved");
-			return 0;
+			return computerDao.save(computer);
+		}else {
+			return new Computer();
 		}
+		
 	}
 
 	/**
@@ -107,12 +66,13 @@ public class ComputerService {
 	 *          asName
 	 * @return (0 or 1)
 	 */
-	public int delete(int id) {
+	public int delete(long id) {
 		if (findById(id).getId() == 0) {
 			LOGGER.info("Le computer que vous voulez supprimer n'esxiste pas");
 			return 0;
 		} else {
-			return computerDAO.delete(id);
+			computerDao.delete(findById(id));
+			return 1;
 		}
 	}
 
@@ -128,25 +88,20 @@ public class ComputerService {
 	public int update(Computer computer) throws CdbException {
 
 		if (findById(computer.getId()).getId() != 0 & computerValidator.verifComputer(computer)) {
-			return computerDAO.update(computer);
+			 computerDao.save(computer);
+			 return 1;
 		} else {
 			LOGGER.info("Le computer que vous voulez modifier n'esxiste pas");
 			return 0;
 		}
 
 	}
-
-	/**
-	 * 
-	 * @param name
-	 * @param pageIndex
-	 * @param numberOfResultByPage
-	 * @return
-	 */
-	public List<Computer> findByComputerAndCompanyName(String name) {
-		return computerDAO.findByComputerAndCompanyName(name);
+	
+	public long countByNameContaining(String name) {
+		return computerDao.countByNameContaining(name);
 	}
 
+
 	/**
 	 * 
 	 * @param name
@@ -154,8 +109,9 @@ public class ComputerService {
 	 * @param numberOfResultByPage
 	 * @return
 	 */
-	public List<Computer> findByComputerAndCompanyNameLimit(String name, int pageIndex, int numberOfResultByPage) {
-		return computerDAO.findByComputerAndCompanyNameLimit(name, pageIndex, numberOfResultByPage);
+	public Page<Computer> findByComputerAndCompanyNameLimit(String name, int pageIndex, int numberOfResultByPage) {
+		Pageable pageable = new PageRequest(pageIndex,numberOfResultByPage);
+		return computerDao.findByNameContainingOrCompanyNameContaining(name, name, pageable);
 	}
 
 }

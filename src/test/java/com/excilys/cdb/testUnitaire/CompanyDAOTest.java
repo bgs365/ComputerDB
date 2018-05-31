@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.junit.After;
 import org.junit.Before;
@@ -13,13 +14,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.excilys.cdb.dao.CompanyDAO;
+import com.excilys.cdb.dao.CompanyDao;
+import com.excilys.cdb.dao.ComputerDao;
 import com.excilys.cdb.model.Company;
-import com.excilys.cdb.springConfig.ApplicationConfig;
+import com.excilys.cdb.springConfig.TestConfig;
 
 /**
  * Class test Company persistance.
@@ -28,13 +31,15 @@ import com.excilys.cdb.springConfig.ApplicationConfig;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = ApplicationConfig.class)
+@ContextConfiguration(classes = TestConfig.class)
 @Configuration
 public class CompanyDAOTest {
 
 	static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAOTest.class);
 	@Autowired
-	private CompanyDAO companyDAO;
+	private CompanyDao companyDao;
+	@Autowired
+	private ComputerDao computerDao;
 
 	/**
 	 * init test data.
@@ -57,7 +62,7 @@ public class CompanyDAOTest {
 	 */
 	@Test
 	public void testFindAll() {
-		List<Company> companies = companyDAO.findAll();
+		List<Company> companies = companyDao.findAll();
 		assertEquals(42, companies.size());
 		assertEquals("Apple Inc.", companies.get(0).getName());
 		assertEquals("Samsung Electronics", companies.get(companies.size() - 1).getName());
@@ -68,7 +73,7 @@ public class CompanyDAOTest {
 	 */
 	@Test
 	public void testFindById() {
-		Company company = companyDAO.findById(1).get();
+		Company company = companyDao.findById(1l).get();
 		assertFalse(company.equals(null));
 		assertEquals("Apple Inc.", company.getName());
 		
@@ -76,11 +81,11 @@ public class CompanyDAOTest {
 	
 	/**
 	 * test find by id with exception.
-	 * @throws EmptyResultDataAccessException
-	 */
-	@Test(expected = EmptyResultDataAccessException.class)
-	public void testFindByIdExceptionCase() throws EmptyResultDataAccessException {
-		companyDAO.findById(50).get();
+	 * 
+	 **/
+	@Test(expected = NoSuchElementException.class)
+	public void testFindByIdExceptionCase() throws NoSuchElementException {
+		companyDao.findById(50l).get();
 	}
 
 	/**
@@ -88,12 +93,12 @@ public class CompanyDAOTest {
 	 */
 	@Test
 	public void testFindByName() {
-		List<Company> companies = companyDAO.findByName("Samsung Electronics");
+		List<Company> companies = companyDao.findByNameContaining("Samsung Electronics");
 		assertFalse(companies.equals(null));
 		assertEquals("Samsung Electronics", companies.get(0).getName());
-		companies = companyDAO.findByName("Ce nom n'existe pas");
+		companies = companyDao.findByNameContaining("Ce nom n'existe pas");
 		assertFalse(companies.size() != 0);
-		companies = companyDAO.findByName("Sun");
+		companies = companyDao.findByNameContaining("Sun");
 		assertEquals(2, companies.size());
 	}
 
@@ -103,14 +108,18 @@ public class CompanyDAOTest {
 	 */
 	@Test
 	public void findLimitNumberOfResult() {
-		List<Company> companies = companyDAO.findLimitNumberOfResult(0, 10);
+		Pageable pageable = new PageRequest(0, 10);
+		List<Company> companies = companyDao.findAll(pageable).getContent();
+		LOGGER.debug(companies+"");
 		assertEquals(10, companies.size());
 		assertEquals("Apple Inc.", companies.get(0).getName());
 		assertEquals("Digital Equipment Corporation", companies.get(9).getName());
-		companies = companyDAO.findLimitNumberOfResult(38, 10);
-		assertEquals(4, companies.size());
-		assertEquals("Texas Instruments", companies.get(0).getName());
-		assertEquals("Samsung Electronics", companies.get(3).getName());
+		pageable = new PageRequest(4, 10);
+		companies = companyDao.findAll(pageable).getContent();
+		LOGGER.debug(companies+"");
+		assertEquals(2, companies.size());
+		assertEquals("Research In Motion", companies.get(0).getName());
+		assertEquals("Samsung Electronics", companies.get(1).getName());
 	}
 
 	/**
@@ -118,8 +127,8 @@ public class CompanyDAOTest {
 	 */
 	@Test
 	public void testdelete() {
-		assertEquals(1, companyDAO.delete(1));
-		assertEquals(0, companyDAO.delete(1));
+		computerDao.deleteAllByCompanyIdIn(1l);
+		companyDao.delete(companyDao.findById(1l).get());
 	}
 
 }

@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -20,17 +19,11 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-/**
- * Do all configurations.
- * @author sanogo
- *
- */
 @Configuration
-@ComponentScan(basePackages = "com.excilys.cdb")
 @EnableJpaRepositories("com.excilys.cdb.dao")
 @EnableTransactionManagement
 @PropertySource("classpath:config.properties")
-public class ApplicationConfig {
+public class TestConfig {
 	static final Logger LOGGER = LoggerFactory.getLogger(ApplicationConfig.class);
 	private static final String PROPERTY_NAME_DATABASE_DRIVER = "db.driver";
 	private static final String PROPERTY_NAME_DATABASE_PASSWORD = "db.password";
@@ -84,5 +77,4 @@ public class ApplicationConfig {
 		};
 
 	}
-
 }

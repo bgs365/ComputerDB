@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -28,7 +29,6 @@ import com.excilys.cdb.exceptions.CdbException;
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.page.Page;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.validator.ComputerDTOValidator;
@@ -40,6 +40,7 @@ public class ComputerController {
 	private int nombrElementPerPage = 10;
 	private String search = "";
 	private int numberOfComputers = 0;
+	private int pageIndex = 0;
 	private List<Computer> computers;
 	private List<CompanyDTO> companies;
 	private Page<Computer> computerPage;
@@ -54,10 +55,10 @@ public class ComputerController {
 	final private String DASHBOARD = "dashboard";
 	final private String ADD_COMPUTER = "addComputer";
 	final private String EDIT_COMPUTER = "editComputer";
-	
+
 	@InitBinder("ComputerDTO")
 	protected void initBinder(WebDataBinder binder) {
-	    binder.setValidator(new ComputerDTOValidator());
+		binder.setValidator(new ComputerDTOValidator());
 	}
 
 	/**
@@ -67,9 +68,9 @@ public class ComputerController {
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String IndexComputer(Locale locale, ModelMap model) {
-		setPageContent(search, 0, nombrElementPerPage);
-		computerPage = new Page<Computer>(computers, nombrElementPerPage, numberOfComputers);
-
+		pageIndex = 0;
+		computerPage = computerService.findByComputerAndCompanyNameLimit(search, pageIndex, nombrElementPerPage);
+		computers = computerPage.getContent();
 		defaultElementToSendToDashboard(model);
 		return DASHBOARD;
 	}
@@ -83,10 +84,9 @@ public class ComputerController {
 	@RequestMapping(value = "/searchPage", method = RequestMethod.GET)
 	public String changePage(@RequestParam(value = "pageNumber") int pageNumber, ModelMap model) {
 
-		computerPage = new Page<Computer>(computers, nombrElementPerPage, numberOfComputers);
-
-		computerPage.setCurrentPage(pageNumber);
-		setPageContent(search, computerPage.getIndexFirstPageElement(), computerPage.getNombreElementPerPage());
+		pageIndex = pageNumber;
+		computerPage = computerService.findByComputerAndCompanyNameLimit(search, pageIndex, nombrElementPerPage);
+		computers = computerPage.getContent();
 
 		defaultElementToSendToDashboard(model);
 		return DASHBOARD;
@@ -102,9 +102,8 @@ public class ComputerController {
 	public String search(@RequestParam(value = "search") String pSearch, ModelMap model) {
 
 		search = pSearch;
-		computerPage = new Page<Computer>(computers, nombrElementPerPage, numberOfComputers);
-
-		setPageContent(search, 0, computerPage.getNombreElementPerPage());
+		computerPage = computerService.findByComputerAndCompanyNameLimit(search, pageIndex, nombrElementPerPage);
+		computers = computerPage.getContent();
 
 		defaultElementToSendToDashboard(model);
 		return DASHBOARD;
@@ -121,10 +120,8 @@ public class ComputerController {
 	    @RequestParam(value = "buttonSetNumberElementDisplayed") int numberElementDisplayed, ModelMap model) {
 
 		nombrElementPerPage = numberElementDisplayed;
-		computerPage.setNombreElementPerPage(nombrElementPerPage);
-		computerPage = new Page<Computer>(computers, nombrElementPerPage, numberOfComputers);
-
-		setPageContent(search, computerPage.getIndexFirstPageElement(), computerPage.getNombreElementPerPage());
+		computerPage = computerService.findByComputerAndCompanyNameLimit(search, pageIndex, nombrElementPerPage);
+		computers = computerPage.getContent();
 
 		defaultElementToSendToDashboard(model);
 		return DASHBOARD;
@@ -166,15 +163,15 @@ public class ComputerController {
 	 * @return editComputer page
 	 */
 	@RequestMapping(value = "/editComputer", method = RequestMethod.POST)
-	public String editComputer(@ModelAttribute("ComputerDTO") @Validated(ComputerDTO.class) ComputerDTO computerDTO, BindingResult result,
-	    ModelMap model) {
-		
+	public String editComputer(@ModelAttribute("ComputerDTO") @Validated(ComputerDTO.class) ComputerDTO computerDTO,
+	    BindingResult result, ModelMap model) {
+
 		companies = companyMapper.mapCompanyToCompanyDTO(companyService.findAll());
 		model.addAttribute("companies", companies);
-		if(result.hasErrors()) {
+		if (result.hasErrors()) {
 			return EDIT_COMPUTER;
 		}
-		
+
 		String errors = "";
 		boolean success = false;
 
@@ -187,7 +184,7 @@ public class ComputerController {
 			computer.setDiscontinued(LocalDate.parse(computerDTO.getDiscontinued(), formatter));
 		}
 		if (computerDTO.getCompanyId() != 0) {
-			computer.setCompany(companyService.findById(computerDTO.getCompanyId()));
+			computer.setCompany(companyService.findById((long) computerDTO.getCompanyId()));
 		} else {
 			computer.setCompany(new Company());
 		}
@@ -233,16 +230,15 @@ public class ComputerController {
 	 * @return dashboard page
 	 */
 	@RequestMapping(value = "/addComputer", method = RequestMethod.POST)
-	public String addComputer( @ModelAttribute("ComputerDTO") @Validated(ComputerDTO.class) ComputerDTO computerDTO, BindingResult result,
-	    Locale locale, ModelMap model) {
-		
+	public String addComputer(@ModelAttribute("ComputerDTO") @Validated(ComputerDTO.class) ComputerDTO computerDTO,
+	    BindingResult result, Locale locale, ModelMap model) {
 
 		companies = companyMapper.mapCompanyToCompanyDTO(companyService.findAll());
 		model.addAttribute("companies", companies);
-		if(result.hasErrors()) {
+		if (result.hasErrors()) {
 			return ADD_COMPUTER;
 		}
-		
+
 		String errors = "";
 		boolean success = false;
 		Computer computer = new Computer();
@@ -262,7 +258,7 @@ public class ComputerController {
 		}
 
 		try {
-			if (computerService.save(computer) == 1) {
+			if (computerService.save(computer).equals(computer)) {
 				success = true;
 			} else {
 				success = false;
@@ -286,7 +282,7 @@ public class ComputerController {
 	@RequestMapping(value = "/deleteComputer", method = RequestMethod.POST)
 	public String deleteComputer(@RequestParam(value = "selection") String idComputerSend, ModelMap model) {
 
-		computerPage = new Page<Computer>(computers, nombrElementPerPage, numberOfComputers);
+		//computerPage = computerService.findByComputerAndCompanyNameLimit(search, pageIndex, nombrElementPerPage);
 
 		String deleteState = "";
 		boolean computerDeleteSuccess = false;
@@ -302,7 +298,8 @@ public class ComputerController {
 			}
 		}
 
-		setPageContent(search, computerPage.getIndexFirstPageElement(), computerPage.getNombreElementPerPage());
+		computerPage = computerService.findByComputerAndCompanyNameLimit(search, pageIndex, nombrElementPerPage);
+		computers = computerPage.getContent();
 
 		model.addAttribute("computerDeleteSuccess", computerDeleteSuccess);
 		model.addAttribute("deleteState", deleteState);
@@ -317,22 +314,14 @@ public class ComputerController {
 	private void defaultElementToSendToDashboard(ModelMap model) {
 		model.addAttribute("search", search);
 		model.addAttribute("numberElementPerPage", nombrElementPerPage);
-		model.addAttribute("numberOfComputers", numberOfComputers);
+		model.addAttribute("numberOfComputers", computerPage.getSize());
 		model.addAttribute("computers", computers);
-		model.addAttribute("computerPage", computerPage);
-		model.addAttribute("numberTotalOfPages", totalNumberOfPages());
+		model.addAttribute("computerPage", computerPage.getNumber());
+		model.addAttribute("numberTotalOfPages", computerPage.getTotalPages());
 		model.addAttribute("computers", computers);
 		model.addAttribute("numberOfComputers", numberOfComputers);
 	}
 
-	/**
-	 * 
-	 * @return totalNumberOfPages asName
-	 */
-	private int totalNumberOfPages() {
-		return (int) Math
-		    .ceil(computerPage.getNombreElementTotal() / Double.valueOf(computerPage.getNombreElementPerPage()));
-	}
 
 	/**
 	 * 
@@ -340,16 +329,4 @@ public class ComputerController {
 	 * @param pIndexFirstPageElement asName
 	 * @param pNombrElementPerPageasName
 	 */
-	private void setPageContent(String pSearch, int pIndexFirstPageElement, int pNombrElementPerPage) {
-		if (!search.equals("")) {
-			numberOfComputers = computerService.findByComputerAndCompanyName(pSearch).size();
-			computers = computerService.findByComputerAndCompanyNameLimit(pSearch, pIndexFirstPageElement,
-			    nombrElementPerPage);
-
-		} else {
-			numberOfComputers = computerService.findAll().size();
-			computers = computerService.findLimitNumberOfResult(pIndexFirstPageElement, pNombrElementPerPage);
-
-		}
-	}
 }

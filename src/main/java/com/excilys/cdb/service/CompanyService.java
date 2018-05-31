@@ -4,9 +4,12 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.excilys.cdb.dao.CompanyDAO;
+import com.excilys.cdb.dao.CompanyDao;
 import com.excilys.cdb.model.Company;
 
 /**
@@ -17,12 +20,12 @@ import com.excilys.cdb.model.Company;
  */
 @Service
 public class CompanyService {
-  private CompanyDAO companyDAO;
+  private CompanyDao companyDao;
   
   static final Logger LOGGER = LoggerFactory.getLogger(CompanyService.class);
  
-  private CompanyService(CompanyDAO companyDAO) {
-  	this.companyDAO = companyDAO;
+  private CompanyService(CompanyDao companyDAO) {
+  	this.companyDao = companyDAO;
   }
 
   /**
@@ -31,8 +34,8 @@ public class CompanyService {
    * @param id asName
    * @return Company
    */
-  public Company findById(int id) {
-    return companyDAO.findById(id).get();
+  public Company findById(Long id) {
+    return companyDao.findById(id).get();
   }
 
   /**
@@ -41,7 +44,7 @@ public class CompanyService {
    * @return List<Company>
    */
   public List<Company> findAll() {
-    return companyDAO.findAll();
+    return companyDao.findAll();
   }
 
   /**
@@ -51,8 +54,9 @@ public class CompanyService {
    * @param numberOfResultByPage asName
    * @return List<Company>
    */
-  public List<Company> findLimitNumberOfResult(int pageIndex, int numberOfResultByPage) {
-    return companyDAO.findLimitNumberOfResult(pageIndex, numberOfResultByPage);
+  public Page<Company> findLimitNumberOfResult(int pageIndex, int numberOfResultByPage) {
+  	Pageable pageable = new PageRequest(pageIndex, numberOfResultByPage);
+    return companyDao.findAll(pageable);
   }
 
   /**
@@ -62,7 +66,7 @@ public class CompanyService {
    * @return Company
    */
   public List<Company> findbyName(String name) {
-    return companyDAO.findByName(name);
+    return companyDao.findByNameContaining(name);
   }
   
   /**
@@ -72,12 +76,13 @@ public class CompanyService {
    *          asName
    * @return (0 or 1)
    */
-  public int delete(int id) {
+  public int delete(Long id) {
     if (findById(id).getId() == 0) {
       LOGGER.info("Company that you want to delete don't exist");
       return 0;
     } else {
-      return companyDAO.delete(id);
+      companyDao.delete(id);
+      return 1;
     }
   }
 

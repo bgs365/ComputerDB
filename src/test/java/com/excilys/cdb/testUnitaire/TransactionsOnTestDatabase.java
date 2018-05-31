@@ -7,21 +7,24 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.datasource.init.DataSourceInitializer;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
-import com.excilys.cdb.springConfig.ApplicationConfig;
+import com.excilys.cdb.springConfig.TestConfig;
 import com.ibatis.common.jdbc.ScriptRunner;
 
 public class TransactionsOnTestDatabase {
 
   static final Logger LOGGER = LoggerFactory.getLogger(TransactionsOnTestDatabase.class);
-  static ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
-	static DataSource dataSource = (DataSource) context.getBean(DataSource.class);
+  static ApplicationContext context = new AnnotationConfigApplicationContext(TestConfig.class);
+	static DriverManagerDataSource dataSource = (DriverManagerDataSource) context.getBean(DriverManagerDataSource	.class);
   static String emptyComputer = "DROP TABLE computer";
   static String emptyCompany = "DROP TABLE company";
 

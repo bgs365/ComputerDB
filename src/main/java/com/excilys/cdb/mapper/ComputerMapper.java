@@ -25,7 +25,7 @@ public class ComputerMapper implements RowMapper<Computer>{
       computer.setDiscontinued(result.getDate("discontinued").toLocalDate());
     }
     if (result.getInt("company.Id") != 0) {
-    	computer.setCompany(new Company(result.getInt("company.Id"),result.getString("company.name")));
+    	computer.setCompany(new Company(result.getLong("company.Id"),result.getString("company.name")));
     }
 		return computer;
 	}

@@ -107,7 +107,7 @@
 		<div class="container text-center">
 			<c:url var="searchUri" value="/computer/searchPage?pageNumber=##" />
 			<pagination:display maxLinks="10"
-				currPage="${computerPage.numerosPage}"
+				currPage="${computerPage}"
 				totalPages="${numberTotalOfPages}" uri="${searchUri}"
 				searchName="${search}"
 				nombreElementPerPage="${nombrElementPerPage }" />

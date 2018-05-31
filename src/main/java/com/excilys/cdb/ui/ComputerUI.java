@@ -38,8 +38,8 @@ public class ComputerUI {
    */
   public void listComputer() {
 
-    List<Computer> computers = computerService.findLimitNumberOfResult(0, nombrElementParPage);
-    Page<Computer> computerPage = new Page<Computer>(computers, nombrElementParPage, computerService.findAll().size());
+    List<Computer> computers = computerService.findByComputerAndCompanyNameLimit("",0, nombrElementParPage).getContent();
+    Page<Computer> computerPage = new Page<Computer>(computers, nombrElementParPage, (int) computerService.countByNameContaining("") );
     String choix = null;
 
     System.out.println("******************* Liste of Computers *******************");
@@ -53,14 +53,14 @@ public class ComputerUI {
         if (choix.equals("1") | choix.equals("2")) {
           switch (choix) {
           case "1":
-            computers = computerService.findLimitNumberOfResult(computerPage.previousPage(), nombrElementParPage);
+            computers = computerService.findByComputerAndCompanyNameLimit("",computerPage.previousPage(), nombrElementParPage).getContent();
             System.out.println("Page n° " + computerPage.getNumerosPage());
             System.out.println(display(computers));
             System.out.println(" << Page precedente 1 ** 0  Quitter ** 2 Page suivante >> ");
             break;
 
           case "2":
-            computers = computerService.findLimitNumberOfResult(computerPage.nextPage(), nombrElementParPage);
+            computers = computerService.findByComputerAndCompanyNameLimit("",computerPage.nextPage(), nombrElementParPage).getContent();
             System.out.println("Page n° " + computerPage.getNumerosPage());
             System.out.println(display(computers));
             System.out.println(" << Page precedente 1 ** 0  Quitter ** 2 Page suivante >> ");

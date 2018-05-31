@@ -3,7 +3,7 @@ package com.excilys.cdb.dto;
 import com.excilys.cdb.model.Company;
 
 public class CompanyDTO {
-	private int id;
+	private long id;
   private String name;
 
 	/**
@@ -15,7 +15,7 @@ public class CompanyDTO {
   }
   
 
-  public int getId() {
+  public long getId() {
 		return id;
 	}
 
