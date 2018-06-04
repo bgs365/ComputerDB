@@ -169,7 +169,6 @@ public class ComputerController {
 		if (result.hasErrors()) {
 			return EDIT_COMPUTER;
 		}
-
 		String errors = "";
 		boolean success = false;
 
@@ -177,17 +176,22 @@ public class ComputerController {
 		computer.setName(computerDTO.getName());
 		if (!StringUtils.isBlank(computerDTO.getIntroduced())) {
 			computer.setIntroduced(LocalDate.parse(computerDTO.getIntroduced(), formatter));
+		}else {
+			computer.setIntroduced(null);
 		}
 		if (!StringUtils.isBlank(computerDTO.getDiscontinued())) {
 			computer.setDiscontinued(LocalDate.parse(computerDTO.getDiscontinued(), formatter));
+		}else {
+			computer.setDiscontinued(null);
 		}
+		
 		if (computerDTO.getCompanyId() > 0) {
-			computer.setCompany(companyService.findById( computerDTO.getCompanyId()));
+			computer.setCompany(companyService.findById(computerDTO.getCompanyId()));
 		}
-
+		
 		try {
 
-			if (computerService.update(computer).equals(computer)) {
+			if (computerService.update(computer).getId() == computer.getId()) {
 				success = true;
 			} else {
 				success = false;
@@ -232,10 +236,8 @@ public class ComputerController {
 		companies = companyMapper.mapCompanyToCompanyDTO(companyService.findAll());
 		model.addAttribute("companies", companies);
 		if (result.hasErrors()) {
-			LOGGER.debug("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 			return ADD_COMPUTER;
 		}
-		LOGGER.debug("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		String errors = "";
 		boolean success = false;
 		Computer computer = new Computer();
@@ -247,15 +249,13 @@ public class ComputerController {
 		if (!StringUtils.isBlank(computerDTO.getDiscontinued())) {
 			computer.setDiscontinued(LocalDate.parse(computerDTO.getDiscontinued(), formatter));
 		}
-		
 
-		
 		if (computerDTO.getCompanyId() > 0) {
 			computer.setCompany(companyService.findById(computerDTO.getCompanyId()));
 		}
 
 		try {
-			if (computerService.save(computer).equals(computer)) {
+			if (computerService.save(computer).getId() == computer.getId()) {
 				success = true;
 			} else {
 				success = false;
@@ -311,7 +311,7 @@ public class ComputerController {
 		model.addAttribute("numberOfComputers", computerPage.getTotalElements());
 		model.addAttribute("computers", computers);
 		model.addAttribute("computerPage", computerPage.getNumber());
-		model.addAttribute("numberTotalOfPages", computerPage.getTotalPages()-1);
+		model.addAttribute("numberTotalOfPages", computerPage.getTotalPages() - 1);
 	}
 
 }

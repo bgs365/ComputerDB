@@ -60,4 +60,12 @@ public class ComputerDTO {
 		this.companyId = companyId;
 	}
 
+	@Override
+	public String toString() {
+		return "ComputerDTO [id=" + id + ", introduced=" + introduced + ", discontinued=" + discontinued + ", companyId="
+		    + companyId + ", name=" + name + "]";
+	}
+	
+	
+
 }
