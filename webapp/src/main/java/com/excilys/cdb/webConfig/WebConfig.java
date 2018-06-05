@@ -3,6 +3,7 @@ package com.excilys.cdb.webConfig;
 import java.util.Locale;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.ViewResolver;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
+@ComponentScan(basePackages = {"com.excilys.cdb.controller"})
 public class WebConfig implements WebMvcConfigurer {
 
 	@Bean

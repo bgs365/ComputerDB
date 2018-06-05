@@ -26,7 +26,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  *
  */
 @Configuration
-@ComponentScan(basePackages = "com.excilys.cdb")
+@ComponentScan(basePackages = { "com.excilys.cdb.model",
+"com.excilys.cdb.dao","com.excilys.cdb.service" })
 @EnableJpaRepositories("com.excilys.cdb.dao")
 @EnableTransactionManagement
 @PropertySource("classpath:config.properties")

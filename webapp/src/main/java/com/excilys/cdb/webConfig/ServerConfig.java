@@ -1,30 +1,27 @@
 package com.excilys.cdb.webConfig;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
-
-import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
-
-import com.excilys.cdb.springConfig.ApplicationConfig;
-
 /**
  * Server configuration.
  * @author sanogo
  *
  */
-public class ServerConfig implements WebApplicationInitializer {
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-  @Override
-  public void onStartup(ServletContext servletContext) throws ServletException {
-           
-      AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-      context.register(ApplicationConfig.class);
-      context.setServletContext(servletContext);
-      ServletRegistration.Dynamic servlet = servletContext.addServlet("dispatcher", new DispatcherServlet(context));
-      servlet.setLoadOnStartup(1);
-      servlet.addMapping("/");
-  }
+import com.excilys.cdb.springConfig.ApplicationConfig;
+
+public class ServerConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
+    @Override
+    protected Class<?>[] getRootConfigClasses() {
+        return new Class[] { ApplicationConfig.class };
+    }
+  
+    @Override
+    protected Class<?>[] getServletConfigClasses() {
+        return new Class[] { WebConfig.class };
+    }
+  
+    @Override
+    protected String[] getServletMappings() {
+        return new String[] { "/" };
+    }
 }
