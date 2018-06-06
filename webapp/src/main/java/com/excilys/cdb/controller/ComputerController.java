@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -34,6 +35,7 @@ import com.excilys.cdb.validator.ComputerDTOValidator;
 
 @Controller
 @RequestMapping("/computer")
+@PreAuthorize("hasRole('ADMIN')")
 public class ComputerController {
 
 	private int nombrElementPerPage = 10;
