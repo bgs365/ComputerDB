@@ -11,7 +11,7 @@ import com.excilys.cdb.dao.UserDao;
 import com.excilys.cdb.model.User;
 
 
-@Service("userDetailsService")
+@Service
 public class UserService implements UserDetailsService {
 
   private UserDao userDao;
@@ -39,5 +39,10 @@ public class UserService implements UserDetailsService {
       throw new UsernameNotFoundException("User not found.");
     }
     return builder.build();
+  }
+  
+  public User save(User user) {
+  	user = userDao.save(user);
+  	return user;
   }
 }

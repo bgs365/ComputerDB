@@ -58,4 +58,12 @@ public class User {
 		this.authorities = authorities;
 	}
 
+	@Override
+	public String toString() {
+		return "User [username=" + username + ", password=" + password + ", enabled=" + enabled + ", authorities="
+		    + authorities + "]";
+	}
+	
+	
+
 }

@@ -12,7 +12,14 @@ create table authorities (
 );
 create unique index ix_auth_username on authorities (username,authority);
 
+/*admin@123*/
 insert into users(username,password,enabled)
 	values('admin','$2a$10$hbxecwitQQ.dDT4JOFzQAulNySFwEpaFLw38jda6Td.Y/cOiRzDFu',true);
 insert into authorities(username,authority) 
 	values('admin','ROLE_ADMIN');
+/*bbbb5555*/
+insert into users(username,password,enabled)
+	values('visitor','$2a$10$WqFZNEOf8oNXINzM7MvtmuAHhk46plHdzIF1T2sqgAAXX5Su.rFdS',true);
+insert into authorities(username,authority) 
+	values('visitor','ROLE_VISITOR');
+

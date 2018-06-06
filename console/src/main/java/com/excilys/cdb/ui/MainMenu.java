@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+
 /**
  * Menu class.
  *
@@ -12,10 +13,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 public class MainMenu {
 	
-	public static void main(String argc[]) {
-		String encoded=new BCryptPasswordEncoder().encode("admin@123");
-		System.out.println("\n"+encoded+"\n");
-		
+	public static void main(String argc[]) {		
+		String encoded=new BCryptPasswordEncoder().encode("bbbbbbbb");
+		System.out.println(encoded);
 		display();
 	}
 	

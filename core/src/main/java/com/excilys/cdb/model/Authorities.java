@@ -34,5 +34,9 @@ public class Authorities {
 		this.user = user;
 	}
 
+	@Override
+	public String toString() {
+		return "Authorities [authority=" + authority + "]";
+	}
   
 }
