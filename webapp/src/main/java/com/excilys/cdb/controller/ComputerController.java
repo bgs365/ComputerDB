@@ -58,6 +58,7 @@ public class ComputerController {
 	protected void initBinder(WebDataBinder binder) {
 		binder.setValidator(new ComputerDTOValidator());
 	}
+	
 
 	/**
 	 * 
@@ -66,7 +67,6 @@ public class ComputerController {
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String IndexComputer(Locale locale, ModelMap model) {
-		LOGGER.info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		pageIndex = 0;
 		computerPage = computerService.findByComputerAndCompanyNameLimit(search, pageIndex, nombrElementPerPage);
 		computers = computerPage.getContent();

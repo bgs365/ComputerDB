@@ -7,7 +7,8 @@
 		</h2>
 		<div>
 			<a href="${pageContext.request.contextPath}?lang=en">English</a> | <a
-				href="${pageContext.request.contextPath}?lang=fr">Français</a>
+				href="${pageContext.request.contextPath}?lang=fr">Français</a> <a
+				href="<c:url value="/logout" />">Logout</a>
 		</div>
 	</div>
 </header>

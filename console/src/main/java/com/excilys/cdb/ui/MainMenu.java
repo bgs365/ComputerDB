@@ -2,6 +2,8 @@ package com.excilys.cdb.ui;
 
 import java.util.Scanner;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 /**
  * Menu class.
  *
@@ -11,6 +13,9 @@ import java.util.Scanner;
 public class MainMenu {
 	
 	public static void main(String argc[]) {
+		String encoded=new BCryptPasswordEncoder().encode("admin@123");
+		System.out.println("\n"+encoded+"\n");
+		
 		display();
 	}
 	

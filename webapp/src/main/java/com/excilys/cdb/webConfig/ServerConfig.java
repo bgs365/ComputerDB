@@ -12,7 +12,7 @@ import com.excilys.cdb.springConfig.ApplicationConfig;
 public class ServerConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] { ApplicationConfig.class };
+        return new Class[] { ApplicationConfig.class,WebSecurityConfig.class };
     }
   
     @Override

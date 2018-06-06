@@ -10,9 +10,8 @@
 	<section id="main">
 		<div class="container">
 			<div class="container">
-				<a href="dashboard"> See computers </a>
+				<a href="/computer/"> See computers </a>
 				<p>${message}</p>
-				<!--<jsp:forward page="/computer/" />-->
 				
 		</div>
 		</div>
