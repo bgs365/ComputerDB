@@ -1,5 +1,7 @@
 package com.excilys.cdb.service;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -39,6 +41,17 @@ public class ComputerService {
 	 */
 	public Computer findById(long id) {
 		return computerDao.findById(id).get();
+	}
+	
+	/**
+	 * find all computers.
+	 *
+	 * @param l
+	 *          asName
+	 * @return Computer
+	 */
+	public List<Computer> findAll() {
+		return computerDao.findAll();
 	}
 
 	/**

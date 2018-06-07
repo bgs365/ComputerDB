@@ -10,7 +10,6 @@ import java.util.Locale;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -44,9 +43,7 @@ public class ComputerController {
 	private List<Computer> computers;
 	private List<CompanyDTO> companies;
 	private Page<Computer> computerPage;
-	@Autowired
 	private ComputerService computerService;
-	@Autowired
 	private CompanyService companyService;
 	private CompanyMapper companyMapper = new CompanyMapper();
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -59,6 +56,11 @@ public class ComputerController {
 	@InitBinder("ComputerDTO")
 	protected void initBinder(WebDataBinder binder) {
 		binder.setValidator(new ComputerDTOValidator());
+	}
+	
+	private ComputerController( ComputerService computerService,CompanyService companyService) {
+		this.computerService = computerService;
+		this.companyService = companyService;
 	}
 	
 
