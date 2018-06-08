@@ -33,6 +33,12 @@
 		<hibernate-entitymanager.version>4.3.8.Final</hibernate-entitymanager.version>
 		<hibernate-validator.version>5.0.1.Final</hibernate-validator.version>
 		<hibernate-java8.version>5.1.0.Final</hibernate-java8.version>
+		<spring-data-jpa.version>1.7.2.RELEASE</spring-data-jpa.version>
+		<spring-security-core.version>5.0.0.RELEASE</spring-security-core.version>
+		<spring-security-web.version>5.0.0.RELEASE</spring-security-web.version>
+		<spring-security-config.version>5.0.0.RELEASE</spring-security-config.version>
+		<hibernate-validator-annotation-processor.version>6.0.2.Final</hibernate-validator-annotation-processor.version>
+		
 	</properties>
 
 	<dependencies>
@@ -153,31 +159,31 @@
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
-			<version>1.7.2.RELEASE</version>
+			<version>${spring-data-jpa.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
-			<version>5.0.0.RELEASE</version>
+			<version>${spring-security-core.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
-			<version>5.0.0.RELEASE</version>
+			<version>${spring-security-web.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
-			<version>5.0.0.RELEASE</version>
+			<version>${spring-security-config.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator-annotation-processor</artifactId>
-			<version>6.0.2.Final</version>
+			<version>${hibernate-validator-annotation-processor.version}</version>
 		</dependency>
 
 	</dependencies>
