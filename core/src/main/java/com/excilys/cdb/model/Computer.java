@@ -11,6 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+
 /**
  * Computer Class.
  *
@@ -29,8 +34,12 @@ public class Computer implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	private String name;
+	@JsonDeserialize(using = LocalDateDeserializer.class)  
+	@JsonSerialize(using = LocalDateSerializer.class) 
 	@Convert(converter=serialiseComputer.class)
 	private LocalDate introduced;
+	@JsonDeserialize(using = LocalDateDeserializer.class)  
+	@JsonSerialize(using = LocalDateSerializer.class) 
 	@Convert(converter=serialiseComputer.class)
 	private LocalDate discontinued;
 	@ManyToOne
