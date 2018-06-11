@@ -17,7 +17,7 @@ public class CompanyUI {
 	static ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 	static CompanyService companyService = (CompanyService) context.getBean(CompanyService.class);
 	static ComputerService computerService = (ComputerService) context.getBean(ComputerService.class);
-  private static SeizureVerification seizureVerification;
+  private SeizureVerification seizureVerification = new SeizureVerification();
   
   private static Scanner sc = new Scanner(System.in);
   private static int nombrElementParPage = 10;
@@ -77,7 +77,7 @@ public class CompanyUI {
    System.out.println("******************* Entrez company id to delete it *******************");
    company = seizureVerification.saisirCompanyATrouver();
    System.out.println("VAre you sure to delete this company ? --> " + company);
-   choix = SeizureVerification.choixBinaire();
+   choix = seizureVerification.choixBinaire();
    if (choix.equals("1")) {
      companyService.delete(company.getId());
    } else {

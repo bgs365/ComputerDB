@@ -1,8 +1,10 @@
 package com.excilys.cdb.ui;
 
+import java.io.IOException;
 import java.util.Scanner;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -13,16 +15,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 public class MainMenu {
 	
-	public static void main(String argc[]) {		
-		String encoded=new BCryptPasswordEncoder().encode("bbbbbbbb");
-		System.out.println(encoded);
+	public static void main(String argc[]) {	
 		display();
 	}
 	
 	static CompanyUI companyUI = new CompanyUI();
 	static ComputerUI computerUI = new ComputerUI();
+  static final Logger LOGGER = LoggerFactory.getLogger(MainMenu.class);
 	
-  private static Scanner sc;
+  private static Scanner scMainMenu;
   enum MainMenuChoice{
   	LIST_COMPANY,DETAIL_OF_COMPUTER,CREATE_COMPUTER,UPDATE_COMPUTER,DELETE_COMPUTER,DELETE_COMPANY,EXIT
   }
@@ -44,8 +45,8 @@ public class MainMenu {
       System.out.println("******************* 5 -- DELETE COMPUTER ");
       System.out.println("******************* 6 -- DELETE COMPANY ");
       System.out.println("******************* 7 -- EXIT ");
-      sc = new Scanner(System.in);
-      int choix = sc.nextInt();
+      scMainMenu = new Scanner(System.in);
+      int choix = scMainMenu.nextInt();
       mainMenuChoice = setChoice(choix);
       System.out.println(choix);
       switch (mainMenuChoice) {
@@ -54,7 +55,11 @@ public class MainMenu {
         break;
 
       case DETAIL_OF_COMPUTER:
-      	computerUI.listComputer();
+					try {
+						computerUI.listComputer();
+					} catch (IOException e) {
+						LOGGER.info(e.getMessage());;
+					}
         break;
 
       case CREATE_COMPUTER:

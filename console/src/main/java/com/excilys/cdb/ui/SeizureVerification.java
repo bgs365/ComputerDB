@@ -23,22 +23,23 @@ import com.excilys.cdb.springConfig.ApplicationConfig;
  */
 public class SeizureVerification {
 
-	static ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
-	static CompanyService companyService = (CompanyService) context.getBean(CompanyService.class);
-	static ComputerService computerService = (ComputerService) context.getBean(ComputerService.class);
-	private static Scanner sc = new Scanner(System.in);
+	 ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+	 CompanyService companyService = (CompanyService) context.getBean(CompanyService.class);
+	 ComputerService computerService = (ComputerService) context.getBean(ComputerService.class);
+	private  Scanner scInputValue;
+	
 
 	/**
 	 * Verify an mane gave by user to an computer.
 	 *
 	 * @return nom
 	 */
-	public static String saisieNom() {
+	public  String saisieNom() {
+		scInputValue = new Scanner(System.in);
 		String nom = null;
-
 		do {
 			System.out.println("Le nom doit avoir plus de 5 carractère !");
-			nom = sc.nextLine();
+			nom = scInputValue.nextLine();
 		} while (nom.length() < 5);
 		return nom;
 	}
@@ -50,8 +51,8 @@ public class SeizureVerification {
 	 *
 	 * @return localDate
 	 */
-	public static LocalDate saisieDate() {
-
+	public  LocalDate saisieDate() {
+		scInputValue = new Scanner(System.in);
 		LocalDate localDate = null;
 		boolean dateValide = false;
 		String uDate = null;
@@ -62,7 +63,7 @@ public class SeizureVerification {
 		    .println("format accepté : (dd/mm/yyyy) || Vous pouvez aussi mettre nc si vous voulez pas entrez de date");
 
 		do {
-			uDate = sc.nextLine();
+			uDate = scInputValue.nextLine();
 			if (!uDate.equals("nc")) {
 				try {
 					sdf.parse(uDate);
@@ -88,14 +89,14 @@ public class SeizureVerification {
 	 * @return Company
 	 */
 	public Company saisirCompany() {
-
+		scInputValue = new Scanner(System.in);
 		Company company = null;
 		boolean companyValide = false;
 		String nomCompany = null;
 
 		do {
 			System.out.println("Entrez une company existante ou *nc* pour aucune company");
-			nomCompany = sc.nextLine();
+			nomCompany = scInputValue.nextLine();
 			if (!nomCompany.equals("nc")) {
 				company = companyService.findbyName(nomCompany).get(0);
 				if (company.getId() != 0) {
@@ -114,18 +115,19 @@ public class SeizureVerification {
 	}
 
 	/**
-	 * Allow user to enter an company. use the same process of verification as
+	 * Allow user to enter an computer. use the same process of verification as
 	 * previous one.
 	 *
 	 * @return Computer
 	 */
 	public Computer saisirComputerATrouver() {
+		scInputValue = new Scanner(System.in);
 		Computer computer = new Computer();
 		boolean computerValide = false;
 		int idComputer = 0;
 		do {
 			System.out.println("Entrez une computer existante ou *0* pour sortir");
-			idComputer = sc.nextInt();
+			idComputer = scInputValue.nextInt();
 			if (idComputer != 0) {
 				computer = computerService.findById(idComputer);
 				if (computer.getId() != 0) {
@@ -140,6 +142,7 @@ public class SeizureVerification {
 		} while (!computerValide);
 		return computer;
 	}
+	
 
 	/**
 	 * as previous but for company.
@@ -147,12 +150,13 @@ public class SeizureVerification {
 	 * @return Company valid company
 	 */
 	public Company saisirCompanyATrouver() {
+		scInputValue = new Scanner(System.in);
 		Company company = new Company();
 		boolean companyValide = false;
 		long idCompany = 0;
 		do {
 			System.out.println("Entrez une computer existante ou *0* pour sortir");
-			idCompany = sc.nextInt();
+			idCompany = scInputValue.nextInt();
 			if (idCompany != 0) {
 				company = companyService.findById(idCompany);
 				if (company.getId() != 0) {
@@ -172,12 +176,12 @@ public class SeizureVerification {
 	 *
 	 * @return String
 	 */
-	public static String choixBinaire() {
+	public  String choixBinaire() {
 		String choix = null;
 		boolean choixValide = false;
 		do {
 			System.out.println("Entre : 1--> Oui - 2-->Non");
-			choix = sc.nextLine();
+			choix = scInputValue.nextLine();
 			if (choix.equals("1") | choix.equals("2")) {
 				choixValide = true;
 			}
